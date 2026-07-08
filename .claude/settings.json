@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc *)",
+      "Bash(git mv *)",
+      "Bash(mv content/design-thinking/piece-01.md content/design-thinking/piece-01.mdx)",
+      "Bash(node -e ' *)",
+      "Bash(grep -o 'text-xs text-sand\">\\\\[.\\\\{0,30\\\\}\\\\]</sup>' \"F:/GitHub/abhirupa-digital-garden/.next/server/app/design-thinking/piece-01.html\")",
+      "Bash(node \"C:/Users/mitra/AppData/Local/Temp/claude/f--GitHub-abhirupa-digital-garden/6fd6dbb8-949b-4835-9f12-7c5f9c672642/scratchpad/citation-repro.mjs\")",
+      "Bash(node citation-repro.mjs)"
+    ]
+  }
+}
