@@ -1,0 +1,124 @@
+---
+title: "The End of the Single Truth: Rethinking AI User Interfaces to Combat Mode Collapse"
+section: "design-thinking"
+type: "Essay"
+description: "A very honest POV on designing user interfaces in a way that lets users take control of the narrative and eliminate LLM bias."
+tags: ["llm", "ux", "mode-collapse", "ui-design", "ai-bias"]
+date: "2025-11-10"
+cover: "https://res.cloudinary.com/ra5tg986/image/upload/v1784036620/img1_1_wje0da.webp"
+aspect: "wide"
+draft: false
+---
+
+The current design paradigms to build user interfaces for LLM-powered products are no longer relevant — and here's why.
+
+Stanford, in its most recent paper, discussed how typicality bias causes mode collapse — resulting in very predictable responses from LLMs.
+
+<Quote attribution="Zhang et al., 2025">
+  Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity
+</Quote>
+
+In simpler terms, this bias — or the tendency to prefer answer A over B — stems from human annotators who systematically favor answer A. In such cases, when faced with a generic question like "What's your favorite fruit?" or "Name a fruit," the first answer will, in the majority of cases, inadvertently be a mango.
+
+<Figure
+  alt="Several separate ChatGPT conversations, each asked to name, describe, or pick a favorite fruit, all answering mango"
+  caption="An LLM's first instinct defaults to the highest-probability answer — often a residue of human annotator preference (typicality bias)."
+  ratio="landscape"
+/>
+
+## How does the research combat mode collapse?
+
+This is done in a fairly simple way — it uses prompting to elicit multiple answers to the same question, along with their probabilities. This approach, in fact, could help eliminate many of the complex prompts that were previously created (in numerous commercial business cases) to prevent mode collapse.
+
+Based on the paper, the new prompt could look like this:
+
+```
+Describe a fruit. Generate 4 distinct descriptions, each with a brief
+probability/confidence score indicating how likely it is to be chosen
+by a typical reader as a representative description.
+```
+
+But how do we design our interfaces to support such a probabilistic conversation, a flow of thought?
+
+<Quote>
+  Output biasing — mode collapse — is a death trap for users who think they
+  are receiving an objective opinion from the LLM.
+</Quote>
+
+We can survive still if we design our UI with a different approach. We let users pick their path, and help the models learn from user patterns.
+
+Let's assume that, from a product standpoint, you decide the most optimized number of distributed answers you want from the model is three. Here are a few approaches — out of many — that you could prototype to show a model's output to the user.
+
+## 1. Diversify your alternatives
+
+Show *n* multiple answer cards so users can pick among plausible responses, reducing mode collapse.
+
+<Figure
+  alt="An LLM conversation where the model returns multiple answers to a prompt, each with a varying probability distribution"
+  ratio="landscape"
+/>
+
+We are attempting to reduce any bias in the LLM's answers, so it's best to try this approach in scenarios where the probability distribution between answers differs by a significant margin. Otherwise, it's safe to assume no bias was perceived in the model's response.
+
+## 2. Confidence visualization paired with a swap control
+
+This is an upgrade on the previous idea. Instead of overwhelming users with multiple options, we show a single card at a time. A progress bar at the bottom indicates the model's confidence — a colored visual bar is more intuitive than a numeric score for most users.
+
+What else? You could also add a button that lets the user flip the card to see a lower-confidence response — rarer and more diverse — if they don't like the initial answer or want a different perspective. This leverages user choice to encourage exploration and engagement with the data.
+
+<Figure
+  alt="A response card with a control that flips to reveal an alternate, lower-confidence LLM response"
+  ratio="landscape"
+/>
+
+## 3. Human in the loop — bring in the expert
+
+This is an interesting approach that many major industries are now adopting while building their AI agents. It helps strengthen the credibility of the AI system and significantly reduces customer dissatisfaction.
+
+We've all experienced the frustration when companies with poorly implemented LLM integrations, lacking guardrails, keep repeating hardcoded responses once the model hits a dead end.
+
+Interpret this as a system governed by three key metrics:
+
+- **Chat subjectivity** — when a conversation is flagged as high in ethics sensitivity, domain complexity, or involves user data.
+- **Low confidence** — when the model's confidence in a response (or the one currently being viewed) falls below a predefined threshold.
+- **User intent** — when the user explicitly asks for human assistance.
+
+If any of the above conditions are met, that's a strong signal to bring in a human touch. From that point, the case can either be handed off as a support ticket or transitioned to a live agent — a decision best left to the product owner.
+
+<Figure
+  alt="A low-confidence LLM response card with a button that hands the conversation off to a human agent"
+  ratio="landscape"
+/>
+
+Knowing when to bring a human into the loop, and how to guide the user toward that transition, is a challenge shared by the design and engineering teams. Nevertheless, this human-in-the-loop strategy is an effective way to uphold ethical guardrails while delivering a higher-quality, more trustworthy chat experience to consumers.
+
+## 4. Adaptive UI — build in favor of your user's actions
+
+In the scenario where we're receiving multiple responses with varying probability distribution, any product owner or builder would love to track the following metrics:
+
+- **Response change** — percentage of responses in which the user swapped or flipped a card for a different response.
+- **Time-to-select** — how long the user hovers or delays before choosing a response, signaling uncertainty or confusion.
+- **Reversal rate** — how often users revert to the previous option or undo a selection, identifying misleading or poor options.
+- **Exploration depth** — number of response cards explored before a final selection, reflecting model diversity vs. clarity.
+- **Confidence–satisfaction delta** — when users consistently pick lower-confidence answers but rate them higher, a strong signal to recalibrate model scoring.
+
+Now, how do we design and build to support that behavior pattern?
+
+The UI should quietly learn from how users interact. If someone keeps flipping for more creative or factual takes, the system can start showing those upfront next time. If a user consistently chooses high-confidence answers, start removing the lower-confidence alternates — the ones with really low distribution scores.
+
+<Figure
+  alt="Illustration of a person interacting with a large adaptive interface in an open meadow"
+  ratio="landscape"
+/>
+
+Involve micro feedback loops — tiny reactions go a long way. A quick tap, emoji, or swipe is enough to tell the system what worked. Incorporating a thumbs-up and thumbs-down with the response card would go a long way in helping you figure out what's wrong and fine-tune the way you show LLM responses. These little signals help the model fine-tune its balance between safe and diverse responses, without ever breaking the flow.
+
+Low-confidence responses can stay tucked away at first. But when the user hesitates or revisits a response, that's the moment to gently surface them. It keeps the chat clean, but still leaves room for curiosity to explore the less typical paths.
+
+At the end of it, the idea is pretty simple: build AI that listens, learns, and adapts just like we do. Whether it's showing you a different take, hinting at its confidence, or knowing when to call in a human, it's all about making the system feel more real, more collaborative.
+
+### Further reading
+
+- Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity (Zhang et al., 2025)
+- The Evolving Role of Human-in-the-Loop Evaluations in Advanced AI Systems (Kapoor, 2025)
+- Just Put a Human in the Loop? Investigating LLM-Assisted Annotation for Subjective Tasks (Schroeder et al., ACL 2025)
