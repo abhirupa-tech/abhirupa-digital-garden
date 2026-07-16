@@ -5,7 +5,7 @@ type: "Journal"
 description: "Placeholder summary standing in for the real piece. One or two lines that hint at the idea without giving everything away."
 tags: ["placeholder", "draft"]
 date: "2026-07-04"
-cover: ""
+cover: "https://res.cloudinary.com/ra5tg986/image/upload/v1784036620/img1_1_wje0da.webp"
 aspect: "tall"
 draft: true
 ---

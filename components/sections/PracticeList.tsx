@@ -17,7 +17,7 @@ export function PracticeList({ zone, entries }: { zone: Zone; entries: ContentEn
         {items.map((entry, i) => (
           <li key={entry.slug} className="border-b border-parchment/12">
             <a
-              href={`#${zone.id}`}
+              href={`/${entry.section}/${entry.slug}`}
               className="group flex items-baseline gap-5 py-5 transition-colors"
             >
               <span className="w-8 shrink-0 font-display text-sm text-sand/50 tabular-nums">

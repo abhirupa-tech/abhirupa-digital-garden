@@ -1,6 +1,8 @@
 import { ImagePlaceholder } from '../ImagePlaceholder';
+import { cloudinaryUrl } from '@/lib/cloudinary';
 
 type FigureProps = {
+  /** A full image URL, or a Cloudinary public ID (e.g. "field-notes/dag-cover"). */
   src?: string;
   alt?: string;
   caption?: string;
@@ -10,10 +12,14 @@ type FigureProps = {
 /** Image with a caption underneath. No `src` yet? Falls back to the site's placeholder look. */
 export function Figure({ src, alt = '', caption, ratio = 'landscape' }: FigureProps) {
   return (
-    <figure className="my-8">
+    <figure className="my-14">
       {src ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={src} alt={alt} className="w-full rounded-sm border border-parchment/10" />
+        <img
+          src={cloudinaryUrl(src, { width: 1600 })}
+          alt={alt}
+          className="w-full rounded-sm border border-parchment/10"
+        />
       ) : (
         <ImagePlaceholder label={alt || 'Image'} ratio={ratio} />
       )}

@@ -9,20 +9,25 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Near-black canvas flowing into deep, muted blue
+        // Near-black canvas flowing into deep, muted blue — desaturated on
+        // purpose so the gradient reads as quiet charcoal-slate, not navy.
         ink: {
-          900: '#08090f',
-          800: '#0a0e1a',
-          700: '#0b1122',
-          600: '#0d1530',
-          500: '#101c3a',
-          400: '#152449',
+          900: '#0b0c10',
+          800: '#101319',
+          700: '#141924',
+          600: '#191f2d',
+          500: '#212940',
+          400: '#2b3550',
         },
         // Sandy / warm — the hero highlight. Accents earn their place.
         sand: {
           DEFAULT: '#d4a574',
           soft: '#e2bd94',
           deep: '#b98a58',
+        },
+        // Muted, dark burnt-orange — enough contrast for white text at small sizes
+        rust: {
+          DEFAULT: '#8a4a2e',
         },
         // Muted navy — quiet hover wash, never bright
         navy: {

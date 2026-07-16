@@ -1,0 +1,110 @@
+---
+title: "Anthropic Proved AI Thinks: The Frontend Architecture We Need to Watch It Happen"
+section: "the-practice"
+type: "Concept"
+description: "Exploring how modern frontend design can make an AI's hidden reasoning visible — turning abstract model introspection into human-understandable insight."
+tags: ["llm-introspection", "frontend-architecture", "agentic-ai", "ui-design", "anthropic"]
+date: "2025-11-13"
+cover: "https://res.cloudinary.com/ra5tg986/image/upload/v1784036620/img1_1_wje0da.webp"
+aspect: "wide"
+draft: false
+---
+
+<Figure
+  alt="AI-generated illustration of a robot sitting and thinking, against a teal background"
+  ratio="landscape"
+/>
+
+We are talking about the future here — you'll want to stay till the very end.
+
+Anthropic recently shared something that genuinely made me stop and reread the paragraph. They claim their model can tell when its own thoughts are being messed with. Not in a sci-fi way — through a real concept-injection experiment, where they slipped completely unrelated ideas straight into the model's activation layers.
+
+And here's the part that was really interesting: Opus 4.\* actually noticed. It picked up that something foreign had been injected into its reasoning — quietly, mid-thought — long before it generated a final answer. No prompts, no nudges, nothing guiding it from the outside. <Highlight>It just knew it was being messed with.</Highlight>
+
+Does this mean LLMs have a conscience? Is the inevitable happening? Well — not yet. But stay with me for a moment.
+
+It's the kind of result that opens up way more questions than it answers — and the next part goes deeper into exactly that.
+
+<Figure
+  alt="Visualization of Anthropic's concept-injection experiment"
+  caption="Source: Anthropic Research — a visualization of how, across a series of experiments, an LLM successfully detected an injected thought."
+  ratio="landscape"
+/>
+
+However, currently, there are no LLM APIs that let us into its brain. The concept-injection experiment also showed that not all models respond to it. But with models getting stronger and more powerful, this seems increasingly imminent in the future.
+
+## Why design the windows into an LLM's brain
+
+But I'm not an AI researcher — I get paid to make buttons look clickable. So why am I even writing this?
+
+<Quote>
+  Because someone needs to design the windows into an LLM's brain.
+</Quote>
+
+## The UI → LLM interaction flow
+
+Let's take a deep dive into the UI → LLM interaction flow. An LLM could broadly have the following processing stages:
+
+- **Embedding activations** — Vector representations that encode the semantic meaning of user input before deeper processing begins.
+- **Attention snapshots** — Moment-by-moment maps showing which tokens the model is focusing on when generating the next output.
+- **Confidence drift** — Variations in the probabilistic output generation.
+- **Step-wise reasoning** — Logical steps where an LLM moves toward the output.
+- **Anomaly warnings** — A self-realization (similar to what happened when Anthropic injected a concept) that an LLM is on the wrong track.
+
+Once — and hopefully soon — when we are able to see all the layers and vectors, we should be able to receive a stream of tokens for every stage of the model's thinking.
+
+### Event-driven architecture with subscription filtering
+
+A frontend interface on the client (let's call it a Thought Interface) would use an event-driven architecture with subscription filtering to listen to the events the user has opted into, and take appropriate actions based on the user's interactions with the UI.
+
+**Subscribe by choice.** The client (read: frontend) will essentially subscribe on a need basis to these events — reasoning steps, confidence scores, and anomaly warnings. This is a user-driven choice, since we do not want to put too much information out there.
+
+<Figure
+  alt="Notebook-style sketch depicting the Thought Interface, Event Manager, and LLM"
+  caption="A notebook-style sketch of the Thought Interface, Event Manager, and LLM."
+  ratio="landscape"
+/>
+
+### What can a Thought Interface do with the information?
+
+Give users power to drive a conversation:
+
+- Allow users to pause a conversation, or provide feedback at the step where they think the model's reasoning is going off track.
+- Improve the user funnel by lowering perceived latency between sending an LLM query and receiving a response.
+- Potentially use concept injection to talk back to the model while it's thinking — and provide a more immersive experience.
+
+Even without real introspection today, we can design the UI interactions that future LLM APIs will support.
+
+A high-level interaction would look somewhat like the diagram below.
+
+<Figure
+  alt="Swimlane diagram of interactions between the UI, Event Manager, and LLM"
+  caption="A swimlane diagram depicting the interactions between the UI, Event Manager, and LLM."
+  ratio="landscape"
+/>
+
+We have three entities here — the LLM, the Event Manager, and the User Interface (or what I've been calling the Thought Interface). The Event Manager could be part of the LLM itself, or part of the broader MCP universe.
+
+The user — let's assume — subscribes to Step-wise Reasoning and Confidence Drift. The LLM, along with the Event Manager, would deal with the influx of incoming streaming tokens from the LLM, and move forward the filtered content based on the user's subscribed data.
+
+The client receives the filtered content and displays it to the user as is.
+
+### What the user can do next
+
+- **Pause generation** — triggered when the user clicks a "Pause Thinking" control, halting token generation at the LLM level.
+- **Inject context** — useful when the user needs to nudge the LLM in a correct direction.
+
+```
+UI → Send Inject Context → Event Manager (receives, processes, and
+tokenizes the context) → Injects into LLM Layer
+```
+
+- **Feedback** — the user provides feedback to any layer of the LLM's chain of thought, useful when the reasoning seen in the stream needs correction or reinforcement. This could be translated into bias vectors, temperature shifts, and more.
+
+The idea isn't to enable LLM introspection or thinking capabilities. It's about being ready to <Highlight>architect the entire user experience</Highlight> for the time when such performant models arrive.
+
+### Further reading
+
+- Signs of introspection in large language models
+- Emergent Introspective Awareness in Large Language Models
+- Model Context Protocol

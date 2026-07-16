@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react';
 
-/** A tiny pill — styling lifted from the tag treatment in KnowledgeLibrary. */
+/** A tiny pill — muted burnt-orange fill, white text, readable at label size. */
 export function Tag({ children }: { children: ReactNode }) {
   return (
-    <span className="label inline-block rounded-full border border-parchment/30 px-3 py-1 text-[0.6rem] text-parchment-muted">
+    <span className="label inline-block rounded-full bg-rust px-3 py-1 text-[0.65rem] font-medium tracking-label text-white">
       {children}
     </span>
   );

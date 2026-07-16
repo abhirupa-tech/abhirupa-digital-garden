@@ -1,0 +1,86 @@
+---
+title: "How Goodhart's Law Ate Your AI Strategy"
+section: "design-thinking"
+type: "Essay"
+description: "An interesting story that needs to be heard — and why we should be more concerned now than ever."
+tags: ["ai-strategy", "goodharts-law", "metrics", "engineering-culture", "agentic-ai"]
+date: "2026-07-10"
+cover: "https://res.cloudinary.com/ra5tg986/image/upload/v1784036620/img1_1_wje0da.webp"
+aspect: "wide"
+draft: false
+---
+
+Last week I overheard a conversation at a coffee shop. Names are fictional. The dysfunction is not. This is how it played out.
+
+<Figure
+  alt="Two engineers talking over coffee about AI token usage"
+  ratio="landscape"
+/>
+
+**Sam:** Leaders are after us this week. Our team's Claude token usage isn't high enough — they're worried we aren't using AI enough.
+
+**Maria:** Wait, but you work in backend infrastructure. There's only so much an LLM can do there.
+
+**Sam:** I know. So we've started using Claude to run design reviews on our entire codebase.
+
+**Marty:** What? That thing is massive. Why would you —
+
+**Sam:** It drives token usage up. One less thing for our manager to complain about.
+
+You see what happened there, right? Which brings us, weirdly, to philosophy.
+
+In 1975, British economist Charles Goodhart observed something simple and devastating:
+
+<Quote attribution="Charles Goodhart, 1975">
+  Once a measure becomes a target, it stops being a good measure.
+</Quote>
+
+That's it. That's the whole law.
+
+And yet here we are, fifty years on, watching billion-dollar companies burn compute budgets optimizing for a token dashboard — because someone in leadership decided that <Highlight>token consumption equals AI adoption</Highlight>.
+
+<Figure
+  alt="Chart showing 92 percent of companies planning to increase AI investment"
+  caption="McKinsey's 2024 AI report found that 92% of companies plan to increase AI investment over the next three years."
+  ratio="landscape"
+/>
+
+Most of them have no idea how they'll measure whether it's working. So they measure what's easy to measure. Volume. Usage. Tokens. And Goodhart — wherever he is — is nodding slowly.
+
+Here's the thing about metrics: they don't lie. They just answer a different question than the one you thought you were asking. You asked <Highlight>are we adopting AI</Highlight>? The token dashboard answered <Highlight>are we consuming AI</Highlight>. Those are not the same sentences.
+
+*We built a leaderboard for destroying the earth — aka. mindlessly burning through tokens.*
+
+## Why metrics get gamed
+
+Because the people setting them are optimizing for a story they can tell upward, not for the work that actually happens.
+
+Here is the mindset. A lot of companies are right now gamifying the entire practice of software engineering. They build leaderboards. And who tops the leaderboard? The person who burned through the maximum number of tokens.
+
+Did we, in this process, ever stop to think about the implications of engineers "wasting" tokens just to meet a target? Those tokens don't come from nowhere. Each one is energy and water spent in a data centre, so a leaderboard that rewards burning the most is quietly a <Highlight>leaderboard for burning the planet</Highlight>.
+
+Because on paper, that engineer looks like a hero. Most output, least time. High velocity, high productivity, a beautiful upward-and-to-the-right line for the next all-hands. Except it measures nothing real. It rewards the person who reached for the biggest, most expensive tool for every task, regardless of whether the task needed it.
+
+This is bollocks. And any working engineer knows it.
+
+Why would I generate an elaborate AI skill for something that is barely a one-line change? Why would I ask AI to blindly fix a bug before I have reproduced it in a local dev environment and understood its side effects?
+
+Every one of those restraints is invisible to a token dashboard. The dashboard cannot see the bug I didn't introduce, the refactor I didn't ship, the outage I didn't cause. It only counts what I consumed. So the engineer exercising judgment scores lower than the one spraying tokens at problems that did not ask for them.
+
+*And honestly, sometimes manually making a change is way easier and quicker than creating a skill for it.*
+
+## What to measure instead
+
+<Figure
+  alt="A senior engineer deciding not to reach for an AI tool"
+  caption="The senior skill is knowing when not to reach for the tool."
+  ratio="landscape"
+/>
+
+The token leaderboard fails because it measures the swing, not the hit. If you actually want to know whether AI is reducing engineering effort, you have to instrument outcomes and reuse, not raw consumption. A few metrics that would actually tell you something:
+
+- **Measure skill reuse, not skill creation.** Building a skill is a cost, not a trophy. What matters is how often it gets called after it exists, and whether messy overlapping skills collapse into one good one. A skill invoked twice was an afternoon wasted.
+- **Usage means nothing without a before and after.** If a skill doesn't make a task faster than your team's own history, it isn't reducing effort. Watch how much the engineer rewrote, and how often AI work comes back as a bug. Reverted output is negative work.
+- **Track tokens per outcome, not tokens per session.** An agent that closes a task in three thousand tokens beats one that sprays eighty thousand at it. On a leaderboard the wasteful one looks like a hero. Divide by the outcome and it shows up as a cost center.
+
+That's the whole shift: stop counting the swing, start counting the hit.

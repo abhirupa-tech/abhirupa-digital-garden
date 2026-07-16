@@ -1,0 +1,99 @@
+---
+title: "Demystifying MCP Servers: The Part No One Explains Well"
+section: "the-practice"
+type: "Guide"
+description: "A clear, practical look at MCP servers and their real value in today's tech world — what they are, why LLMs need them, and how one actually works under the hood."
+tags: ["mcp", "llm", "ai-tooling", "javascript", "agentic-ai"]
+date: "2025-12-11"
+cover: "https://res.cloudinary.com/ra5tg986/image/upload/v1784036620/img1_1_wje0da.webp"
+aspect: "wide"
+draft: false
+---
+
+When I first heard the term MCP server, I nodded along like I totally knew what it meant. Spoiler: I absolutely did not. And if you're in the same spot, don't worry. You're in very good company.
+
+"MCP" is one of those phrases people casually drop to sound deeply technical, even though the mental model behind it is usually — let's say, pretty questionable. Plot twist — there's nothing mysterious about it at all.
+
+MCP isn't rocket science. It's actually pretty straightforward once you strip away the hype. And once it clicks, you'll see why everyone suddenly keeps bringing it up.
+
+Let's break it down for real.
+
+<Quote>
+  At its core, MCP is how you safely let third-party LLMs or AI agents do
+  things inside your product.
+</Quote>
+
+That's it. That's the entire magic.
+
+You can build your own MCP server if you're ambitious (or bored). Or — you can literally get an LLM like Claude to generate one for you.
+
+## Why do we actually need MCPs?
+
+Because LLMs are incapable of doing anything meaningful on their own. They are, at best, text-prediction tools.
+
+You give them a series of text that forms your query, and the LLM predicts what it thinks the reply should be. But it is still dumb.
+
+How do you make an LLM smart? You integrate tools with the LLM and create a pathway for the model to work with those tools.
+
+This is not as simple as it sounds. Each tool has different APIs with different payload signatures, and wiring an LLM to handle dozens of tools and call all those APIs can quickly become a nightmare. It gets messy fast. If you connect an LLM directly to them, you end up writing custom wrappers, validators, retries, and prompt hacks for every single tool.
+
+This is when an MCP server comes to the rescue.
+
+Anthropic introduced MCP as a standardized way to expose your product's external APIs so an LLM can communicate with them in a consistent, predictable manner. It turns scattered integrations into a single clean interface that any model can understand and use.
+
+Imagine you have three tools in your product: a flight search API, a hotel booking API, and a payment API. Each one has its own auth method, payload shape, error format, and version quirk.
+
+With MCP, you expose them as <Highlight>clean, schema-defined tools</Highlight> that any LLM can discover and call without custom glue code.
+
+<Figure
+  alt="Three separate product APIs unified behind a single MCP interface"
+  ratio="landscape"
+/>
+
+## Inside the MCP server: what happens under the hood?
+
+An MCP setup has an MCP client, an MCP server, and the service. The service is the product you want an LLM to operate on. The MCP server is what the product or service owner builds so the MCP client can talk to their system.
+
+**Example.** A travel app like Skyscanner could build an MCP server that exposes tools for searching flights, filtering prices, and checking availability. The MCP client (inside an AI assistant) discovers these tools and calls them reliably without custom integrations.
+
+A lot of clients have actually already built their MCP servers. You could already have them configured using Docker Desktop and wire it up with Claude to directly converse with the LLM and get it to do real work.
+
+### How an MCP call actually works, step by step
+
+Let's assume YouTube has its own MCP server. We'd be trying to get work done on YouTube, but through an LLM. This could look somewhat like this:
+
+- Claude starts by initiating the MCP client handshake. The client queries the YouTube MCP server for its tool manifest. The server responds with a list of capabilities — `searchVideos`, `getVideoDetails`, `listComments`, `uploadAsset`, and so on — each with its own JSON schema for inputs and outputs.
+- You ask Claude, "Search YouTube for the top tutorials on MCP servers." Claude validates your query against the expected schema, and issues a structured MCP call.
+- The YouTube MCP server receives this, maps it to the corresponding YouTube Data API endpoint, handles OAuth, rate limits, pagination, and then returns a normalized MCP-compliant response back to Claude.
+- Claude now has real API data and can continue the flow. If you ask for comments on one of those videos, it repeats the process by calling `listComments` with the selected `videoId`. No guessing, no prompt hacks.
+
+The beauty here is that YouTube's internal backend stays exactly the same. MCP is just a thin, standardized protocol layer that abstracts discovery, schema validation, invocation, and error handling.
+
+If you want to peek one layer deeper, MCP actually communicates using a lightweight JSON-RPC–style protocol over transports like stdio or WebSockets.
+
+When Claude queries the MCP server, it receives a manifest that lists every available tool along with strict input/output schemas. These schemas are what <Highlight>prevent the model from hallucinating parameters</Highlight> or inventing APIs — it can only call what the manifest explicitly defines.
+
+<Figure
+  alt="A manifest of MCP tools with strict JSON input and output schemas"
+  ratio="landscape"
+/>
+
+## Where this architecture still gets criticized
+
+### User data privacy
+
+The moment an LLM starts calling external tools, data is moving across boundaries. Who sees what? Where is it stored? How long is it retained? Without a standardized protocol, every integration becomes a fresh privacy minefield waiting for someone to step on it.
+
+### Interoperability
+
+Different platforms speak different languages. One service wants XML, another loves JSON, another insists on a weird custom signature header. Wiring an LLM to talk to all of them is chaos. Getting multiple systems to play nicely together is harder than anyone admits.
+
+### Energy consumption
+
+And then there's the energy argument. Running LLMs and orchestrating tool calls at scale is not exactly a low-power hobby. Some researchers joke that this whole setup could be powering small satellites. Not entirely wrong. Efficient protocols matter more than ever.
+
+Will MCP magically solve every scalability, privacy, interoperability, or energy challenge? No. But it gives us a cleaner foundation to build on — something the AI ecosystem badly needs as tools multiply and expectations skyrocket.
+
+If you've made it this far, you now understand MCP better than half the internet. And hopefully, you can also see why people are excited about it. Not because it's flashy, but because it's practical.
+
+And in tech, the practical things are usually the ones that quietly change everything.

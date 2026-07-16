@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import type { Zone } from '@/lib/data';
 import type { ContentEntry } from '@/lib/content';
-import { ImagePlaceholder } from './ImagePlaceholder';
+import { CoverImage } from './CoverImage';
 import { Reveal } from './motion/Reveal';
 import { WanderLink } from './sections/SectionHeader';
 
@@ -38,7 +38,7 @@ function LibraryCard({
         aria-expanded={expanded}
         className="block w-full text-left focus-visible:outline-none"
       >
-        <ImagePlaceholder label={item.type} ratio={item.aspect === 'tall' ? 'portrait' : item.aspect === 'wide' ? 'landscape' : 'square'} />
+        <CoverImage src={item.cover} alt={item.title} ratio={item.aspect === 'tall' ? 'portrait' : item.aspect === 'wide' ? 'landscape' : 'square'} />
         <div className="px-1 pt-4">
           <span className={`label inline-block rounded-full border px-3 py-1 text-[0.6rem] ${accent}`}>
             {item.type}

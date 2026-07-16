@@ -1,7 +1,7 @@
 import type { Zone } from '@/lib/data';
 import type { ContentEntry } from '@/lib/content';
 import { Reveal } from '../motion/Reveal';
-import { ImagePlaceholder } from '../ImagePlaceholder';
+import { CoverImage } from '../CoverImage';
 import { Sketch } from '../Sketch';
 import { SectionHeader, WanderLink } from './SectionHeader';
 
@@ -25,9 +25,9 @@ export function DesignThinkingCollage({ zone, entries }: { zone: Zone; entries: 
           const withImage = i % 2 === 0;
           return (
             <Reveal delay={0.08 * i} key={entry.slug} as="article" className="h-full">
-              <a href={`#${zone.id}`} className="group flex h-full flex-col">
+              <a href={`/${entry.section}/${entry.slug}`} className="group flex h-full flex-col">
                 {withImage ? (
-                  <ImagePlaceholder ratio="square" label={entry.type} />
+                  <CoverImage src={entry.cover} alt={entry.title} ratio="square" />
                 ) : (
                   <div className="flex aspect-square items-center justify-center rounded-sm border border-sand/25 bg-ink-700/20">
                     <span className="font-display text-5xl text-sand/40">

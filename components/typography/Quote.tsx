@@ -14,7 +14,7 @@ type QuoteProps = {
  */
 export function Quote({ children, attribution }: QuoteProps) {
   return (
-    <blockquote className="my-8 border-l-2 border-sand/50 pl-6 font-display text-2xl italic leading-snug text-parchment [&_p]:mb-0 [&_p]:font-display [&_p]:text-2xl [&_p]:italic [&_p]:leading-snug [&_p]:text-parchment">
+    <blockquote className="my-14 border-l border-sand/25 pl-8 font-serif text-3xl font-light italic leading-relaxed tracking-tight text-parchment/95 md:text-4xl [&_p]:mb-0 [&_p]:font-serif [&_p]:text-3xl [&_p]:font-light [&_p]:italic [&_p]:leading-relaxed [&_p]:tracking-tight [&_p]:text-parchment/95 md:[&_p]:text-4xl">
       {children}
       {attribution && (
         <cite className="label mt-4 block not-italic text-parchment-faint">— {attribution}</cite>

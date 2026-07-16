@@ -7,7 +7,11 @@
       "Bash(node -e ' *)",
       "Bash(grep -o 'text-xs text-sand\">\\\\[.\\\\{0,30\\\\}\\\\]</sup>' \"F:/GitHub/abhirupa-digital-garden/.next/server/app/design-thinking/piece-01.html\")",
       "Bash(node \"C:/Users/mitra/AppData/Local/Temp/claude/f--GitHub-abhirupa-digital-garden/6fd6dbb8-949b-4835-9f12-7c5f9c672642/scratchpad/citation-repro.mjs\")",
-      "Bash(node citation-repro.mjs)"
+      "Bash(node citation-repro.mjs)",
+      "Bash(grep -n \"^---$\" content/field-notes/piece-01.md)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(python3 -c \"print\\(open\\('content/design-thinking/piece-02.mdx','rb'\\).read\\(\\)[400:700]\\)\")",
+      "Bash(powershell -Command \"Get-Content content/design-thinking/piece-02.mdx -TotalCount 25 | Select-Object -Last 5\")"
     ]
   }
 }

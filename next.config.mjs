@@ -1,10 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Static HTML export — GitHub Pages serves the `out/` folder as flat files.
+  output: 'export',
+  // Directory-style URLs (`/section/slug/index.html`) resolve most reliably on
+  // static hosts like GitHub Pages.
+  trailingSlash: true,
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
   images: {
-    formats: ['image/avif', 'image/webp'],
+    // The default image optimizer needs a running server; a static export has
+    // none. Our images are plain <img> (often already optimized via
+    // Cloudinary), so serve them as-authored.
+    unoptimized: true,
   },
   // Bundling is handled by webpack (not Turbopack). `next dev` / `next build`
   // use webpack by default here; this hook makes that explicit and is the

@@ -6,8 +6,8 @@
 export const site = {
   name: 'Abhirupa Mitra',
   shortName: 'Abhirupa',
-  // Update to the production domain when deployed.
-  url: 'https://abhirupa.com',
+  // Production domain (custom domain on GitHub Pages).
+  url: 'https://abhirupamitra.com',
   role: 'Frontend Engineer at Slack',
   tagline:
     'Abhirupa architects spaces where AI breathes and thinks alongside humans.',

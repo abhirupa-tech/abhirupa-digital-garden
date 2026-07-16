@@ -1,7 +1,7 @@
 import type { Zone } from '@/lib/data';
 import type { ContentEntry } from '@/lib/content';
 import { Reveal } from '../motion/Reveal';
-import { ImagePlaceholder } from '../ImagePlaceholder';
+import { CoverImage } from '../CoverImage';
 import { SectionHeader, WanderLink } from './SectionHeader';
 
 /**
@@ -22,7 +22,7 @@ export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: Conten
               className="group flex gap-5 rounded-2xl p-3 transition-colors duration-500 hover:bg-navy-muted"
             >
               <div className="w-24 shrink-0 sm:w-28">
-                <ImagePlaceholder ratio="square" shape="squircle" label={entry.type} />
+                <CoverImage src={entry.cover} alt={entry.title} ratio="square" shape="squircle" />
               </div>
               <div className="flex-1 py-1">
                 <span className="label text-sand/70">{entry.type}</span>
