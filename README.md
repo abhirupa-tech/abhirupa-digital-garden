@@ -32,7 +32,7 @@ npm start        # serve production build
 ```
 app/
   layout.tsx      Metadata, fonts, JSON-LD structured data (SEO core)
-  page.tsx        Assembles hero + 5 zones + footer
+  page.tsx        Assembles hero + 4 zones + footer
   globals.css     Gradient canvas + type base
   sitemap.ts      /sitemap.xml
   robots.ts       /robots.txt
@@ -49,7 +49,6 @@ content/          Static content — one folder per section
   field-notes/        piece-01.md … piece-05.md
   design-thinking/    …
   knowledge-library/  …
-  slow-living/        …
 scripts/
   scaffold-content.mjs   Regenerates content folders (idempotent — never clobbers)
 ```
@@ -67,18 +66,16 @@ its own distinct format**:
 | Field Notes | Horizontal thumbnail cards *(shares a row with The Practice)* |
 | Design Thinking | Staggered collage — mixed image / big-number tiles |
 | Knowledge Library | Discovery masonry, click-to-expand |
-| Slow Living | Rotated photo stack + date-stamped journal list |
 
 Add or edit entries by dropping `.md` files into the right folder — no code
 changes needed. Run `npm run scaffold` to top up any missing placeholders.
 
-## The five zones
+## The four zones
 
 1. **The Practice** — building agentic interfaces at Slack
 2. **Field Notes** — essays on human–AI interaction
 3. **Design Thinking** — a human-centered method
 4. **Knowledge Library** — a discovery model (papers, blogs, books, art)
-5. **Slow Living** — the human behind the engineer
 
 ## SEO
 

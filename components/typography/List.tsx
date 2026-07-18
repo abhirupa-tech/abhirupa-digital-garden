@@ -2,14 +2,14 @@ import type { ReactNode } from 'react';
 
 /**
  * Maps markdown's `ul` / `ol` / `li`. Tuned to sit beside the body Paragraph:
- * same serif face and smoke-white tone, with quiet sand markers. Keep list
+ * same rounded face and near-black tone, with rust markers. Keep list
  * items *tight* in the source (no blank lines between them) so MDX doesn't
  * wrap each item in a Paragraph — the `[&>p]` overrides below are a safety net
  * for loose lists, collapsing the oversized body-paragraph look back down.
  */
 
 const listItemText =
-  'font-serif text-2xl font-light leading-relaxed text-[#eef0f2]/90 marker:text-sand/70 [&>p]:mb-0 [&>p]:font-serif [&>p]:text-2xl [&>p]:font-light [&>p]:leading-relaxed [&>p]:text-[#eef0f2]/90';
+  'font-rounded text-[1.3rem] font-normal leading-[1.6] text-parchment marker:text-rust [&>p]:mb-0 [&>p]:font-rounded [&>p]:text-[1.3rem] [&>p]:font-normal [&>p]:leading-[1.6] [&>p]:text-parchment';
 
 /** Maps markdown's `ul`. */
 export function UnorderedList({ children }: { children: ReactNode }) {

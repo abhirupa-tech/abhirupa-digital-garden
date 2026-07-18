@@ -19,17 +19,23 @@ export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: Conten
           <Reveal from="right" delay={0.08 * i} key={entry.slug} as="article">
             <a
               href={`#${zone.id}`}
-              className="group flex gap-5 rounded-2xl p-3 transition-colors duration-500 hover:bg-navy-muted"
+              className="group flex items-center gap-5 rounded-2xl bg-transparent p-3 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#f5efe0] hover:shadow-md"
             >
-              <div className="w-24 shrink-0 sm:w-28">
-                <CoverImage src={entry.cover} alt={entry.title} ratio="square" shape="squircle" />
+              <div className="w-24 shrink-0 overflow-hidden rounded-[28%] sm:w-28">
+                <CoverImage
+                  src={entry.cover}
+                  alt={entry.title}
+                  ratio="square"
+                  shape="squircle"
+                  className="transition-transform duration-500 group-hover:scale-110"
+                />
               </div>
-              <div className="flex-1 py-1">
+              <div className="flex-1">
                 <span className="label text-sand/70">{entry.type}</span>
                 <h3 className="mt-1 font-display text-lg leading-snug text-parchment transition-colors duration-300 group-hover:text-sand">
                   {entry.title}
                 </h3>
-                <p className="mt-1.5 font-body text-sm leading-relaxed text-parchment/65">
+                <p className="mt-1.5 line-clamp-2 font-rounded text-sm leading-relaxed text-parchment/85">
                   {entry.description}
                 </p>
               </div>

@@ -7,10 +7,12 @@ type WaveProps = {
   flip?: boolean;
 };
 
+// Text-color classes (not raw hex) so the wave picks up the active theme's
+// variable automatically via `currentColor`.
 const tones: Record<NonNullable<WaveProps['tone']>, string> = {
-  sand: '#d4a574',
-  teal: '#7fb3ab',
-  faint: '#b9b4ac',
+  sand: 'text-sand',
+  teal: 'text-teal-whisper',
+  faint: 'text-parchment-muted',
 };
 
 /**
@@ -19,7 +21,6 @@ const tones: Record<NonNullable<WaveProps['tone']>, string> = {
  * representing the meeting of AI/tech and human experience.
  */
 export function Wave({ tone = 'faint', className, flip }: WaveProps) {
-  const color = tones[tone];
   const style: CSSProperties | undefined = flip
     ? { transform: 'scaleY(-1)' }
     : undefined;
@@ -27,7 +28,7 @@ export function Wave({ tone = 'faint', className, flip }: WaveProps) {
   return (
     <div
       aria-hidden="true"
-      className={`pointer-events-none w-full overflow-hidden ${className ?? ''}`}
+      className={`pointer-events-none w-full overflow-hidden ${tones[tone]} ${className ?? ''}`}
       style={style}
     >
       <svg
@@ -38,7 +39,7 @@ export function Wave({ tone = 'faint', className, flip }: WaveProps) {
         <path
           className="animate-drift"
           d="M0 60 C 180 20, 320 100, 520 62 S 900 20, 1120 60 1440 52 1440 52 L1440 120 L0 120 Z"
-          fill={color}
+          fill="currentColor"
           opacity="0.05"
         />
         <path
@@ -46,7 +47,7 @@ export function Wave({ tone = 'faint', className, flip }: WaveProps) {
           style={{ animationDelay: '-6s' }}
           d="M0 74 C 220 44, 380 104, 600 72 S 980 40, 1200 76 1440 70 1440 70"
           fill="none"
-          stroke={color}
+          stroke="currentColor"
           strokeWidth="1.25"
           opacity="0.28"
         />
@@ -55,7 +56,7 @@ export function Wave({ tone = 'faint', className, flip }: WaveProps) {
           style={{ animationDelay: '-11s' }}
           d="M0 88 C 260 66, 420 112, 660 86 S 1020 60, 1260 90 1440 86 1440 86"
           fill="none"
-          stroke={color}
+          stroke="currentColor"
           strokeWidth="1"
           opacity="0.16"
         />

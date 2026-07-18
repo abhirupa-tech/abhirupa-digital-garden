@@ -18,9 +18,9 @@ export function PracticeList({ zone, entries }: { zone: Zone; entries: ContentEn
           <li key={entry.slug} className="border-b border-parchment/12">
             <a
               href={`/${entry.section}/${entry.slug}`}
-              className="group flex items-baseline gap-5 py-5 transition-colors"
+              className="group -mx-3 flex items-baseline gap-5 rounded-xl hover:border-sand-deep hover:border-1 bg-transparent px-3 py-5 transition-all duration-300 hover:-translate-y-0.5 hover:bg-gradient-to-br hover:from-[#f6f1e4] hover:to-[#fde2c4] hover:shadow-sm"
             >
-              <span className="w-8 shrink-0 font-display text-sm text-sand/50 tabular-nums">
+              <span className="w-8 shrink-0 font-display text-sm text-sand/80 tabular-nums transition-colors duration-300 group-hover:text-sand">
                 {String(i + 1).padStart(2, '0')}
               </span>
               <span className="flex-1">

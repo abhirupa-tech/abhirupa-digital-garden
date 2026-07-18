@@ -4,7 +4,6 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { site } from '@/lib/site';
 import { SocialIcons } from './SocialIcons';
 import { Wave } from './Wave';
-import { Sketch } from './Sketch';
 
 export function Hero() {
   const reduce = useReducedMotion();
@@ -17,17 +16,6 @@ export function Hero() {
 
   return (
     <header id="top" className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden">
-      {/* faint drifting sketch, upper-right, personal texture */}
-      <motion.div
-        aria-hidden
-        className="absolute right-[6%] top-[16%] hidden opacity-60 md:block"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.6 }}
-        transition={{ duration: 2, delay: 0.8 }}
-      >
-        <Sketch name="orbit" className="h-36 w-36 animate-breathe" />
-      </motion.div>
-
       <div className="zone flex-1 flex flex-col justify-center pt-28 pb-16 md:pt-24">
         <motion.p {...rise(0.1)} className="label mb-8">
           {site.name} · Senior Frontend Engineer · Agentic AI Interfaces
@@ -38,7 +26,9 @@ export function Hero() {
           className="max-w-[16ch] font-display text-[clamp(2.25rem,5.2vw,4.5rem)] font-medium leading-[1.08] tracking-[-0.015em] text-parchment lg:max-w-[25ch]"
         >
           Abhirupa architects spaces where{' '}
-          <span className="italic text-sand">AI breathes and thinks</span>{' '}
+          <span className="bg-gradient-to-r from-rust-deep via-rust to-rust-soft bg-clip-text font-semibold italic text-transparent">
+            AI breathes and thinks
+          </span>{' '}
           alongside humans.
         </motion.h1>
 

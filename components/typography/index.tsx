@@ -12,8 +12,9 @@ import { Citation } from './Citation';
 import { Tag, TagList } from './Tag';
 import { Link } from './Link';
 import { UnorderedList, OrderedList, ListItem } from './List';
+import { CodeBlock } from './CodeBlock';
 
-export { Heading, Subtitle, Paragraph, Bold, Italic, Quote, Highlight, Figure, AudioNote, Subnote, Citation, Tag, TagList, Link, UnorderedList, OrderedList, ListItem };
+export { Heading, Subtitle, Paragraph, Bold, Italic, Quote, Highlight, Figure, AudioNote, Subnote, Citation, Tag, TagList, Link, UnorderedList, OrderedList, ListItem, CodeBlock };
 
 /**
  * The MDX component map: standard markdown syntax (`**bold**`, `# heading`,
@@ -33,6 +34,7 @@ export const typographyComponents: MDXComponents = {
   ul: UnorderedList,
   ol: OrderedList,
   li: ListItem,
+  pre: CodeBlock,
   Heading,
   Subtitle,
   Quote,

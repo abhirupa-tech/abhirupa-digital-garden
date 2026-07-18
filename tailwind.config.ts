@@ -9,42 +9,45 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Near-black canvas flowing into deep, muted blue — desaturated on
-        // purpose so the gradient reads as quiet charcoal-slate, not navy.
+        // Every token below resolves through a CSS variable (defined per
+        // theme in globals.css), so light/dark switching never touches
+        // component code — only the variable values change. The
+        // `<alpha-value>` placeholder keeps Tailwind's opacity modifiers
+        // (e.g. `bg-sand/10`) working.
         ink: {
-          900: '#0b0c10',
-          800: '#101319',
-          700: '#141924',
-          600: '#191f2d',
-          500: '#212940',
-          400: '#2b3550',
+          900: 'rgb(var(--color-ink-900) / <alpha-value>)',
+          800: 'rgb(var(--color-ink-800) / <alpha-value>)',
+          700: 'rgb(var(--color-ink-700) / <alpha-value>)',
+          600: 'rgb(var(--color-ink-600) / <alpha-value>)',
+          500: 'rgb(var(--color-ink-500) / <alpha-value>)',
+          400: 'rgb(var(--color-ink-400) / <alpha-value>)',
         },
-        // Sandy / warm — the hero highlight. Accents earn their place.
+        // Primary highlight — warm sand in dark mode, dark navy in light mode.
         sand: {
-          DEFAULT: '#d4a574',
-          soft: '#e2bd94',
-          deep: '#b98a58',
+          DEFAULT: 'rgb(var(--color-sand) / <alpha-value>)',
+          soft: 'rgb(var(--color-sand-soft) / <alpha-value>)',
+          deep: 'rgb(var(--color-sand-deep) / <alpha-value>)',
         },
-        // Muted, dark burnt-orange — enough contrast for white text at small sizes
+        // Secondary highlight — bold, bright rust orange.
         rust: {
-          DEFAULT: '#8a4a2e',
+          DEFAULT: 'rgb(var(--color-rust) / <alpha-value>)',
+          soft: 'rgb(var(--color-rust-soft) / <alpha-value>)',
+          deep: 'rgb(var(--color-rust-deep) / <alpha-value>)',
         },
-        // Muted navy — quiet hover wash, never bright
-        navy: {
-          muted: '#111a33',
-        },
+        // Warm off-white hover wash — no blue in it, always lighter than canvas.
+        wash: 'rgb(var(--color-wash) / <alpha-value>)',
         // Whispers, secondary only
         teal: {
-          whisper: '#7fb3ab',
+          whisper: 'rgb(var(--color-teal-whisper) / <alpha-value>)',
         },
         blush: {
-          whisper: '#d99fae',
+          whisper: 'rgb(var(--color-blush-whisper) / <alpha-value>)',
         },
-        // Readable text tones on dark
+        // Body text tones — parchment on dark, dark grey on light.
         parchment: {
-          DEFAULT: '#ece7dd',
-          muted: '#b9b4ac',
-          faint: '#7d7a76',
+          DEFAULT: 'rgb(var(--color-parchment) / <alpha-value>)',
+          muted: 'rgb(var(--color-parchment-muted) / <alpha-value>)',
+          faint: 'rgb(var(--color-parchment-faint) / <alpha-value>)',
         },
       },
       fontFamily: {

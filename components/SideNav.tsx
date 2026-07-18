@@ -42,12 +42,6 @@ const icons = {
       <path {...S} d="M19 5h-6a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h6z" />
     </svg>
   ),
-  leaf: (
-    <svg viewBox="0 0 24 24" className="h-6 w-6">
-      <path {...S} d="M6 18C6 10 12 5 19 5c0 8-6 13-13 13z" />
-      <path {...S} d="M6.5 17.5C9.5 14.5 13 11 16 8.5" />
-    </svg>
-  ),
   mail: (
     <svg viewBox="0 0 24 24" className="h-6 w-6">
       <rect {...S} x="3.5" y="6" width="17" height="12" rx="2" />
@@ -74,7 +68,6 @@ const iconItems: { id: string; label: string; icon: keyof typeof icons }[] = [
   { id: 'field-notes', label: 'Field Notes', icon: 'pen' },
   { id: 'design-thinking', label: 'Design Thinking', icon: 'compass' },
   { id: 'knowledge-library', label: 'Knowledge Library', icon: 'book' },
-  { id: 'slow-living', label: 'Slow Living', icon: 'leaf' },
   { id: 'stay-updated', label: 'Stay updated', icon: 'mail' },
 ];
 
@@ -83,7 +76,7 @@ const spyIds = ['top', ...iconItems.map((i) => i.id)];
 // Black by default; muted blue on hover / when active.
 function iconClass(active: boolean) {
   return `flex h-11 w-11 items-center justify-center rounded-xl transition-colors duration-300 hover:text-[#274a80] focus-visible:text-[#274a80] focus-visible:outline-none ${
-    active ? 'text-[#274a80]' : 'text-ink-900'
+    active ? 'text-[#274a80]' : 'text-[#0b0c10]'
   }`;
 }
 
@@ -110,7 +103,7 @@ function NavIcon({
       aria-current={active ? 'true' : undefined}
       onClick={onClick}
       className={`group relative flex h-11 w-11 items-center justify-center rounded-full focus-visible:outline-none ${
-        active ? 'text-[#274a80]' : 'text-ink-900'
+        active ? 'text-[#274a80]' : 'text-[#0b0c10]'
       }`}
     >
       <span
@@ -148,10 +141,10 @@ export function SideNav() {
 
   return (
     <>
-      {/* Desktop full-height beige bar */}
+      {/* Desktop full-height bar — muted rust-orange gradient */}
       <nav
         aria-label="Section navigation"
-        className="fixed inset-y-0 left-0 z-40 hidden w-20 flex-col items-center border-r border-black/10 bg-[#e4d8c1] bg-opacity-75 lg:flex"
+        className="fixed inset-y-0 left-0 z-40 hidden w-20 flex-col items-center border-r border-black/10 bg-gradient-to-b from-[#ecd3ba]/90 to-[#c98861]/90 lg:flex"
       >
         <a
           href="#top"
@@ -159,7 +152,7 @@ export function SideNav() {
           title="Top"
           aria-current={active === 'top' ? 'true' : undefined}
           className={`mt-7 font-display text-2xl leading-none transition-colors duration-300 hover:text-[#274a80] ${
-            active === 'top' ? 'text-[#274a80]' : 'text-ink-900'
+            active === 'top' ? 'text-[#274a80]' : 'text-[#0b0c10]'
           }`}
         >
           A
@@ -181,7 +174,7 @@ export function SideNav() {
           onClick={() => setOpen((o) => !o)}
           aria-label={open ? 'Close navigation' : 'Open navigation'}
           aria-expanded={open}
-          className="fixed right-4 top-4 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-[#e4d8c1] text-ink-900 shadow-sm transition-colors duration-300 hover:text-[#274a80]"
+          className="fixed right-4 top-4 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-b from-[#ecd3ba] to-[#c98861] text-[#0b0c10] shadow-sm transition-colors duration-300 hover:text-[#274a80]"
         >
           {open ? icons.close : icons.menu}
         </button>
@@ -194,7 +187,7 @@ export function SideNav() {
               animate={{ opacity: 1, x: 0 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, x: 16 }}
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed right-4 top-[4.75rem] z-40 flex flex-col items-center gap-2 rounded-3xl bg-[#e4d8c1] p-2.5 shadow-lg"
+              className="fixed right-4 top-[4.75rem] z-40 flex flex-col items-center gap-2 rounded-3xl bg-gradient-to-b from-[#ecd3ba] to-[#c98861] p-2.5 shadow-lg"
             >
               <a
                 href="#top"

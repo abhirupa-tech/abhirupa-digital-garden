@@ -32,8 +32,8 @@ export function SectionHeader({
       <div
         className={`flex items-baseline gap-4 ${align === 'center' ? 'justify-center' : ''}`}
       >
-        <span className="font-display text-lg text-sand/70">{zone.index}</span>
-        <span className="label">{zone.kicker}</span>
+        <span className="font-display text-lg text-sand/90">{zone.index}</span>
+        <span className="label text-parchment-muted">{zone.kicker}</span>
       </div>
       <h2 className={`mt-4 text-parchment ${titleClass}`}>{zone.title}</h2>
       <p className="mt-3 font-rounded text-lg font-light not-italic leading-tight tracking-tight text-parchment-muted">

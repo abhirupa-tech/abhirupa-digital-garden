@@ -46,14 +46,6 @@ export const zones: Zone[] = [
     title: 'The things I read, keep, and return to',
     blurb: 'Papers, essays, books, and art — a place for finding, not browsing.',
   },
-  {
-    id: 'slow-living',
-    index: '05',
-    kicker: 'Slow Living',
-    title: 'Living life beyond the computer screen',
-    blurb:
-      'The human behind the engineer — on why good work needs fallow time.',
-  },
 ];
 
 export const zoneById = Object.fromEntries(zones.map((z) => [z.id, z])) as Record<
@@ -69,7 +61,6 @@ export const sitemapLinks: { heading: string; links: { label: string; href: stri
       { label: 'Field Notes', href: '#field-notes' },
       { label: 'Design Thinking', href: '#design-thinking' },
       { label: 'Knowledge Library', href: '#knowledge-library' },
-      { label: 'Slow Living', href: '#slow-living' },
     ],
   },
   {

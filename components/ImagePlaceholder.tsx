@@ -36,11 +36,11 @@ export function ImagePlaceholder({
         aria-hidden="true"
         viewBox="0 0 200 120"
         preserveAspectRatio="none"
-        className="absolute inset-x-0 bottom-0 h-1/2 w-full opacity-[0.14]"
+        className="absolute inset-x-0 bottom-0 h-1/2 w-full text-sand opacity-[0.14]"
       >
         <path
           d="M0 80 C 40 60, 60 96, 100 78 S 160 56, 200 76 L200 120 L0 120 Z"
-          fill="#d4a574"
+          fill="currentColor"
         />
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">

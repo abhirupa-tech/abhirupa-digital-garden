@@ -1,12 +1,14 @@
-'use client';
-
-import { useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import type { Zone } from '@/lib/data';
 import type { ContentEntry } from '@/lib/content';
+import { site } from '@/lib/site';
 import { CoverImage } from './CoverImage';
 import { Reveal } from './motion/Reveal';
-import { WanderLink } from './sections/SectionHeader';
+import { SectionHeader, WanderLink } from './sections/SectionHeader';
+
+const authorInitials = site.name
+  .split(' ')
+  .map((word) => word[0])
+  .join('');
 
 // Type badges pick up a whisper of colour; unknown types fall back to neutral.
 const typeAccent: Record<string, string> = {
@@ -16,97 +18,91 @@ const typeAccent: Record<string, string> = {
   Art: 'text-parchment-muted border-parchment/30',
 };
 
-function LibraryCard({
-  item,
-  expanded,
-  onToggle,
-}: {
-  item: ContentEntry;
-  expanded: boolean;
-  onToggle: () => void;
-}) {
-  const reduce = useReducedMotion();
-  const accent = typeAccent[item.type] ?? 'text-parchment-muted border-parchment/30';
+function TypeBadge({ type, className }: { type: string; className?: string }) {
+  const accent = typeAccent[type] ?? 'text-parchment-muted border-parchment/30';
   return (
-    <motion.article
-      layout={!reduce}
-      className="mb-6 break-inside-avoid rounded-sm border border-parchment/10 bg-ink-700/30 p-3 backdrop-blur-[2px] transition-colors duration-500 hover:border-sand/30"
-    >
-      <button
-        type="button"
-        onClick={onToggle}
-        aria-expanded={expanded}
-        className="block w-full text-left focus-visible:outline-none"
+    <span className={`label inline-block rounded-full border px-2 py-0.5 text-[0.55rem] ${accent} ${className ?? ''}`}>
+      {type}
+    </span>
+  );
+}
+
+/** The one featured piece — image, and up to five lines of subtext. */
+function HeroCard({ item }: { item: ContentEntry }) {
+  return (
+    <Reveal from="left" className="lg:col-span-6">
+      <a
+        href={`/${item.section}/${item.slug}`}
+        className="group block rounded-sm border border-parchment/10 bg-ink-700/30 p-3 backdrop-blur-[2px] transition-all duration-300 hover:-translate-y-1 hover:border-sand/40 hover:shadow-lg"
       >
-        <CoverImage src={item.cover} alt={item.title} ratio={item.aspect === 'tall' ? 'portrait' : item.aspect === 'wide' ? 'landscape' : 'square'} />
-        <div className="px-1 pt-4">
-          <span className={`label inline-block rounded-full border px-3 py-1 text-[0.6rem] ${accent}`}>
-            {item.type}
-          </span>
-          <h3 className="mt-3 font-display text-xl font-medium text-parchment">{item.title}</h3>
-
-          <AnimatePresence initial={false}>
-            {expanded && (
-              <motion.div
-                key="detail"
-                initial={reduce ? undefined : { height: 0, opacity: 0 }}
-                animate={reduce ? undefined : { height: 'auto', opacity: 1 }}
-                exit={reduce ? undefined : { height: 0, opacity: 0 }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="overflow-hidden"
-              >
-                <p className="pt-3 font-body text-base leading-relaxed text-parchment/80">
-                  {item.description}
-                </p>
-                <ul className="flex flex-wrap gap-2 pt-4">
-                  {item.tags.map((t) => (
-                    <li key={t} className="label text-[0.6rem] text-parchment-faint">
-                      #{t}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <span className="label mt-4 inline-block text-[0.6rem] text-sand/70">
-            {expanded ? '— close' : 'open —'}
-          </span>
+        <div className="overflow-hidden rounded-sm">
+          <CoverImage
+            src={item.cover}
+            alt={item.title}
+            ratio={item.aspect === 'tall' ? 'portrait' : item.aspect === 'wide' ? 'landscape' : 'square'}
+            className="transition-transform duration-500 group-hover:scale-105"
+          />
         </div>
-      </button>
-    </motion.article>
+        <div className="px-0.5 pt-4">
+          <TypeBadge type={item.type} />
+          <h3 className="mt-3 font-display text-2xl font-medium leading-snug text-parchment transition-colors duration-300 group-hover:text-sand">
+            {item.title}
+          </h3>
+          <p className="mt-3 line-clamp-5 font-rounded text-base leading-relaxed text-parchment/80">
+            {item.description}
+          </p>
+        </div>
+      </a>
+    </Reveal>
+  );
+}
+
+/** A text-only row — no image, two lines of subtext at most. */
+function EntryRow({ item, delay }: { item: ContentEntry; delay: number }) {
+  return (
+    <Reveal from="right" delay={delay}>
+      <a
+        href={`/${item.section}/${item.slug}`}
+        className="group -mx-3 flex items-start gap-4 overflow-hidden rounded-xl border border-transparent bg-transparent px-3 py-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-rust hover:bg-white/40"
+      >
+        <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-sand/25 bg-sand/10">
+          <span className="font-display text-xs text-sand">{authorInitials}</span>
+        </div>
+        <div className="min-w-0 flex-1 transition-transform duration-300 group-hover:translate-x-1">
+          <h4 className="font-display text-lg font-medium leading-snug text-parchment transition-colors duration-300 group-hover:text-sand">
+            {item.title}{' '}
+            <TypeBadge type={item.type} className="ml-1 align-middle" />
+          </h4>
+          <p className="mt-1.5 line-clamp-2 font-rounded text-sm leading-relaxed text-parchment/70">
+            {item.description}
+          </p>
+        </div>
+      </a>
+    </Reveal>
   );
 }
 
 export function KnowledgeLibrary({ zone, entries }: { zone: Zone; entries: ContentEntry[] }) {
-  const [openId, setOpenId] = useState<string | null>(null);
+  const [hero, ...rest] = entries;
+  const rows = rest.slice(0, 4);
 
   return (
     <div>
-      <Reveal className="max-w-xl">
-        <div className="flex items-baseline gap-4">
-          <span className="font-display text-lg text-sand/70">{zone.index}</span>
-          <span className="label">{zone.kicker}</span>
-        </div>
-        <h2 className="mt-4 font-display text-section font-medium text-parchment">{zone.title}</h2>
-        <p className="mt-3 font-rounded text-lg font-light not-italic leading-tight tracking-tight text-parchment-muted">
-          {zone.blurb}
-        </p>
-      </Reveal>
+      <SectionHeader zone={zone} />
 
-      {/* Discovery masonry — asymmetric columns, a place for finding */}
-      <Reveal delay={0.1} className="mt-12">
-        <div className="columns-1 gap-6 sm:columns-2 lg:columns-3">
-          {entries.map((item) => (
-            <LibraryCard
-              key={item.slug}
-              item={item}
-              expanded={openId === item.slug}
-              onToggle={() => setOpenId((cur) => (cur === item.slug ? null : item.slug))}
-            />
-          ))}
+      {hero && (
+        <div className="mt-12 grid gap-x-10 gap-y-8 lg:grid-cols-12 lg:items-start">
+          <HeroCard item={hero} />
+
+          {rows.length > 0 && (
+            <div className="divide-y divide-parchment/12 lg:col-span-6">
+              {rows.map((item, i) => (
+                <EntryRow key={item.slug} item={item} delay={0.08 * i} />
+              ))}
+            </div>
+          )}
         </div>
-      </Reveal>
+      )}
 
       <WanderLink zone={zone} />
     </div>

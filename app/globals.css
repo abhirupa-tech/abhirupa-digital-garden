@@ -4,7 +4,47 @@
 
 @layer base {
   :root {
-    color-scheme: dark;
+    color-scheme: light;
+
+    /* Single light palette — a deep off-white canvas (not stark white), a
+     * near-black warm grey for body text, dark navy as the primary highlight,
+     * and a bold rust-orange as the secondary highlight. Every component
+     * reads colors through these variables, so retuning the palette never
+     * requires touching component code. */
+    --color-ink-900: 244 243 239;
+    --color-ink-800: 236 234 224;
+    --color-ink-700: 226 222 206;
+    --color-ink-600: 214 208 184;
+    --color-ink-500: 198 188 155;
+    --color-ink-400: 182 168 126;
+
+    --color-sand: 29 58 99;
+    --color-sand-soft: 44 84 136;
+    --color-sand-deep: 20 41 68;
+
+    --color-rust: 209 72 15;
+    --color-rust-soft: 232 103 44;
+    --color-rust-deep: 168 58 18;
+
+    /* Pure white hover wash — deliberately blue-free, so it stands out
+     * unambiguously against the deeper, warmer canvas tones. */
+    --color-wash: 255 255 255;
+
+    --color-teal-whisper: 79 138 128;
+    --color-blush-whisper: 181 100 120;
+
+    --color-parchment: 20 18 16;
+    --color-parchment-muted: 58 54 48;
+    --color-parchment-faint: 96 90 80;
+
+    --bg-canvas-1: #f4f3ef;
+    --bg-canvas-2: #f0eee6;
+    --bg-canvas-3: #ebe8dc;
+    --bg-canvas-4: #e4dfcd;
+    --bg-canvas-5: #d9d2b8;
+
+    --selection-bg: rgba(29, 58, 99, 0.18);
+    --selection-fg: #f4f3ef;
   }
 
   html {
@@ -16,26 +56,26 @@
   body {
     @apply font-body text-parchment antialiased;
     /*
-     * The single, imperceptible gradient of the whole ecosystem:
-     * near-black slate at the top, easing into muted deep blue below.
-     * Fixed so scrolling reveals the transition slowly.
+     * The single, imperceptible gradient of the whole ecosystem: the off-white
+     * canvas at the top, easing into a deeper warm tone below. Fixed so
+     * scrolling reveals the transition slowly.
      */
-    background-color: #0a0a0c;
+    background-color: var(--bg-canvas-1);
     background-image: linear-gradient(
       180deg,
-      #0a0a0c 0%,
-      #0c0e13 24%,
-      #10131c 46%,
-      #141926 70%,
-      #181f30 100%
+      var(--bg-canvas-1) 0%,
+      var(--bg-canvas-2) 24%,
+      var(--bg-canvas-3) 46%,
+      var(--bg-canvas-4) 70%,
+      var(--bg-canvas-5) 100%
     );
     background-attachment: fixed;
     background-repeat: no-repeat;
   }
 
   ::selection {
-    background: rgba(212, 165, 116, 0.28);
-    color: #ece7dd;
+    background: var(--selection-bg);
+    color: var(--selection-fg);
   }
 
   h1, h2, h3 {

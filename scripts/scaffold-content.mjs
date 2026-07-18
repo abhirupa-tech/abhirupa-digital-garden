@@ -22,7 +22,6 @@ const sections = [
     name: 'Knowledge Library',
     type: (i) => ['Research Paper', 'Blog', 'Book', 'Art', 'Research Paper'][i],
   },
-  { slug: 'slow-living', name: 'Slow Living', type: () => 'Journal' },
 ];
 
 // The same dummy text lives in every entry (per request). Swap later.

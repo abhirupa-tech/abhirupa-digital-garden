@@ -34,8 +34,8 @@ const quicksand = Quicksand({
 });
 
 export const viewport: Viewport = {
-  themeColor: '#08090f',
-  colorScheme: 'dark',
+  themeColor: '#f2ede2',
+  colorScheme: 'light',
   width: 'device-width',
   initialScale: 1,
 };
