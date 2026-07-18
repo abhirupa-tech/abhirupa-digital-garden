@@ -9,7 +9,7 @@ import type { ReactNode } from 'react';
  */
 
 const listItemText =
-  'font-rounded text-[1.3rem] font-normal leading-[1.6] text-parchment marker:text-rust [&>p]:mb-0 [&>p]:font-rounded [&>p]:text-[1.3rem] [&>p]:font-normal [&>p]:leading-[1.6] [&>p]:text-parchment';
+  'font-rounded text-[1.15rem] font-normal leading-[1.6] text-parchment marker:text-rust [&>p]:mb-0 [&>p]:font-rounded [&>p]:text-[1.3rem] [&>p]:font-normal [&>p]:leading-[1.6] [&>p]:text-parchment';
 
 /** Maps markdown's `ul`. */
 export function UnorderedList({ children }: { children: ReactNode }) {

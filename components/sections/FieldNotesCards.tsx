@@ -2,7 +2,8 @@ import type { Zone } from '@/lib/data';
 import type { ContentEntry } from '@/lib/content';
 import { Reveal } from '../motion/Reveal';
 import { CoverImage } from '../CoverImage';
-import { SectionHeader, WanderLink } from './SectionHeader';
+import { TypeBadge } from '../TypeBadge';
+import { SectionHeader } from './SectionHeader';
 
 /**
  * Format: stacked horizontal cards — a small square thumbnail beside a title
@@ -18,7 +19,7 @@ export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: Conten
         {items.map((entry, i) => (
           <Reveal from="right" delay={0.08 * i} key={entry.slug} as="article">
             <a
-              href={`#${zone.id}`}
+              href={`/${entry.section}/${entry.slug}`}
               className="group flex items-center gap-5 rounded-2xl bg-transparent p-3 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#f5efe0] hover:shadow-md"
             >
               <div className="w-24 shrink-0 overflow-hidden rounded-[28%] sm:w-28">
@@ -31,7 +32,7 @@ export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: Conten
                 />
               </div>
               <div className="flex-1">
-                <span className="label text-sand/70">{entry.type}</span>
+                <TypeBadge type={entry.type} />
                 <h3 className="mt-1 font-display text-lg leading-snug text-parchment transition-colors duration-300 group-hover:text-sand">
                   {entry.title}
                 </h3>
@@ -43,8 +44,6 @@ export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: Conten
           </Reveal>
         ))}
       </div>
-
-      <WanderLink zone={zone} />
     </div>
   );
 }

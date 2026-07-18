@@ -16,7 +16,7 @@ export function Hero() {
 
   return (
     <header id="top" className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden">
-      <div className="zone flex-1 flex flex-col justify-center pt-28 pb-16 md:pt-24">
+      <div className="zone flex-1 flex flex-col justify-center pt-32 pb-16 md:pt-28">
         <motion.p {...rise(0.1)} className="label mb-8">
           {site.name} · Senior Frontend Engineer · Agentic AI Interfaces
         </motion.p>

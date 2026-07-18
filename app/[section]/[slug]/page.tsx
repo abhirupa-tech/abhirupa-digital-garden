@@ -125,6 +125,9 @@ function ArticleStructuredData({
         articleSection: zone.kicker,
         keywords: [...entry.tags, zone.kicker].join(', '),
         inLanguage: 'en-US',
+        // This site stays canonical; sameAs just notes the piece is also
+        // mirrored on Medium, without ceding search ranking to it.
+        ...(entry.medium ? { sameAs: [entry.medium] } : {}),
       },
       {
         '@type': 'BreadcrumbList',
@@ -157,6 +160,15 @@ export default async function PiecePage({ params }: { params: Promise<PageParams
   const siblings = getEntries(section)
     .filter((e) => e.slug !== slug)
     .slice(0, 4);
+  // One pick from every other zone, for "From elsewhere in the garden" —
+  // internal links that spread equity across sections, not just within one.
+  const crossLinks = zones
+    .filter((z) => z.id !== section)
+    .map((z) => {
+      const pick = getEntries(z.id).find((e) => !e.draft) ?? getEntries(z.id)[0];
+      return pick ? { zone: z, entry: pick } : null;
+    })
+    .filter((x): x is { zone: Zone; entry: ContentEntry } => x !== null);
 
   const { content } = await compileMDX({
     source: entry.body,
@@ -196,7 +208,7 @@ export default async function PiecePage({ params }: { params: Promise<PageParams
             <div className="mt-16">{content}</div>
           </article>
 
-          <ArticleFooter zone={zone} siblings={siblings} />
+          <ArticleFooter zone={zone} entry={entry} siblings={siblings} crossLinks={crossLinks} />
         </main>
 
         <Footer />

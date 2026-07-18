@@ -30,6 +30,8 @@ export type ContentEntry = {
   tags: string[];
   date: string;
   cover: string;
+  /** Optional URL of the original Medium post, for attribution — this site stays canonical. */
+  medium: string;
   aspect: 'tall' | 'wide' | 'square';
   draft: boolean;
   body: string;
@@ -61,6 +63,7 @@ export function getEntries(section: string): ContentEntry[] {
         tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
         date: String(data.date ?? ''),
         cover: coverOverrides[`${section}/${slug}`] || String(data.cover ?? ''),
+        medium: String(data.medium ?? ''),
         aspect: coerceAspect(data.aspect),
         draft: Boolean(data.draft),
         body: content.trim(),

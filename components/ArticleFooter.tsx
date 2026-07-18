@@ -14,10 +14,14 @@ import { site } from '@/lib/site';
  */
 export function ArticleFooter({
   zone,
+  entry,
   siblings,
+  crossLinks,
 }: {
   zone: Zone;
+  entry: ContentEntry;
   siblings: ContentEntry[];
+  crossLinks: { zone: Zone; entry: ContentEntry }[];
 }) {
   return (
     <footer className="zone mx-auto mt-24 max-w-4xl border-t border-parchment/12 pt-12">
@@ -27,13 +31,13 @@ export function ArticleFooter({
             More in {zone.kicker}
           </h2>
           <ul className="mt-5 space-y-3">
-            {siblings.map((entry) => (
-              <li key={entry.slug}>
+            {siblings.map((sibling) => (
+              <li key={sibling.slug}>
                 <a
-                  href={`/${entry.section}/${entry.slug}/`}
+                  href={`/${sibling.section}/${sibling.slug}/`}
                   className="group flex items-baseline gap-3 font-serif text-xl font-light text-parchment transition-colors duration-300 hover:text-sand"
                 >
-                  <span className="flex-1">{entry.title}</span>
+                  <span className="flex-1">{sibling.title}</span>
                   <span className="text-parchment-faint transition-transform duration-300 group-hover:translate-x-1 group-hover:text-sand">
                     →
                   </span>
@@ -42,6 +46,45 @@ export function ArticleFooter({
             ))}
           </ul>
         </section>
+      )}
+
+      {crossLinks.length > 0 && (
+        <section aria-labelledby="elsewhere-garden-heading" className="mb-16">
+          <h2 id="elsewhere-garden-heading" className="label text-sand/70">
+            From elsewhere in the garden
+          </h2>
+          <ul className="mt-5 space-y-3">
+            {crossLinks.map(({ zone: z, entry: pick }) => (
+              <li key={pick.slug}>
+                <a
+                  href={`/${pick.section}/${pick.slug}/`}
+                  className="group flex items-baseline gap-3 font-serif text-xl font-light text-parchment transition-colors duration-300 hover:text-sand"
+                >
+                  <span className="label shrink-0 text-parchment-faint">{z.kicker}</span>
+                  <span className="flex-1">{pick.title}</span>
+                  <span className="text-parchment-faint transition-transform duration-300 group-hover:translate-x-1 group-hover:text-sand">
+                    →
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {entry.medium && (
+        <p className="label mb-14 text-parchment-faint">
+          Originally published on{' '}
+          <a
+            href={entry.medium}
+            rel="noopener noreferrer"
+            target="_blank"
+            className="text-sand underline decoration-sand/40 underline-offset-4 hover:text-sand-soft"
+          >
+            Medium
+          </a>
+          .
+        </p>
       )}
 
       {/* Author card — a quiet callout, not body copy. Keyword-rich links kept for SEO. */}

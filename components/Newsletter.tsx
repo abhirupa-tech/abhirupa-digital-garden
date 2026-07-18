@@ -26,7 +26,7 @@ export function Newsletter() {
             key="form"
             onSubmit={handleSubmit}
             exit={{ opacity: 0 }}
-            className="flex items-center gap-3 border-b border-parchment/25 pb-2 focus-within:border-sand/60"
+            className="flex items-center gap-3 border-b border-white/25 pb-2 focus-within:border-[#e8c9a0]/60"
           >
             <input
               type="email"
@@ -35,11 +35,11 @@ export function Newsletter() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="your@email.com"
               aria-label="Email address"
-              className="w-full bg-transparent font-body text-lg text-parchment placeholder:text-parchment-faint/60 focus:outline-none"
+              className="w-full bg-transparent font-body text-lg text-white placeholder:text-white/40 focus:outline-none"
             />
             <button
               type="submit"
-              className="label whitespace-nowrap text-sand transition-opacity duration-300 hover:opacity-70"
+              className="label whitespace-nowrap text-[#e8c9a0] transition-opacity duration-300 hover:opacity-70"
             >
               Subscribe →
             </button>
@@ -49,7 +49,7 @@ export function Newsletter() {
             key="done"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="font-serif text-lg italic text-sand"
+            className="font-serif text-lg italic text-[#e8c9a0]"
           >
             Thank you — you’re on the list. Something thoughtful is coming.
           </motion.p>

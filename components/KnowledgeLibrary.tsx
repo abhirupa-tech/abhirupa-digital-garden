@@ -1,31 +1,12 @@
 import type { Zone } from '@/lib/data';
 import type { ContentEntry } from '@/lib/content';
-import { site } from '@/lib/site';
 import { CoverImage } from './CoverImage';
+import { TypeBadge } from './TypeBadge';
 import { Reveal } from './motion/Reveal';
-import { SectionHeader, WanderLink } from './sections/SectionHeader';
+import { SectionHeader } from './sections/SectionHeader';
 
-const authorInitials = site.name
-  .split(' ')
-  .map((word) => word[0])
-  .join('');
-
-// Type badges pick up a whisper of colour; unknown types fall back to neutral.
-const typeAccent: Record<string, string> = {
-  'Research Paper': 'text-teal-whisper border-teal-whisper/40',
-  Blog: 'text-sand border-sand/40',
-  Book: 'text-blush-whisper border-blush-whisper/40',
-  Art: 'text-parchment-muted border-parchment/30',
-};
-
-function TypeBadge({ type, className }: { type: string; className?: string }) {
-  const accent = typeAccent[type] ?? 'text-parchment-muted border-parchment/30';
-  return (
-    <span className={`label inline-block rounded-full border px-2 py-0.5 text-[0.55rem] ${accent} ${className ?? ''}`}>
-      {type}
-    </span>
-  );
-}
+const AUTHOR_MARK_URL =
+  'https://res.cloudinary.com/ra5tg986/image/upload/v1784392260/Gemini_Generated_Image_k6ew92k6ew92k6ew_wfy2kp.png';
 
 /** The one featured piece — image, and up to five lines of subtext. */
 function HeroCard({ item }: { item: ContentEntry }) {
@@ -33,7 +14,7 @@ function HeroCard({ item }: { item: ContentEntry }) {
     <Reveal from="left" className="lg:col-span-6">
       <a
         href={`/${item.section}/${item.slug}`}
-        className="group block rounded-sm border border-parchment/10 bg-ink-700/30 p-3 backdrop-blur-[2px] transition-all duration-300 hover:-translate-y-1 hover:border-sand/40 hover:shadow-lg"
+        className="group block rounded-sm border border-parchment/10 bg-[#f9f6e9] p-3 backdrop-blur-[2px] transition-all duration-300 hover:-translate-y-1 hover:border-sand/40 hover:shadow-lg"
       >
         <div className="overflow-hidden rounded-sm">
           <CoverImage
@@ -65,8 +46,9 @@ function EntryRow({ item, delay }: { item: ContentEntry; delay: number }) {
         href={`/${item.section}/${item.slug}`}
         className="group -mx-3 flex items-start gap-4 overflow-hidden rounded-xl border border-transparent bg-transparent px-3 py-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-rust hover:bg-white/40"
       >
-        <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-sand/25 bg-sand/10">
-          <span className="font-display text-xs text-sand">{authorInitials}</span>
+        <div className="mt-0.5 h-9 w-9 shrink-0 overflow-hidden rounded-full border border-sand/25 bg-sand/10">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={AUTHOR_MARK_URL} alt="" className="h-full w-full object-cover" />
         </div>
         <div className="min-w-0 flex-1 transition-transform duration-300 group-hover:translate-x-1">
           <h4 className="font-display text-lg font-medium leading-snug text-parchment transition-colors duration-300 group-hover:text-sand">
@@ -103,8 +85,6 @@ export function KnowledgeLibrary({ zone, entries }: { zone: Zone; entries: Conte
           )}
         </div>
       )}
-
-      <WanderLink zone={zone} />
     </div>
   );
 }

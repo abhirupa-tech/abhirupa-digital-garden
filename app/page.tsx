@@ -29,7 +29,7 @@ export default function Home() {
         {/* Row A — two sections share one row: a vertical list beside horizontal cards */}
         <section
           id="the-practice"
-          className="zone scroll-mt-24 grid gap-x-14 gap-y-14 pb-12 md:grid-cols-12 md:pb-16"
+          className="zone scroll-mt-24 grid gap-x-14 gap-y-14 pb-12 pt-6 md:grid-cols-12 md:pb-16 md:pt-8"
         >
           <div className="md:col-span-5">
             <PracticeList zone={zoneById['the-practice']} entries={practice} />
@@ -51,7 +51,7 @@ export default function Home() {
         <Wave tone="faint" className="my-2 opacity-70" />
 
         {/* Row C — even, equal-height card row */}
-        <section id="knowledge-library" className="zone scroll-mt-24 pb-12 md:pb-16">
+        <section id="knowledge-library" className="zone scroll-mt-24">
           <DesignThinkingCollage zone={zoneById['knowledge-library']} entries={library} />
         </section>
 

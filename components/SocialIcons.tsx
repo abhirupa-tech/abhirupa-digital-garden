@@ -30,7 +30,18 @@ const socials = [
   { key: 'email' as const, href: site.social.email, label: 'Email' },
 ];
 
-export function SocialIcons({ className }: { className?: string }) {
+export function SocialIcons({
+  className,
+  tone = 'default',
+}: {
+  className?: string;
+  /** 'light' for use on dark backgrounds (e.g. the footer). */
+  tone?: 'default' | 'light';
+}) {
+  const toneClass =
+    tone === 'light'
+      ? 'text-white/70 hover:text-[#e8c9a0] focus-visible:text-[#e8c9a0]'
+      : 'text-parchment-muted hover:text-sand focus-visible:text-sand';
   return (
     <ul className={`flex items-center gap-6 ${className ?? ''}`}>
       {socials.map((s) => (
@@ -40,7 +51,7 @@ export function SocialIcons({ className }: { className?: string }) {
             target={s.key === 'email' ? undefined : '_blank'}
             rel={s.key === 'email' ? undefined : 'noopener noreferrer'}
             aria-label={`Abhirupa Mitra on ${s.label}`}
-            className="inline-flex items-center gap-2 text-parchment-muted transition-colors duration-500 hover:text-sand focus-visible:text-sand focus-visible:outline-none"
+            className={`inline-flex items-center gap-2 transition-colors duration-500 focus-visible:outline-none ${toneClass}`}
           >
             {icons[s.key]}
             <span className="label text-[0.62rem] text-current">{s.label}</span>

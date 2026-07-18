@@ -42,16 +42,3 @@ export function SectionHeader({
     </Reveal>
   );
 }
-
-/** Small "wander into →" affordance linking to the (future) full section. */
-export function WanderLink({ zone }: { zone: Zone }) {
-  return (
-    <a
-      href={`#${zone.id}`}
-      className="group label mt-6 inline-flex items-center gap-2 text-sand/80 transition-colors duration-300 hover:text-sand"
-    >
-      Wander into {zone.kicker}
-      <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-    </a>
-  );
-}
