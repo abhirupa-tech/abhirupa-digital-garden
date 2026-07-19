@@ -147,7 +147,7 @@ export function SideNav() {
         className="fixed inset-y-0 left-0 z-40 hidden w-20 flex-col items-center border-r border-black/10 bg-gradient-to-b from-[#f5f1e9]/95 to-[#ddd6c4]/95 lg:flex"
       >
         <a
-          href="#top"
+          href="/#top"
           aria-label="Top"
           title="Top"
           aria-current={active === 'top' ? 'true' : undefined}
@@ -160,7 +160,7 @@ export function SideNav() {
 
         <div className="flex flex-1 flex-col items-center justify-center gap-5">
           {iconItems.map((it) => (
-            <NavIcon key={it.id} href={`#${it.id}`} label={it.label} active={active === it.id}>
+            <NavIcon key={it.id} href={`/#${it.id}`} label={it.label} active={active === it.id}>
               {icons[it.icon]}
             </NavIcon>
           ))}
@@ -190,7 +190,7 @@ export function SideNav() {
               className="fixed right-4 top-[4.75rem] z-40 flex flex-col items-center gap-2 rounded-3xl bg-gradient-to-b from-[#f5f1e9] to-[#ddd6c4] p-2.5 shadow-lg"
             >
               <a
-                href="#top"
+                href="/#top"
                 aria-label="Top"
                 title="Top"
                 onClick={() => setOpen(false)}
@@ -201,7 +201,7 @@ export function SideNav() {
               {iconItems.map((it) => (
                 <NavIcon
                   key={it.id}
-                  href={`#${it.id}`}
+                  href={`/#${it.id}`}
                   label={it.label}
                   active={active === it.id}
                   onClick={() => setOpen(false)}

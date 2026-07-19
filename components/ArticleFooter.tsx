@@ -16,12 +16,10 @@ export function ArticleFooter({
   zone,
   entry,
   siblings,
-  crossLinks,
 }: {
   zone: Zone;
   entry: ContentEntry;
   siblings: ContentEntry[];
-  crossLinks: { zone: Zone; entry: ContentEntry }[];
 }) {
   return (
     <footer className="zone mx-auto mt-24 max-w-4xl border-t border-parchment/12 pt-12">
@@ -39,30 +37,6 @@ export function ArticleFooter({
                 >
                   <span className="flex-1">{sibling.title}</span>
                   <span className="text-parchment-faint transition-transform duration-300 group-hover:translate-x-1">
-                    →
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {crossLinks.length > 0 && (
-        <section aria-labelledby="elsewhere-garden-heading" className="mb-16">
-          <h2 id="elsewhere-garden-heading" className="label text-sand/70">
-            From elsewhere in the garden
-          </h2>
-          <ul className="mt-5 space-y-3">
-            {crossLinks.map(({ zone: z, entry: pick }) => (
-              <li key={`${pick.section}-${pick.slug}`}>
-                <a
-                  href={`/${pick.section}/${pick.slug}/`}
-                  className="group flex items-baseline gap-3 font-serif text-xl font-light text-parchment transition-colors duration-300 hover:text-sand"
-                >
-                  <span className="label shrink-0 text-parchment-faint">{z.kicker}</span>
-                  <span className="flex-1">{pick.title}</span>
-                  <span className="text-parchment-faint transition-transform duration-300 group-hover:translate-x-1 group-hover:text-sand">
                     →
                   </span>
                 </a>
@@ -136,7 +110,7 @@ export function ArticleFooter({
             <li key={z.id}>
               <a
                 href={`/#${z.id}`}
-                className="font-display text-parchment/80 transition-colors duration-300 hover:text-sand"
+                className="font-display text-parchment/80 transition-colors duration-300 hover:text-rust-deep"
               >
                 {z.kicker}
               </a>
@@ -146,7 +120,7 @@ export function ArticleFooter({
       </nav>
 
       {/* Outbound identity links — rel="me" for cross-web authority. */}
-      <nav aria-label="Elsewhere on the web">
+      <nav aria-label="Elsewhere on the web" className="pb-16">
         <h2 className="label text-sand/70">Elsewhere</h2>
         <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-3">
           <li>

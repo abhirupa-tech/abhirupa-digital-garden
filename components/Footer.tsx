@@ -77,6 +77,10 @@ export function Footer() {
             © {year} {site.name}. Tended with care.
           </p>
         </div>
+
+        <p className="mt-8 text-center text-xs text-white/35">
+          {site.name} — {site.role} · Agentic AI Interfaces
+        </p>
       </div>
     </footer>
   );
