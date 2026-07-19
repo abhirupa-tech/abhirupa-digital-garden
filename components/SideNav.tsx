@@ -141,10 +141,10 @@ export function SideNav() {
 
   return (
     <>
-      {/* Desktop full-height bar — muted rust-orange gradient */}
+      {/* Desktop full-height bar — soft ivory-to-taupe gradient */}
       <nav
         aria-label="Section navigation"
-        className="fixed inset-y-0 left-0 z-40 hidden w-20 flex-col items-center border-r border-black/10 bg-gradient-to-b from-[#ecd3ba]/90 to-[#c98861]/90 lg:flex"
+        className="fixed inset-y-0 left-0 z-40 hidden w-20 flex-col items-center border-r border-black/10 bg-gradient-to-b from-[#f5f1e9]/95 to-[#ddd6c4]/95 lg:flex"
       >
         <a
           href="#top"
@@ -174,7 +174,7 @@ export function SideNav() {
           onClick={() => setOpen((o) => !o)}
           aria-label={open ? 'Close navigation' : 'Open navigation'}
           aria-expanded={open}
-          className="fixed right-4 top-4 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-b from-[#ecd3ba] to-[#c98861] text-[#0b0c10] shadow-sm transition-colors duration-300 hover:text-[#274a80]"
+          className="fixed right-4 top-4 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-b from-[#f5f1e9] to-[#ddd6c4] text-[#0b0c10] shadow-sm transition-colors duration-300 hover:text-[#274a80]"
         >
           {open ? icons.close : icons.menu}
         </button>
@@ -187,7 +187,7 @@ export function SideNav() {
               animate={{ opacity: 1, x: 0 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, x: 16 }}
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed right-4 top-[4.75rem] z-40 flex flex-col items-center gap-2 rounded-3xl bg-gradient-to-b from-[#ecd3ba] to-[#c98861] p-2.5 shadow-lg"
+              className="fixed right-4 top-[4.75rem] z-40 flex flex-col items-center gap-2 rounded-3xl bg-gradient-to-b from-[#f5f1e9] to-[#ddd6c4] p-2.5 shadow-lg"
             >
               <a
                 href="#top"

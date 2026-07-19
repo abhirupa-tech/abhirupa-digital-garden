@@ -35,10 +35,10 @@ export function ArticleFooter({
               <li key={sibling.slug}>
                 <a
                   href={`/${sibling.section}/${sibling.slug}/`}
-                  className="group flex items-baseline gap-3 font-serif text-xl font-light text-parchment transition-colors duration-300 hover:text-sand"
+                  className="group flex items-baseline gap-3 font-serif text-xl font-light text-parchment decoration-rust decoration-[1px] underline-offset-4 transition-all duration-300 hover:underline"
                 >
                   <span className="flex-1">{sibling.title}</span>
-                  <span className="text-parchment-faint transition-transform duration-300 group-hover:translate-x-1 group-hover:text-sand">
+                  <span className="text-parchment-faint transition-transform duration-300 group-hover:translate-x-1">
                     →
                   </span>
                 </a>
@@ -55,7 +55,7 @@ export function ArticleFooter({
           </h2>
           <ul className="mt-5 space-y-3">
             {crossLinks.map(({ zone: z, entry: pick }) => (
-              <li key={pick.slug}>
+              <li key={`${pick.section}-${pick.slug}`}>
                 <a
                   href={`/${pick.section}/${pick.slug}/`}
                   className="group flex items-baseline gap-3 font-serif text-xl font-light text-parchment transition-colors duration-300 hover:text-sand"

@@ -1,6 +1,6 @@
 type ImagePlaceholderProps = {
   label?: string;
-  ratio?: 'portrait' | 'landscape' | 'square';
+  ratio?: 'portrait' | 'landscape' | 'square' | 'cinematic';
   /** 'card' = subtle radius; 'squircle' = soft superellipse-style corners. */
   shape?: 'card' | 'squircle';
   className?: string;
@@ -10,6 +10,7 @@ const ratios: Record<NonNullable<ImagePlaceholderProps['ratio']>, string> = {
   portrait: 'aspect-[3/4]',
   landscape: 'aspect-[4/3]',
   square: 'aspect-square',
+  cinematic: 'aspect-[10/3]',
 };
 
 const shapes: Record<NonNullable<ImagePlaceholderProps['shape']>, string> = {

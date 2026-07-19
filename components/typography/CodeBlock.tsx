@@ -8,7 +8,7 @@ import type { ReactNode } from 'react';
  */
 export function CodeBlock({ children }: { children: ReactNode }) {
   return (
-    <div className="relative my-10 overflow-hidden rounded-2xl border border-white/15 bg-[#1b1e24]/50 shadow-[0_8px_30px_rgba(0,0,0,0.35)] backdrop-blur-2xl">
+    <div className="relative my-10 overflow-hidden rounded-2xl border border-white/15 bg-[#14161b]/65 shadow-[0_8px_30px_rgba(0,0,0,0.35)] backdrop-blur-2xl">
       {/* Glass sheen — light catching the curved top of the panel */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 via-white/[0.02] to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />

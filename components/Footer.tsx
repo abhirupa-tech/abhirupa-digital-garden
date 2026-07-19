@@ -1,5 +1,6 @@
 import { site } from '@/lib/site';
 import { sitemapLinks } from '@/lib/data';
+import { featureFlags } from '@/lib/featureflag';
 import { Newsletter } from './Newsletter';
 import { SocialIcons } from './SocialIcons';
 import { Reveal } from './motion/Reveal';
@@ -18,23 +19,25 @@ export function Footer() {
 
         <div className="grid gap-16 md:grid-cols-12">
           {/* Call to action + newsletter */}
-          <Reveal className="md:col-span-6">
-            <span className="label text-white/55">Stay updated</span>
-            <h2 className="mt-5 max-w-md font-display text-section font-medium text-white">
-              Notes from the garden, now and then.
-            </h2>
-            <p className="mt-4 max-w-md font-body text-lg leading-relaxed text-white/75">
-              Subscribe for Abhirupa’s articles, research, and quiet thoughts on
-              agentic AI interfaces, design thinking, and slow living. No noise —
-              only what’s worth your attention.
-            </p>
-            <div className="mt-8">
-              <Newsletter />
-            </div>
-          </Reveal>
+          {featureFlags.showNewsletterSection && (
+            <Reveal className="md:col-span-6">
+              <span className="label text-white/55">Stay updated</span>
+              <h2 className="mt-5 max-w-md font-display text-section font-medium text-white">
+                Notes from the garden, now and then.
+              </h2>
+              <p className="mt-4 max-w-md font-body text-lg leading-relaxed text-white/75">
+                Subscribe for Abhirupa’s articles, research, and quiet thoughts on
+                agentic AI interfaces, design thinking, and slow living. No noise —
+                only what’s worth your attention.
+              </p>
+              <div className="mt-8">
+                <Newsletter />
+              </div>
+            </Reveal>
+          )}
 
           {/* Detailed sitemap */}
-          <Reveal delay={0.1} className="md:col-span-6">
+          <Reveal delay={0.1} className={featureFlags.showNewsletterSection ? 'md:col-span-6' : 'md:col-span-12'}>
             <nav aria-label="Site" className="grid grid-cols-2 gap-10 sm:grid-cols-3">
               {sitemapLinks.map((group) => (
                 <div key={group.heading}>

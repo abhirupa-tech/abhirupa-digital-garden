@@ -4,7 +4,7 @@ import { ImagePlaceholder } from './ImagePlaceholder';
 type CoverImageProps = {
   src?: string;
   alt: string;
-  ratio?: 'portrait' | 'landscape' | 'square';
+  ratio?: 'portrait' | 'landscape' | 'square' | 'cinematic';
   shape?: 'card' | 'squircle';
   className?: string;
 };
@@ -13,6 +13,8 @@ const ratios: Record<NonNullable<CoverImageProps['ratio']>, string> = {
   portrait: 'aspect-[3/4]',
   landscape: 'aspect-[4/3]',
   square: 'aspect-square',
+  // A short, banner-like crop — used where a full photo aspect reads too tall.
+  cinematic: 'aspect-[10/3]',
 };
 
 const shapes: Record<NonNullable<CoverImageProps['shape']>, string> = {

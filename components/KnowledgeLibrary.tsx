@@ -14,13 +14,13 @@ function HeroCard({ item }: { item: ContentEntry }) {
     <Reveal from="left" className="lg:col-span-6">
       <a
         href={`/${item.section}/${item.slug}`}
-        className="group block rounded-sm border border-parchment/10 bg-[#f9f6e9] p-3 backdrop-blur-[2px] transition-all duration-300 hover:-translate-y-1 hover:border-sand/40 hover:shadow-lg"
+        className="group block rounded-xl border border-parchment/10 bg-[#f9f6e9] p-3 backdrop-blur-[2px] transition-all duration-300 hover:-translate-y-1 hover:border-sand/40 hover:shadow-lg"
       >
-        <div className="overflow-hidden rounded-sm">
+        <div className="overflow-hidden rounded-lg">
           <CoverImage
             src={item.cover}
             alt={item.title}
-            ratio={item.aspect === 'tall' ? 'portrait' : item.aspect === 'wide' ? 'landscape' : 'square'}
+            ratio="cinematic"
             className="transition-transform duration-500 group-hover:scale-105"
           />
         </div>
@@ -29,7 +29,7 @@ function HeroCard({ item }: { item: ContentEntry }) {
           <h3 className="mt-3 font-display text-2xl font-medium leading-snug text-parchment transition-colors duration-300 group-hover:text-sand">
             {item.title}
           </h3>
-          <p className="mt-3 line-clamp-5 font-rounded text-base leading-relaxed text-parchment/80">
+          <p className="mt-3 line-clamp-4 font-rounded text-base leading-relaxed text-parchment/80">
             {item.description}
           </p>
         </div>
