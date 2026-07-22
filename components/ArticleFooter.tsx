@@ -1,5 +1,5 @@
 import type { Zone } from '@/lib/data';
-import { zones } from '@/lib/data';
+import { visibleZones } from '@/lib/data';
 import type { ContentEntry } from '@/lib/content';
 import { site } from '@/lib/site';
 
@@ -106,7 +106,7 @@ export function ArticleFooter({
       <nav aria-label="Explore the garden" className="mb-12">
         <h2 className="label text-sand/70">Explore the garden</h2>
         <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-3">
-          {zones.map((z) => (
+          {visibleZones.map((z) => (
             <li key={z.id}>
               <a
                 href={`/#${z.id}`}

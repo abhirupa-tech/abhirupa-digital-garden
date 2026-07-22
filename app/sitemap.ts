@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { site } from '@/lib/site';
-import { zones } from '@/lib/data';
+import { visibleZones } from '@/lib/data';
 import { getEntries } from '@/lib/content';
 
 // Emit as a static file for `output: 'export'`.
@@ -21,7 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 1,
   };
 
-  const articles = zones.flatMap((zone) =>
+  const articles = visibleZones.flatMap((zone) =>
     getEntries(zone.id)
       .filter((entry) => !entry.draft)
       .map((entry) => ({

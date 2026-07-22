@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { compileMDX } from 'next-mdx-remote/rsc';
 import { getEntries, getEntry, type ContentEntry } from '@/lib/content';
-import { zoneById, zones, type Zone } from '@/lib/data';
+import { zoneById, visibleZones, type Zone } from '@/lib/data';
 import { site } from '@/lib/site';
 import { cloudinaryUrl } from '@/lib/cloudinary';
 import { SideNav } from '@/components/SideNav';
@@ -28,7 +28,7 @@ function pieceImage(entry: ContentEntry) {
  * standard markdown and explicit component tags both work in the source file.
  */
 export function generateStaticParams() {
-  return zones.flatMap((zone) =>
+  return visibleZones.flatMap((zone) =>
     getEntries(zone.id).map((entry) => ({ section: zone.id, slug: entry.slug })),
   );
 }

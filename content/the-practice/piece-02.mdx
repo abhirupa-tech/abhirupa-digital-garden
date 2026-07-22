@@ -17,6 +17,7 @@ Every change I made, every feature I tested, every bug I fixed — all of it was
 And honestly? It felt great. Everything worked. I felt like I had it figured out.
 
 <Figure
+src="https://res.cloudinary.com/ra5tg986/image/upload/v1784737324/948308cc-7a0e-4bb4-94bc-e749277b3f83.png"
   alt="A full-stack app running entirely on localhost"
   ratio="landscape"
 />
@@ -42,6 +43,7 @@ For hosting, I went with Vercel for the frontend and Render for the backend. Bot
 These two aren't independent. They're <Highlight>deeply interdependent</Highlight>. Which means I couldn't just deploy one and figure out the other later. I had to configure both platforms side by side, in sync, at the same time.
 
 <Figure
+src="https://res.cloudinary.com/ra5tg986/image/upload/v1784737340/fd6241a2-071d-4827-9854-b2d1eb247323.png"
   alt="Vercel and Render dashboards configured side by side"
   ratio="landscape"
 />
@@ -53,6 +55,7 @@ Before every API call your frontend makes, a preflight request goes out first. Y
 <Highlight>When CORS fails, your frontend screams. Your backend doesn't even flinch.</Highlight>
 
 <Figure
+src="https://res.cloudinary.com/ra5tg986/image/upload/v1784737343/ddc9f142-ea54-429d-860a-1553b52e920b.png""
   alt="A CORS failure shown in the browser devtools network tab"
   caption="An example of a CORS failure as seen on the Network Tab in devtools."
   ratio="landscape"
@@ -124,6 +127,7 @@ Once that's done, run an audit on your dependencies — `npm audit`. This is the
 Once you've sorted your dependencies and your build is clean locally, push everything to your main branch.
 
 <Figure
+src="https://res.cloudinary.com/ra5tg986/image/upload/v1784737361/c241868a-45a8-4246-994a-95820953215a.png"
   alt="A Vercel dashboard showing a deployment in progress"
   caption="A preview of my project's Vercel Dashboard (and the sad build failures)."
   ratio="landscape"
@@ -133,10 +137,6 @@ One thing worth knowing here. Vercel supports preview deployments out of the box
 
 Once you push, go into both Vercel and Render and set up your environment variables. And here's a mistake that's way more common than you'd think. Do not reference any localhost ports in your environment variables on these platforms. No `localhost:8080`, no `127.0.0.1`, nothing local. <Highlight>Everything needs to point to the actual live URLs</Highlight> of your deployed services.
 
-<Figure
-  alt="Setting production environment variables on Vercel and Render"
-  ratio="landscape"
-/>
 
 After that, there will be failures. That's not a maybe, that's a guarantee. Go into your deployment logs on both platforms, read them carefully, push the fixes, and redeploy. Rinse and repeat.
 

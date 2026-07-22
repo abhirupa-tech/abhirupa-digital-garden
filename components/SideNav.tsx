@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useState, type ReactNode } from 'react';
+import { featureFlags } from '@/lib/featureflag';
 
 /**
  * Fixed, full-height beige navigation bar — runs top to bottom on the left.
@@ -67,7 +68,9 @@ const iconItems: { id: string; label: string; icon: keyof typeof icons }[] = [
   { id: 'the-practice', label: 'The Practice', icon: 'cursor' },
   { id: 'field-notes', label: 'Field Notes', icon: 'pen' },
   { id: 'design-thinking', label: 'Design Thinking', icon: 'compass' },
-  { id: 'knowledge-library', label: 'Knowledge Library', icon: 'book' },
+  ...(featureFlags.showKnowledgeSection
+    ? [{ id: 'knowledge-library', label: 'Knowledge Library', icon: 'book' as const }]
+    : []),
   { id: 'stay-updated', label: 'Stay updated', icon: 'mail' },
 ];
 

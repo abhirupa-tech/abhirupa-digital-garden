@@ -41,6 +41,16 @@ function coerceAspect(value: unknown): ContentEntry['aspect'] {
   return value === 'tall' || value === 'wide' || value === 'square' ? value : 'square';
 }
 
+/** "The End of the Single Truth!" -> "the-end-of-the-single-truth" */
+function slugify(input: string): string {
+  return input
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/\p{Mn}/gu, '') // strip accents left behind by NFKD decomposition
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 /** All entries for a section, sorted by filename (piece-01, piece-02, …). */
 export function getEntries(section: string): ContentEntry[] {
   const dir = path.join(CONTENT_DIR, section);
@@ -53,16 +63,23 @@ export function getEntries(section: string): ContentEntry[] {
     .map((file) => {
       const raw = fs.readFileSync(path.join(dir, file), 'utf8');
       const { data, content } = matter(raw);
-      const slug = file.replace(/\.mdx?$/, '');
+      // The filename (piece-01, …) stays the internal identity — it's what
+      // covers.json keys on and what keeps sort order stable. The public
+      // slug is a readable blog-name, derived from front matter `slug` if
+      // set, else the title, so URLs read as /the-practice/blog-name.
+      const fileId = file.replace(/\.mdx?$/, '');
+      const title = String(data.title ?? file);
+      const slug =
+        (typeof data.slug === 'string' && slugify(data.slug)) || slugify(title) || fileId;
       return {
         slug,
         section,
-        title: String(data.title ?? file),
+        title,
         type: String(data.type ?? 'Note'),
         description: String(data.description ?? ''),
         tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
         date: String(data.date ?? ''),
-        cover: coverOverrides[`${section}/${slug}`] || String(data.cover ?? ''),
+        cover: coverOverrides[`${section}/${fileId}`] || String(data.cover ?? ''),
         medium: String(data.medium ?? ''),
         aspect: coerceAspect(data.aspect),
         draft: Boolean(data.draft),

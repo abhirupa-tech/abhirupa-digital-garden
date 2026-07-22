@@ -1,5 +1,6 @@
 import { zoneById } from '@/lib/data';
 import { getEntries } from '@/lib/content';
+import { featureFlags } from '@/lib/featureflag';
 import { Hero } from '@/components/Hero';
 import { SideNav } from '@/components/SideNav';
 import { PracticeList } from '@/components/sections/PracticeList';
@@ -51,9 +52,11 @@ export default function Home() {
         <Wave tone="faint" className="my-2 opacity-70" />
 
         {/* Row C — even, equal-height card row */}
-        <section id="knowledge-library" className="zone scroll-mt-24">
-          <DesignThinkingCollage zone={zoneById['knowledge-library']} entries={library} />
-        </section>
+        {featureFlags.showKnowledgeSection && (
+          <section id="knowledge-library" className="zone scroll-mt-24">
+            <DesignThinkingCollage zone={zoneById['knowledge-library']} entries={library} />
+          </section>
+        )}
 
         <div className="zone flex justify-end py-1">
           <Sketch name="coastline" className="h-14 w-44 opacity-50" />

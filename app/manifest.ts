@@ -13,5 +13,12 @@ export default function manifest(): MetadataRoute.Manifest {
     display: 'standalone',
     background_color: '#08090f',
     theme_color: '#08090f',
+    icons: [
+      {
+        src: '/icons/abhirupa-mitra-icon.png',
+        sizes: '235x235',
+        type: 'image/png',
+      },
+    ],
   };
 }

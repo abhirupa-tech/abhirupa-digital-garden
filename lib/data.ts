@@ -4,6 +4,7 @@
  * the kicker, title, and a one-to-two line blurb. Copy carries SEO weight
  * (agentic UI, frontend for AI, design thinking, UX research, women in tech).
  */
+import { featureFlags } from './featureflag';
 
 export type Zone = {
   id: string;
@@ -53,22 +54,34 @@ export const zoneById = Object.fromEntries(zones.map((z) => [z.id, z])) as Recor
   Zone
 >;
 
+// Zones actually surfaced in nav, the sitemap, and static generation — gated
+// by feature flags so a hidden section disappears everywhere consistently.
+export const visibleZones = zones.filter(
+  (z) => z.id !== 'knowledge-library' || featureFlags.showKnowledgeSection,
+);
+
 export const sitemapLinks: { heading: string; links: { label: string; href: string }[] }[] = [
   {
     heading: 'The Garden',
     links: [
-      { label: 'The Practice', href: '#the-practice' },
-      { label: 'Field Notes', href: '#field-notes' },
-      { label: 'Design Thinking', href: '#design-thinking' },
-      { label: 'Knowledge Library', href: '#knowledge-library' },
+      { label: 'The Practice', href: '/#the-practice' },
+      { label: 'Field Notes', href: '/#field-notes' },
+      { label: 'Design Thinking', href: '/#design-thinking' },
+      ...(featureFlags.showKnowledgeSection
+        ? [{ label: 'Knowledge Library', href: '/#knowledge-library' }]
+        : []),
     ],
   },
   {
     heading: 'Writing',
     links: [
-      { label: 'Essays', href: '#field-notes' },
-      { label: 'Research Notes', href: '#knowledge-library' },
-      { label: 'Reading List', href: '#knowledge-library' },
+      { label: 'Essays', href: '/#field-notes' },
+      ...(featureFlags.showKnowledgeSection
+        ? [
+            { label: 'Research Notes', href: '/#knowledge-library' },
+            { label: 'Reading List', href: '/#knowledge-library' },
+          ]
+        : []),
     ],
   },
   {
