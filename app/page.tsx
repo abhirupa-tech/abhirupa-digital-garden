@@ -30,7 +30,7 @@ export default function Home() {
         {/* Row A — two sections share one row: a vertical list beside horizontal cards */}
         <section
           id="the-practice"
-          className="zone scroll-mt-24 grid gap-x-14 gap-y-14 pb-12 pt-6 md:grid-cols-12 md:pb-16 md:pt-8"
+          className="zone scroll-mt-24 grid gap-x-14 gap-y-8 pb-8 pt-4 md:grid-cols-12 md:gap-y-14 md:pb-16 md:pt-8"
         >
           <div className="md:col-span-5">
             <PracticeList zone={zoneById['the-practice']} entries={practice} />
@@ -45,7 +45,7 @@ export default function Home() {
         </div>
 
         {/* Row B — discovery masonry */}
-        <section id="design-thinking" className="zone scroll-mt-24 pb-12 md:pb-16">
+        <section id="design-thinking" className="zone scroll-mt-24 pb-8 md:pb-16">
           <KnowledgeLibrary zone={zoneById['design-thinking']} entries={designThinking} />
         </section>
 

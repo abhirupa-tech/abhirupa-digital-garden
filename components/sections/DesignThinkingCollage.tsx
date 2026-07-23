@@ -1,6 +1,7 @@
 import type { Zone } from '@/lib/data';
 import type { ContentEntry } from '@/lib/content';
 import { cloudinaryUrl } from '@/lib/cloudinary';
+import { formatDate } from '@/lib/format';
 import { Reveal } from '../motion/Reveal';
 import { SectionHeader } from './SectionHeader';
 
@@ -61,6 +62,9 @@ export function DesignThinkingCollage({ zone, entries }: { zone: Zone; entries: 
                 <h3 className="mt-3 font-display text-base font-medium leading-snug text-parchment transition-colors duration-300 group-hover:text-sand">
                   {entry.title}
                 </h3>
+                {entry.date && (
+                  <time className="label mt-1 block text-parchment-faint">{formatDate(entry.date)}</time>
+                )}
               </a>
             </Reveal>
           );

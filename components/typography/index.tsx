@@ -22,9 +22,9 @@ export { Heading, Subtitle, Paragraph, Bold, Italic, Quote, Highlight, Figure, A
  * both resolve through this same set, so a piece can mix either freely.
  */
 export const typographyComponents: MDXComponents = {
-  h1: (props) => <Heading level={2} className="mt-20 mb-5 first:mt-0" {...props} />,
-  h2: (props) => <Heading level={2} className="mt-20 mb-5 first:mt-0" {...props} />,
-  h3: (props) => <Heading level={3} className="mt-14 mb-4" {...props} />,
+  h1: (props) => <Heading level={2} className="mt-12 mb-3 first:mt-0 sm:mt-20 sm:mb-5" {...props} />,
+  h2: (props) => <Heading level={2} className="mt-12 mb-3 first:mt-0 sm:mt-20 sm:mb-5" {...props} />,
+  h3: (props) => <Heading level={3} className="mt-9 mb-3 sm:mt-14 sm:mb-4" {...props} />,
   p: Paragraph,
   strong: Bold,
   em: Italic,

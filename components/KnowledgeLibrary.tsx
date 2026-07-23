@@ -1,5 +1,6 @@
 import type { Zone } from '@/lib/data';
 import type { ContentEntry } from '@/lib/content';
+import { formatDate } from '@/lib/format';
 import { CoverImage } from './CoverImage';
 import { TypeBadge } from './TypeBadge';
 import { Reveal } from './motion/Reveal';
@@ -11,7 +12,7 @@ const AUTHOR_MARK_URL =
 /** The one featured piece — image, and up to five lines of subtext. */
 function HeroCard({ item }: { item: ContentEntry }) {
   return (
-    <Reveal from="left" className="lg:col-span-6">
+    <Reveal from="left">
       <a
         href={`/${item.section}/${item.slug}`}
         className="group block rounded-xl border border-parchment/10 bg-[#f9f6e9] p-3 backdrop-blur-[2px] transition-all duration-300 hover:-translate-y-1 hover:border-sand/40 hover:shadow-lg"
@@ -25,7 +26,12 @@ function HeroCard({ item }: { item: ContentEntry }) {
           />
         </div>
         <div className="px-0.5 pt-4">
-          <TypeBadge type={item.type} />
+          <div className="flex items-center gap-2">
+            <TypeBadge type={item.type} />
+            {item.date && (
+              <time className="label text-parchment-faint">{formatDate(item.date)}</time>
+            )}
+          </div>
           <h3 className="mt-3 font-display text-2xl font-medium leading-snug text-parchment transition-colors duration-300 group-hover:text-sand">
             {item.title}
           </h3>
@@ -55,6 +61,9 @@ function EntryRow({ item, delay }: { item: ContentEntry; delay: number }) {
             {item.title}{' '}
             <TypeBadge type={item.type} className="ml-1 align-middle" />
           </h4>
+          {item.date && (
+            <time className="label mt-1 block text-parchment-faint">{formatDate(item.date)}</time>
+          )}
           <p className="mt-1.5 line-clamp-2 font-rounded text-sm leading-relaxed text-parchment/70">
             {item.description}
           </p>
@@ -70,11 +79,19 @@ export function KnowledgeLibrary({ zone, entries }: { zone: Zone; entries: Conte
 
   return (
     <div>
-      <SectionHeader zone={zone} />
+      {!hero && <SectionHeader zone={zone} />}
 
       {hero && (
-        <div className="mt-12 grid gap-x-10 gap-y-8 lg:grid-cols-12 lg:items-start">
-          <HeroCard item={hero} />
+        <div className="grid gap-x-10 gap-y-8 lg:grid-cols-12 lg:items-start">
+          {/* Left column: the section heading sits directly above the hero
+              card, so the right column's row list — which starts at the
+              same grid row — begins level with the heading, not the card. */}
+          <div className="lg:col-span-6">
+            <SectionHeader zone={zone} />
+            <div className="mt-8">
+              <HeroCard item={hero} />
+            </div>
+          </div>
 
           {rows.length > 0 && (
             <div className="divide-y divide-parchment/12 lg:col-span-6">

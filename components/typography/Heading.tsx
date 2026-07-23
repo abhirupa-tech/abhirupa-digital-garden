@@ -9,8 +9,8 @@ type HeadingProps = {
 
 const sizes: Record<NonNullable<HeadingProps['level']>, string> = {
   1: 'font-display text-section font-medium',
-  2: 'font-display text-2xl md:text-3xl font-medium',
-  3: 'font-display text-xl md:text-2xl font-normal text-parchment/90',
+  2: 'font-display text-2xl md:text-3xl font-bold',
+  3: 'font-display text-xl md:text-2xl font-bold text-parchment/90',
 };
 
 const tags = { 1: 'h1', 2: 'h2', 3: 'h3' } as const;

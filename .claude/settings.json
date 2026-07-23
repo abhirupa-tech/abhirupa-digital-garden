@@ -11,7 +11,16 @@
       "Bash(grep -n \"^---$\" content/field-notes/piece-01.md)",
       "Bash(echo \"EXIT:$?\")",
       "Bash(python3 -c \"print\\(open\\('content/design-thinking/piece-02.mdx','rb'\\).read\\(\\)[400:700]\\)\")",
-      "Bash(powershell -Command \"Get-Content content/design-thinking/piece-02.mdx -TotalCount 25 | Select-Object -Last 5\")"
+      "Bash(powershell -Command \"Get-Content content/design-thinking/piece-02.mdx -TotalCount 25 | Select-Object -Last 5\")",
+      "Bash(npm ls *)",
+      "Bash(node -e \"const v=JSON.parse\\(require\\('fs'\\).readFileSync\\(0,'utf8'\\)\\); console.log\\(v.filter\\(x=>x.startsWith\\('9.'\\)\\).slice\\(-5\\)\\);\")",
+      "Bash(node -e \"console.log\\(JSON.stringify\\(require\\('./node_modules/eslint-config-next/package.json'\\).exports, null, 2\\)\\)\")",
+      "Bash(git commit -m ' *)",
+      "PowerShell(taskkill /PID 35000 /F)",
+      "PowerShell(Get-Process -Id 35000 -ErrorAction SilentlyContinue)",
+      "PowerShell(Stop-Process -Id 35000 -Force -ErrorAction Stop)",
+      "PowerShell(try { $p = Get-Process -Id 35000 -ErrorAction Stop; \"STILL RUNNING: $\\($p.Id\\)\" } catch { \"PROCESS GONE\" })",
+      "Bash(tasklist //FI \"IMAGENAME eq node.exe\")"
     ]
   }
 }

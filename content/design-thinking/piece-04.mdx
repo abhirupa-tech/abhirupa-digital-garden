@@ -1,0 +1,123 @@
+---
+title: "Breaking Down Harness Engineering — How to Vibecode Like a Senior Engineer"
+section: "design-thinking"
+type: "Essay"
+description: "Here's everything around the model that makes the model good — and how to build your own agent harness: the phased workflow, grading criteria, and guardrails that separate senior engineering from unguided vibecoding."
+tags: ["harness-engineering", "agentic-ai", "claude-code", "ai-agents", "developer-workflow"]
+date: "2026-07-23"
+cover: ""
+aspect: "wide"
+draft: false
+---
+
+You must have heard of harness engineering and thought, what on the holy earth is this?
+
+No?
+
+Nevermind. If you're curious, keep reading.
+
+For this we'll start in the dinosaur age of LLMs, better known as the time when we were all reading about prompt engineering.
+
+Initially we started with how to write the perfect prompt so that a language model understands. Then we moved on to LLM awareness. What data do we provide to the LLM so that it is aware of the context of our prompt? This meant grounding the data (RAG), supplying spatial context, the page we are on, the data we are working with. This led us to the concept of context engineering.
+
+<Figure
+src="https://res.cloudinary.com/ra5tg986/image/upload/v1784823962/10a7cb4e-31b4-4d0e-8b6d-24a0c29d9e21.png"
+  alt="Harness engineering in relation to context engineering and prompt engineering"
+  caption="Harness engineering in relation to context engineering and prompt engineering."
+  ratio="landscape"
+/>
+
+So now we have a prompt, and we have contextual data. How do we make sure the LLM doesn't go rogue? This led us to harnesses. Or in simpler words, a way to put a leash around the LLM and guide it to a situationally correct answer.
+
+Let's imagine a very boring but possibly realistic scenario.
+
+You are in charge of building (you'll probably be vibe-coding) an internal grade record system for a school. React, TypeScript, half-built by someone else two years ago.
+
+You open Claude Code and type:
+
+<Quote>
+  Prompt: Add a grade entry table where teachers enter marks per student.
+</Quote>
+
+Claude writes 300 lines. It looks great — but it also invented its own `Student` interface, ignored the `DataTable` component every other screen uses, and treated an empty cell as `0`, not "not entered yet." Zero.
+
+So the first time a teacher saves a half-finished sheet, thirty kids have a zero in Mathematics and a report card goes home saying something untrue.
+
+<Highlight>If someone tells you that this could have been fixed by a more intricate prompt or better context awareness — don't believe what they say.</Highlight>
+
+This is why harness engineering came to play.
+
+## How do I apply harness engineering for my frontend projects?
+
+I've taken a lot of inspiration from Prithvi Rajasekaran's post, ["Harness design for long-running application development"](https://www.anthropic.com/engineering/harness-design-long-running-apps), and here's the version that has worked for me on frontend work.
+
+Start with a `CLAUDE.md` if you don't have one. Claude reads it automatically before it acts on your prompt, so this is where your conventions and commands live.
+
+Here's how I think about it.
+
+<Figure
+src="https://res.cloudinary.com/ra5tg986/image/upload/v1784823991/e3eb2a07-7fb0-4c8d-abc6-cf979f9ce152.png"
+  alt="The three phases of a harness: planning, implementation, and evaluation"
+  ratio="landscape"
+/>
+
+### Phase one: planning
+
+I run two agents for it:
+
+- **A Researcher** that goes and reads the codebase and understands what exists — the architecture of the system and the coding conventions.
+- **A Planner** that takes the problem statement plus whatever the Researcher found, and writes a spec.
+
+A Researcher harnesses the plan to the existing code and system design, while the Planner turns that into a detailed set of deliverables.
+
+The output of this phase is a `plan.md`.
+
+Then the human comes back in — human in the loop. This is my turn (or yours!) to edit the plan, iterate on it, and make sure the path is right before a single line gets written. I would hate to spend thousands of tokens watching an agent build a feature, only to find out it never understood the problem in the first place.
+
+*Because come on. They aren't humans after all. We're still the smartest ones on this planet, at least for now.*
+
+### Phase two: implementation
+
+<Figure
+src="https://res.cloudinary.com/ra5tg986/image/upload/v1784824008/ccf9b04d-4622-497e-9148-73f20f7a77b9.png"
+  alt="An implementation agent working alongside a test-writing subagent"
+  ratio="landscape"
+/>
+
+The agent works in strict coherence with the plan, and a test-writing subagent runs alongside it so the tests get written as the code does. That subagent writes tests from the spec, never from the implementation — otherwise all you get is a test asserting that the code does what the code does.
+
+### Phase three: evaluation
+
+<Figure
+src="https://res.cloudinary.com/ra5tg986/image/upload/v1784824013/3b3f0bcf-ede9-47ac-810d-0cf0f6a86885.png"
+  alt="An evaluator agent looping through changes to check correctness and quality"
+  caption="An Evaluator checks technical correctness and code quality, looping through the changes in a phased pattern, improving them in coherence with the harness guidelines."
+  ratio="landscape"
+/>
+
+The part I spent the most time on is the grading criteria, and that's where the real idea from the post lives. Agents are bad at judging their own work. Ask one if it's done and it will say yes more often than it should. So you separate the agent doing the work from the agent grading it, and you hand both of them the same criteria up front.
+
+Rajasekaran uses four: design quality, originality, craft, functionality. They're written for generating designs from scratch. I adapted them for frontend engineering work in an existing codebase:
+
+- **System fit.** Does this look like someone who works on this codebase wrote it? Reuse over rebuild. Tokens, not hex values. This one is the inverse of his originality criterion, and that inversion is the whole point. When you're generating a standalone design, template defaults are the failure mode. Inside a product that already exists, inventing a novel pattern is the failure mode. A perfect score here looks completely unremarkable.
+- **Render behaviour.** How many times does this render, and why? Every memo needs a stated reason. Store subscriptions read the narrowest slice that works. And for anything streaming, what happens at ten updates a second, not just at rest.
+- **Accessibility.** Test it with the keyboard only and report what breaks. Semantic elements, focus visible and managed, accessible names on everything interactive, contrast at AA.
+- **Correctness and states.** Loading, empty, error, partial, success. Slow networks, failed requests, unmount mid-request, out-of-order responses.
+- **Craft.** Spacing, naming, no dead code. Baseline competence, low weight, because the model already arrives good at this.
+
+That weighting is deliberate. Weight the criteria where the model is careless, not the ones you personally care about most. Claude turns up competent at craft and careless about render cost and keyboard access, so those get 3x and craft gets 1x. Every criterion also gets a hard threshold — one score below it fails the round, no averaging a failure away behind four good ones.
+
+### Automation
+
+The last phase is automation. The agent runs the pipelines itself — lint, types, formatting, tests — and works through the warnings rather than handing them back to me.
+
+<Figure
+src="https://res.cloudinary.com/ra5tg986/image/upload/v1784824067/e4c4b589-e1ee-4c22-91e3-d3b09a0f084b.png"
+  alt="An agentic delegation system running lint, types, formatting, and tests automatically"
+  caption="An agentic delegation system as part of harness engineering."
+  ratio="landscape"
+/>
+
+### Get the harness.md
+
+I'll be sharing the `harness.md` file from my GitHub repo soon — tweak it according to your personal preferences.

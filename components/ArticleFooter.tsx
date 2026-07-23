@@ -22,9 +22,9 @@ export function ArticleFooter({
   siblings: ContentEntry[];
 }) {
   return (
-    <footer className="zone mx-auto mt-24 max-w-4xl border-t border-parchment/12 pt-12">
+    <footer className="zone mx-auto mt-14 max-w-4xl border-t border-parchment/12 pt-8 sm:mt-24 sm:pt-12">
       {siblings.length > 0 && (
-        <section aria-labelledby="more-heading" className="mb-16">
+        <section aria-labelledby="more-heading" className="mb-10 sm:mb-16">
           <h2 id="more-heading" className="label text-sand/70">
             More in {zone.kicker}
           </h2>
@@ -47,7 +47,7 @@ export function ArticleFooter({
       )}
 
       {entry.medium && (
-        <p className="label mb-14 text-parchment-faint">
+        <p className="label mb-8 text-parchment-faint sm:mb-14">
           Originally published on{' '}
           <a
             href={entry.medium}
@@ -62,7 +62,7 @@ export function ArticleFooter({
       )}
 
       {/* Author card — a quiet callout, not body copy. Keyword-rich links kept for SEO. */}
-      <section aria-labelledby="author-heading" className="mb-14">
+      <section aria-labelledby="author-heading" className="mb-8 sm:mb-14">
         <div className="flex flex-col gap-5 rounded-2xl border border-gray-300/25 bg-gray-400/[0.14] p-7 sm:flex-row sm:items-start sm:gap-6 md:p-8">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[28%] border border-sand/25 bg-sand/10">
             <span className="font-display text-base text-sand">
@@ -103,7 +103,7 @@ export function ArticleFooter({
       </section>
 
       {/* Explore the garden — internal links to every topic hub. */}
-      <nav aria-label="Explore the garden" className="mb-12">
+      <nav aria-label="Explore the garden" className="mb-8 sm:mb-12">
         <h2 className="label text-sand/70">Explore the garden</h2>
         <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-3">
           {visibleZones.map((z) => (
@@ -120,7 +120,7 @@ export function ArticleFooter({
       </nav>
 
       {/* Outbound identity links — rel="me" for cross-web authority. */}
-      <nav aria-label="Elsewhere on the web" className="pb-16">
+      <nav aria-label="Elsewhere on the web" className="pb-10 sm:pb-16">
         <h2 className="label text-sand/70">Elsewhere</h2>
         <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-3">
           <li>

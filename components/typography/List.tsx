@@ -9,16 +9,16 @@ import type { ReactNode } from 'react';
  */
 
 const listItemText =
-  'font-rounded text-[1.15rem] font-normal leading-[1.6] text-parchment marker:text-rust [&>p]:mb-0 [&>p]:font-rounded [&>p]:text-[1.3rem] [&>p]:font-normal [&>p]:leading-[1.6] [&>p]:text-parchment';
+  'font-rounded text-[1.02rem] sm:text-[1.15rem] font-normal leading-[1.6] text-parchment marker:text-rust [&>p]:mb-0 [&>p]:font-rounded [&>p]:text-[1.15rem] sm:[&>p]:text-[1.3rem] [&>p]:font-normal [&>p]:leading-[1.6] [&>p]:text-parchment';
 
 /** Maps markdown's `ul`. */
 export function UnorderedList({ children }: { children: ReactNode }) {
-  return <ul className="my-9 list-disc space-y-4 pl-6">{children}</ul>;
+  return <ul className="my-6 list-disc space-y-2.5 pl-6 sm:my-9 sm:space-y-4">{children}</ul>;
 }
 
 /** Maps markdown's `ol`. */
 export function OrderedList({ children }: { children: ReactNode }) {
-  return <ol className="my-9 list-decimal space-y-4 pl-6">{children}</ol>;
+  return <ol className="my-6 list-decimal space-y-2.5 pl-6 sm:my-9 sm:space-y-4">{children}</ol>;
 }
 
 /** Maps markdown's `li`. */

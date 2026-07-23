@@ -1,5 +1,6 @@
 import type { Zone } from '@/lib/data';
 import type { ContentEntry } from '@/lib/content';
+import { formatDate } from '@/lib/format';
 import { Reveal } from '../motion/Reveal';
 import { CoverImage } from '../CoverImage';
 import { TypeBadge } from '../TypeBadge';
@@ -34,7 +35,12 @@ export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: Conten
                   />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <TypeBadge type={entry.type} />
+                  <div className="flex items-center gap-2">
+                    <TypeBadge type={entry.type} />
+                    {entry.date && (
+                      <time className="label text-parchment-faint">{formatDate(entry.date)}</time>
+                    )}
+                  </div>
                   <h3 className="mt-1 line-clamp-3 font-display text-base leading-snug text-parchment transition-colors duration-300 group-hover:text-sand">
                     {entry.title}
                   </h3>
@@ -46,7 +52,7 @@ export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: Conten
 
               {/* Tablet/desktop: original single-row layout, unchanged */}
               <div className="hidden items-center gap-5 md:flex">
-                <div className="w-24 shrink-0 overflow-hidden rounded-[28%] md:w-28">
+                <div className="w-28 shrink-0 overflow-hidden rounded-[28%] md:w-32">
                   <CoverImage
                     src={entry.cover}
                     alt={entry.title}
@@ -56,7 +62,12 @@ export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: Conten
                   />
                 </div>
                 <div className="flex-1">
-                  <TypeBadge type={entry.type} />
+                  <div className="flex items-center gap-2">
+                    <TypeBadge type={entry.type} />
+                    {entry.date && (
+                      <time className="label text-parchment-faint">{formatDate(entry.date)}</time>
+                    )}
+                  </div>
                   <h3 className="mt-1 font-display text-lg leading-snug text-parchment transition-colors duration-300 group-hover:text-sand">
                     {entry.title}
                   </h3>

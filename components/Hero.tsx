@@ -16,8 +16,8 @@ export function Hero() {
 
   return (
     <header id="top" className="relative flex min-h-svh flex-col justify-center overflow-hidden">
-      <div className="zone flex-1 flex flex-col justify-center pt-14 pb-16 md:pt-28">
-        <motion.p {...rise(0.1)} className="label mb-8">
+      <div className="zone flex-1 flex flex-col justify-center pt-14 pb-10 md:pt-28 md:pb-16">
+        <motion.p {...rise(0.1)} className="label mb-5 sm:mb-8">
           {site.name} · Senior Frontend Engineer · Agentic AI Interfaces
         </motion.p>
 
@@ -34,13 +34,13 @@ export function Hero() {
 
         <motion.p
           {...rise(0.5)}
-          className="mt-8 max-w-2xl font-serif text-sub font-light text-parchment-muted"
+          className="mt-5 max-w-2xl font-serif text-sub font-light text-parchment-muted sm:mt-8"
         >
           {site.subline} — designing the frontend where agents reason, and a
           quieter practice of slow living behind the work.
         </motion.p>
 
-        <motion.div {...rise(0.7)} className="mt-12 flex flex-wrap items-center gap-x-10 gap-y-6">
+        <motion.div {...rise(0.7)} className="mt-8 flex flex-wrap items-center gap-x-10 gap-y-6 sm:mt-12">
           <SocialIcons />
           <div className="flex items-center gap-3 text-parchment-faint">
             <span className="accent-rule" />

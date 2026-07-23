@@ -1,30 +1,30 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-ink-400: rgb(var(--color-ink-400));
-  --color-ink-500: rgb(var(--color-ink-500));
-  --color-ink-600: rgb(var(--color-ink-600));
-  --color-ink-700: rgb(var(--color-ink-700));
-  --color-ink-800: rgb(var(--color-ink-800));
-  --color-ink-900: rgb(var(--color-ink-900));
+  --color-ink-400: rgb(var(--raw-ink-400));
+  --color-ink-500: rgb(var(--raw-ink-500));
+  --color-ink-600: rgb(var(--raw-ink-600));
+  --color-ink-700: rgb(var(--raw-ink-700));
+  --color-ink-800: rgb(var(--raw-ink-800));
+  --color-ink-900: rgb(var(--raw-ink-900));
 
-  --color-sand: rgb(var(--color-sand));
-  --color-sand-soft: rgb(var(--color-sand-soft));
-  --color-sand-deep: rgb(var(--color-sand-deep));
+  --color-sand: rgb(var(--raw-sand));
+  --color-sand-soft: rgb(var(--raw-sand-soft));
+  --color-sand-deep: rgb(var(--raw-sand-deep));
 
-  --color-rust: rgb(var(--color-rust));
-  --color-rust-soft: rgb(var(--color-rust-soft));
-  --color-rust-deep: rgb(var(--color-rust-deep));
+  --color-rust: rgb(var(--raw-rust));
+  --color-rust-soft: rgb(var(--raw-rust-soft));
+  --color-rust-deep: rgb(var(--raw-rust-deep));
 
-  --color-wash: rgb(var(--color-wash));
+  --color-wash: rgb(var(--raw-wash));
 
-  --color-teal-whisper: rgb(var(--color-teal-whisper));
+  --color-teal-whisper: rgb(var(--raw-teal-whisper));
 
-  --color-blush-whisper: rgb(var(--color-blush-whisper));
+  --color-blush-whisper: rgb(var(--raw-blush-whisper));
 
-  --color-parchment: rgb(var(--color-parchment));
-  --color-parchment-muted: rgb(var(--color-parchment-muted));
-  --color-parchment-faint: rgb(var(--color-parchment-faint));
+  --color-parchment: rgb(var(--raw-parchment));
+  --color-parchment-muted: rgb(var(--raw-parchment-muted));
+  --color-parchment-faint: rgb(var(--raw-parchment-faint));
 
   --font-display: var(--font-playfair), Georgia, serif;
   --font-serif: var(--font-cormorant), Georgia, serif;
@@ -43,6 +43,11 @@
   --tracking-label: 0.28em;
 
   --container-editorial: 78rem;
+
+  /* Extra breakpoint for very large monitors (~28"+, 1920px-wide viewports
+     and up) — the content column stays capped at --container-editorial
+     below this, so nothing changes on ordinary screens. */
+  --breakpoint-3xl: 120rem;
 
   --animate-drift: drift 18s ease-in-out infinite;
   --animate-breathe: breathe 9s ease-in-out infinite;
@@ -95,8 +100,10 @@
 }
 
 @utility zone {
-  /* Subtle grain-free vignette so bright hero text never floats */
-  @apply relative mx-auto w-full max-w-editorial px-6 md:px-10;
+  /* Subtle grain-free vignette so bright hero text never floats. Widens
+     past --container-editorial only on 3xl+ screens, so large monitors
+     don't sit in a narrow column with the rest of the screen empty. */
+  @apply relative mx-auto w-full max-w-editorial px-6 md:px-10 3xl:max-w-[104rem] 3xl:px-20;
 }
 
 @layer base {
@@ -108,31 +115,31 @@
      * and a bold rust-orange as the secondary highlight. Every component
      * reads colors through these variables, so retuning the palette never
      * requires touching component code. */
-    --color-ink-900: 244 243 239;
-    --color-ink-800: 236 234 224;
-    --color-ink-700: 226 222 206;
-    --color-ink-600: 214 208 184;
-    --color-ink-500: 198 188 155;
-    --color-ink-400: 182 168 126;
+    --raw-ink-900: 244 243 239;
+    --raw-ink-800: 236 234 224;
+    --raw-ink-700: 226 222 206;
+    --raw-ink-600: 214 208 184;
+    --raw-ink-500: 198 188 155;
+    --raw-ink-400: 182 168 126;
 
-    --color-sand: 29 58 99;
-    --color-sand-soft: 44 84 136;
-    --color-sand-deep: 20 41 68;
+    --raw-sand: 29 58 99;
+    --raw-sand-soft: 44 84 136;
+    --raw-sand-deep: 20 41 68;
 
-    --color-rust: 209 72 15;
-    --color-rust-soft: 232 103 44;
-    --color-rust-deep: 168 58 18;
+    --raw-rust: 209 72 15;
+    --raw-rust-soft: 232 103 44;
+    --raw-rust-deep: 168 58 18;
 
     /* Pure white hover wash — deliberately blue-free, so it stands out
      * unambiguously against the deeper, warmer canvas tones. */
-    --color-wash: 255 255 255;
+    --raw-wash: 255 255 255;
 
-    --color-teal-whisper: 79 138 128;
-    --color-blush-whisper: 181 100 120;
+    --raw-teal-whisper: 79 138 128;
+    --raw-blush-whisper: 181 100 120;
 
-    --color-parchment: 20 18 16;
-    --color-parchment-muted: 58 54 48;
-    --color-parchment-faint: 96 90 80;
+    --raw-parchment: 20 18 16;
+    --raw-parchment-muted: 58 54 48;
+    --raw-parchment-faint: 96 90 80;
 
     --bg-canvas-1: #f5f4f1;
     --bg-canvas-2: #f1efe9;

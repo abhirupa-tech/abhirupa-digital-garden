@@ -12,7 +12,7 @@ type FigureProps = {
 /** Image with a caption underneath. No `src` yet? Falls back to the site's placeholder look. */
 export function Figure({ src, alt = '', caption, ratio = 'landscape' }: FigureProps) {
   return (
-    <figure className="my-14">
+    <figure className="my-8 sm:my-14">
       {src ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img

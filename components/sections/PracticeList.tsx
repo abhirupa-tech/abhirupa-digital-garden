@@ -1,5 +1,6 @@
 import type { Zone } from '@/lib/data';
 import type { ContentEntry } from '@/lib/content';
+import { formatDate } from '@/lib/format';
 import { Reveal } from '../motion/Reveal';
 import { TypeBadge } from '../TypeBadge';
 import { SectionHeader } from './SectionHeader';
@@ -28,7 +29,12 @@ export function PracticeList({ zone, entries }: { zone: Zone; entries: ContentEn
                 <span className="block font-display text-xl leading-tight text-parchment transition-colors duration-300 group-hover:text-sand">
                   {entry.title}
                 </span>
-                <TypeBadge type={entry.type} className="mt-1" />
+                <span className="mt-1.5 flex items-center gap-2">
+                  <TypeBadge type={entry.type} />
+                  {entry.date && (
+                    <time className="label text-parchment-faint">{formatDate(entry.date)}</time>
+                  )}
+                </span>
               </span>
               <span className="translate-y-[2px] text-parchment-faint transition-all duration-300 group-hover:translate-x-1 group-hover:text-sand">
                 →

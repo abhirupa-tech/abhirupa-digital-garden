@@ -176,7 +176,7 @@ export default async function PiecePage({ params }: { params: Promise<PageParams
       <SideNav />
       <div className="lg:pl-20">
         <main>
-          <article className="zone max-w-4xl pb-16 pt-16 md:pt-28">
+          <article className="zone max-w-4xl pb-10 pt-10 sm:pb-16 sm:pt-16 md:pt-28">
             <a
               href={`/#${zone.id}`}
               className="label inline-flex items-center gap-2 text-sand/80 transition-colors duration-300 hover:text-sand"
@@ -196,7 +196,7 @@ export default async function PiecePage({ params }: { params: Promise<PageParams
             {entry.description && <Subtitle>{entry.description}</Subtitle>}
             <TagList tags={entry.tags} />
 
-            <div className="mt-16">{content}</div>
+            <div className="mt-9 sm:mt-16">{content}</div>
           </article>
 
           <ArticleFooter zone={zone} entry={entry} siblings={siblings} />
