@@ -6,7 +6,7 @@ type AudioNoteProps = {
 /** A styled audio note. No `src` yet? Renders a quiet placeholder state. */
 export function AudioNote({ src, label = 'Audio note' }: AudioNoteProps) {
   return (
-    <div className="my-14 rounded-sm border border-parchment/10 bg-ink-700/30 p-4">
+    <div className="my-14 rounded-xs border border-parchment/10 bg-ink-700/30 p-4">
       <span className="label text-parchment-faint">{label}</span>
       {src ? (
         <audio controls src={src} className="mt-3 w-full accent-sand">

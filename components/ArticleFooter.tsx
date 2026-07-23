@@ -33,7 +33,7 @@ export function ArticleFooter({
               <li key={sibling.slug}>
                 <a
                   href={`/${sibling.section}/${sibling.slug}/`}
-                  className="group flex items-baseline gap-3 font-serif text-xl font-light text-parchment decoration-rust decoration-[1px] underline-offset-4 transition-all duration-300 hover:underline"
+                  className="group flex items-baseline gap-3 font-serif text-xl font-light text-parchment decoration-rust decoration-1 underline-offset-4 transition-all duration-300 hover:underline"
                 >
                   <span className="flex-1">{sibling.title}</span>
                   <span className="text-parchment-faint transition-transform duration-300 group-hover:translate-x-1">

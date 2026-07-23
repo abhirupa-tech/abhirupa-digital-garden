@@ -35,7 +35,7 @@ export function Newsletter() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="your@email.com"
               aria-label="Email address"
-              className="w-full bg-transparent font-body text-lg text-white placeholder:text-white/40 focus:outline-none"
+              className="w-full bg-transparent font-body text-lg text-white placeholder:text-white/40 focus:outline-hidden"
             />
             <button
               type="submit"

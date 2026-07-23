@@ -11,11 +11,11 @@ export function Footer() {
   return (
     <footer
       id="stay-updated"
-      className="relative scroll-mt-24 bg-gradient-to-b from-[#6b5744] to-[#040404]"
+      className="relative scroll-mt-24 bg-linear-to-b from-[#6b5744] to-[#040404]"
     >
       <div className="zone pt-20 pb-14">
         {/* Coastline side-mark / visual bookmark */}
-        <div className="pointer-events-none absolute left-0 top-24 hidden h-40 w-1 bg-gradient-to-b from-[#e8c9a0]/60 to-transparent md:block" />
+        <div className="pointer-events-none absolute left-0 top-24 hidden h-40 w-1 bg-linear-to-b from-[#e8c9a0]/60 to-transparent md:block" />
 
         <div className="grid gap-16 md:grid-cols-12">
           {/* Call to action + newsletter */}

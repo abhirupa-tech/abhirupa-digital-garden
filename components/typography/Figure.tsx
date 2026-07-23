@@ -18,7 +18,7 @@ export function Figure({ src, alt = '', caption, ratio = 'landscape' }: FigurePr
         <img
           src={cloudinaryUrl(src, { width: 1600 })}
           alt={alt}
-          className="w-full rounded-sm border border-parchment/10"
+          className="w-full rounded-xs border border-parchment/10"
         />
       ) : (
         <ImagePlaceholder label={alt || 'Image'} ratio={ratio} />

@@ -7,14 +7,14 @@ type ImagePlaceholderProps = {
 };
 
 const ratios: Record<NonNullable<ImagePlaceholderProps['ratio']>, string> = {
-  portrait: 'aspect-[3/4]',
-  landscape: 'aspect-[4/3]',
+  portrait: 'aspect-3/4',
+  landscape: 'aspect-4/3',
   square: 'aspect-square',
-  cinematic: 'aspect-[10/3]',
+  cinematic: 'aspect-10/3',
 };
 
 const shapes: Record<NonNullable<ImagePlaceholderProps['shape']>, string> = {
-  card: 'rounded-sm',
+  card: 'rounded-xs',
   squircle: 'rounded-[28%]',
 };
 
@@ -32,7 +32,7 @@ export function ImagePlaceholder({
     <div
       className={`group relative overflow-hidden border border-parchment/10 bg-ink-700/40 ${shapes[shape]} ${ratios[ratio]} ${className ?? ''}`}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-ink-600/30 via-transparent to-sand/5" />
+      <div className="absolute inset-0 bg-linear-to-br from-ink-600/30 via-transparent to-sand/5" />
       <svg
         aria-hidden="true"
         viewBox="0 0 200 120"

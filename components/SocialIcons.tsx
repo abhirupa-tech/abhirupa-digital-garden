@@ -51,7 +51,7 @@ export function SocialIcons({
             target={s.key === 'email' ? undefined : '_blank'}
             rel={s.key === 'email' ? undefined : 'noopener noreferrer'}
             aria-label={`Abhirupa Mitra on ${s.label}`}
-            className={`inline-flex items-center gap-2 transition-colors duration-500 focus-visible:outline-none ${toneClass}`}
+            className={`inline-flex items-center gap-2 transition-colors duration-500 focus-visible:outline-hidden ${toneClass}`}
           >
             {icons[s.key]}
             <span className="label text-[0.62rem] text-current">{s.label}</span>

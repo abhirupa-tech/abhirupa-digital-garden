@@ -14,7 +14,7 @@ const spines = [
 
 /**
  * Format: a scrollable shelf of books, not a grid of cards. Portrait
- * proportions, a spine down the left edge, a stacked drop-shadow for page
+ * proportions, a spine down the left edge, a stacked drop-shadow-sm for page
  * depth, and a bookmark ribbon peeking out the top. The title lives below
  * the cover — legible, not squeezed onto it — and the shelf scrolls
  * horizontally so it can hold more than a fixed row would.
@@ -25,13 +25,13 @@ export function DesignThinkingCollage({ zone, entries }: { zone: Zone; entries: 
     <div className="relative">
       <SectionHeader zone={zone} />
 
-      <div className="-mx-6 mt-10 flex snap-x snap-mandatory gap-x-8 overflow-x-auto px-6 pb-4 [scrollbar-width:thin] md:-mx-10 md:px-10">
+      <div className="-mx-6 mt-10 flex snap-x snap-mandatory gap-x-8 overflow-x-auto px-6 pb-4 scrollbar-thin md:-mx-10 md:px-10">
         {items.map((entry, i) => {
           const { spine, cover } = spines[i % spines.length];
           return (
             <Reveal delay={0.06 * i} key={entry.slug} as="article" className="w-44 shrink-0 snap-start sm:w-52">
               <a href={`/${entry.section}/${entry.slug}`} className="group block">
-                <div className="relative aspect-[3/4] overflow-hidden rounded-r-xl rounded-l-[3px] shadow-[3px_3px_0_rgba(11,12,16,0.12),6px_6px_0_rgba(11,12,16,0.06)] transition-all duration-500 ease-out group-hover:-translate-y-1.5 group-hover:-rotate-2 group-hover:shadow-[5px_9px_0_rgba(11,12,16,0.16),10px_15px_0_rgba(11,12,16,0.08)]">
+                <div className="relative aspect-3/4 overflow-hidden rounded-r-xl rounded-l-[3px] shadow-[3px_3px_0_rgba(11,12,16,0.12),6px_6px_0_rgba(11,12,16,0.06)] transition-all duration-500 ease-out group-hover:-translate-y-1.5 group-hover:-rotate-2 group-hover:shadow-[5px_9px_0_rgba(11,12,16,0.16),10px_15px_0_rgba(11,12,16,0.08)]">
                   {/* Cover art or, lacking one, a flat color field */}
                   {entry.cover ? (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -41,7 +41,7 @@ export function DesignThinkingCollage({ zone, entries }: { zone: Zone; entries: 
                       className="absolute inset-0 h-full w-full object-cover"
                     />
                   ) : (
-                    <div className={`absolute inset-0 bg-gradient-to-br ${cover}`} />
+                    <div className={`absolute inset-0 bg-linear-to-br ${cover}`} />
                   )}
 
                   {/* Spine */}

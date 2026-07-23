@@ -19,7 +19,7 @@ export function PracticeList({ zone, entries }: { zone: Zone; entries: ContentEn
           <li key={entry.slug} className="border-b border-parchment/12">
             <a
               href={`/${entry.section}/${entry.slug}`}
-              className="group -mx-3 flex items-baseline gap-5 rounded-xl border border-transparent bg-transparent px-3 py-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#c2a179] hover:bg-[#f9f8f5] hover:shadow-sm"
+              className="group -mx-3 flex items-baseline gap-5 rounded-xl border border-transparent bg-transparent px-3 py-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#c2a179] hover:bg-[#f9f8f5] hover:shadow-xs"
             >
               <span className="w-8 shrink-0 font-display text-sm text-sand/80 tabular-nums transition-colors duration-300 group-hover:text-sand">
                 {String(i + 1).padStart(2, '0')}
