@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { site } from '@/lib/site';
 import { visibleZones } from '@/lib/data';
-import { getEntries } from '@/lib/content';
+import { getEntries, getAllTypes } from '@/lib/content';
 
 // Emit as a static file for `output: 'export'`.
 export const dynamic = 'force-static';
@@ -21,6 +21,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 1,
   };
 
+  const sectionIds = visibleZones.map((z) => z.id);
+
+  const about: MetadataRoute.Sitemap[number] = {
+    url: `${site.url}/about/`,
+    lastModified: now,
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  };
+
+  // Format collection pages (Guides, Playbooks, Essays, …).
+  const collections = getAllTypes(sectionIds).map((t) => ({
+    url: `${site.url}/collections/${t.slug}/`,
+    lastModified: now,
+    changeFrequency: 'weekly' as const,
+    priority: 0.6,
+  }));
+
   const articles = visibleZones.flatMap((zone) =>
     getEntries(zone.id)
       .filter((entry) => !entry.draft)
@@ -32,5 +49,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
       })),
   );
 
-  return [home, ...articles];
+  return [home, about, ...collections, ...articles];
 }

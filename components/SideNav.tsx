@@ -85,24 +85,33 @@ function iconClass(active: boolean) {
 
 // Nav icon link: a dark-blue circle grows from a dot behind the icon on
 // hover/focus (and shrinks back inward on hover-out), turning the icon white.
+// A small labelled tooltip slides out (right on the desktop bar, left in the
+// mobile panel) so each wordless icon announces where it leads.
 function NavIcon({
   href,
   label,
   active,
+  side = 'right',
   onClick,
   children,
 }: {
   href: string;
   label: string;
   active: boolean;
+  /** Which way the tooltip opens — away from the nav's edge. */
+  side?: 'right' | 'left';
   onClick?: () => void;
   children: ReactNode;
 }) {
+  const tooltipSide =
+    side === 'right'
+      ? 'left-full ml-3 -translate-x-1 group-hover:translate-x-0 group-focus-visible:translate-x-0'
+      : 'right-full mr-3 translate-x-1 group-hover:translate-x-0 group-focus-visible:translate-x-0';
+
   return (
     <a
       href={href}
       aria-label={label}
-      title={label}
       aria-current={active ? 'true' : undefined}
       onClick={onClick}
       className={`group relative flex h-11 w-11 items-center justify-center rounded-full focus-visible:outline-hidden ${
@@ -115,6 +124,12 @@ function NavIcon({
       />
       <span className="relative z-10 transition-colors duration-300 group-hover:text-white group-focus-visible:text-white">
         {children}
+      </span>
+      <span
+        role="tooltip"
+        className={`pointer-events-none absolute top-1/2 z-20 -translate-y-1/2 whitespace-nowrap rounded-md border border-rust/50 bg-[#faf9f6] px-2.5 py-1 font-rounded text-[0.72rem] text-parchment opacity-0 shadow-md transition-all duration-200 ease-out group-hover:opacity-100 group-focus-visible:opacity-100 ${tooltipSide}`}
+      >
+        {label}
       </span>
     </a>
   );
@@ -207,6 +222,7 @@ export function SideNav() {
                   href={`/#${it.id}`}
                   label={it.label}
                   active={active === it.id}
+                  side="left"
                   onClick={() => setOpen(false)}
                 >
                   {icons[it.icon]}

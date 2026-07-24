@@ -1,9 +1,26 @@
+'use client';
+
+import { motion, type Variants } from 'framer-motion';
 import type { Zone } from '@/lib/data';
 import type { ContentEntry } from '@/lib/content';
 import { formatDate } from '@/lib/format';
 import { Reveal } from '../motion/Reveal';
+import { HoverLink, AnimatedTitle, HoverDivider } from '../motion/HoverLink';
 import { TypeBadge } from '../TypeBadge';
 import { SectionHeader } from './SectionHeader';
+
+const RUST = '#d1480f';
+
+// Number + arrow warm to rust alongside the title, driven by the link's
+// rest/hover variant state (see HoverLink).
+const numberVariants: Variants = {
+  rest: { color: 'rgb(29 58 99 / 0.8)' },
+  hover: { color: RUST },
+};
+const arrowVariants: Variants = {
+  rest: { color: '#605a50', x: 0 },
+  hover: { color: RUST, x: 4 },
+};
 
 /**
  * Format: a vertical index list — a table-of-contents feel, no imagery.
@@ -17,18 +34,22 @@ export function PracticeList({ zone, entries }: { zone: Zone; entries: ContentEn
 
       <Reveal from="left" delay={0.1} as="ol" className="mt-9 border-t border-parchment/12">
         {items.map((entry, i) => (
-          <li key={entry.slug} className="border-b border-parchment/12">
-            <a
+          <li key={entry.slug}>
+            <HoverLink
               href={`/${entry.section}/${entry.slug}`}
-              className="group -mx-3 flex items-baseline gap-5 rounded-xl border border-transparent bg-transparent px-3 py-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#c2a179] hover:bg-[#f9f8f5] hover:shadow-xs"
+              className="relative -mx-3 flex items-baseline gap-5 rounded-xl px-3 py-5"
             >
-              <span className="w-8 shrink-0 font-display text-sm text-sand/80 tabular-nums transition-colors duration-300 group-hover:text-sand">
+              <motion.span
+                variants={numberVariants}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                className="w-8 shrink-0 font-display text-sm tabular-nums"
+              >
                 {String(i + 1).padStart(2, '0')}
-              </span>
+              </motion.span>
               <span className="flex-1">
-                <span className="block font-display text-xl leading-tight text-parchment transition-colors duration-300 group-hover:text-sand">
+                <AnimatedTitle className="font-display text-xl leading-tight">
                   {entry.title}
-                </span>
+                </AnimatedTitle>
                 <span className="mt-1.5 flex items-center gap-2">
                   <TypeBadge type={entry.type} />
                   {entry.date && (
@@ -36,10 +57,15 @@ export function PracticeList({ zone, entries }: { zone: Zone; entries: ContentEn
                   )}
                 </span>
               </span>
-              <span className="translate-y-[2px] text-parchment-faint transition-all duration-300 group-hover:translate-x-1 group-hover:text-sand">
+              <motion.span
+                variants={arrowVariants}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                className="translate-y-[2px]"
+              >
                 →
-              </span>
-            </a>
+              </motion.span>
+              <HoverDivider />
+            </HoverLink>
           </li>
         ))}
       </Reveal>

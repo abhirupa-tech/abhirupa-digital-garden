@@ -13,7 +13,7 @@ export function Link({ href = '#', children }: LinkProps) {
       href={href}
       target={external ? '_blank' : undefined}
       rel={external ? 'noreferrer' : undefined}
-      className="text-sand underline decoration-sand/40 underline-offset-4 transition-colors duration-300 hover:text-sand-soft hover:decoration-sand"
+      className="text-rust underline decoration-rust/40 underline-offset-4 transition-colors duration-300 hover:text-rust-deep hover:decoration-rust-deep"
     >
       {children}
     </a>

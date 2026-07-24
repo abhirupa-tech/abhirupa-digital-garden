@@ -1,7 +1,7 @@
 ---
 title: "How I Make AI Handle the Boring Parts of Frontend — So I Could Focus on Real Engineering"
 section: "field-notes"
-type: "Essay"
+type: "Guide"
 description: "Offload the repetitive chaos to AI-powered tools and MCP servers, and save your focus for the tasks that actually make you a better engineer."
 tags: ["frontend", "ai-tooling", "developer-workflow", "mcp", "react"]
 date: "2025-12-01"

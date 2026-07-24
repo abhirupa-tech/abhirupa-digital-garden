@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { site } from '@/lib/site';
 import { sitemapLinks } from '@/lib/data';
 import { featureFlags } from '@/lib/featureflag';
@@ -11,8 +12,27 @@ export function Footer() {
   return (
     <footer
       id="stay-updated"
-      className="relative scroll-mt-24 bg-linear-to-b from-[#6b5744] to-[#040404]"
+      className="relative mt-20 scroll-mt-24 bg-linear-to-b from-[#6b5744] to-[#040404] md:mt-28"
     >
+      {/* Seamless wavy top edge: the footer's own crest rises into the canvas
+          above. Filled with the footer's top gradient color (#6b5744) and
+          pulled up flush against the footer, so there's no gap or seam. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 w-full -translate-y-full overflow-hidden text-[#6b5744]"
+      >
+        <svg
+          viewBox="0 0 1440 100"
+          preserveAspectRatio="none"
+          className="h-14 w-full md:h-24"
+        >
+          <path
+            d="M0 46 C 240 96, 480 4, 720 34 S 1200 76, 1440 40 L1440 100 L0 100 Z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+
       <div className="zone pt-20 pb-14">
         {/* Coastline side-mark / visual bookmark */}
         <div className="pointer-events-none absolute left-0 top-24 hidden h-40 w-1 bg-linear-to-b from-[#e8c9a0]/60 to-transparent md:block" />
@@ -45,16 +65,24 @@ export function Footer() {
                   <ul className="space-y-3">
                     {group.links.map((link) => {
                       const external = link.href.startsWith('http') || link.href.startsWith('mailto');
+                      const className =
+                        'font-body text-base text-white/70 transition-colors duration-300 hover:text-[#e8c9a0]';
                       return (
                         <li key={link.label}>
-                          <a
-                            href={link.href}
-                            target={external && link.href.startsWith('http') ? '_blank' : undefined}
-                            rel={external && link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                            className="font-body text-base text-white/70 transition-colors duration-300 hover:text-[#e8c9a0]"
-                          >
-                            {link.label}
-                          </a>
+                          {external ? (
+                            <a
+                              href={link.href}
+                              target={link.href.startsWith('http') ? '_blank' : undefined}
+                              rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                              className={className}
+                            >
+                              {link.label}
+                            </a>
+                          ) : (
+                            <Link href={link.href} className={className}>
+                              {link.label}
+                            </Link>
+                          )}
                         </li>
                       );
                     })}

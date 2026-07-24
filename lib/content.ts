@@ -92,3 +92,29 @@ export function getEntries(section: string): ContentEntry[] {
 export function getEntry(section: string, slug: string): ContentEntry | null {
   return getEntries(section).find((e) => e.slug === slug) ?? null;
 }
+
+/** "Guide" -> "guide"; used for /collections/<type> URLs. */
+export function typeSlug(type: string): string {
+  return slugify(type);
+}
+
+/**
+ * Every published entry across the given sections whose `type` slug matches —
+ * the data source for the /collections/<type> pages. Newest first.
+ */
+export function getEntriesByType(type: string, sections: string[]): ContentEntry[] {
+  return sections
+    .flatMap((section) => getEntries(section))
+    .filter((e) => !e.draft && typeSlug(e.type) === typeSlug(type))
+    .sort((a, b) => (a.date < b.date ? 1 : -1));
+}
+
+/** Distinct published entry types across the given sections (label + slug). */
+export function getAllTypes(sections: string[]): { label: string; slug: string }[] {
+  const bySlug = new Map<string, string>();
+  sections
+    .flatMap((section) => getEntries(section))
+    .filter((e) => !e.draft)
+    .forEach((e) => bySlug.set(typeSlug(e.type), e.type));
+  return [...bySlug.entries()].map(([slug, label]) => ({ slug, label }));
+}

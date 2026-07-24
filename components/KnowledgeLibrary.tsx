@@ -1,9 +1,12 @@
+'use client';
+
 import type { Zone } from '@/lib/data';
 import type { ContentEntry } from '@/lib/content';
 import { formatDate } from '@/lib/format';
 import { CoverImage } from './CoverImage';
 import { TypeBadge } from './TypeBadge';
 import { Reveal } from './motion/Reveal';
+import { HoverLink, AnimatedTitle, HoverDivider } from './motion/HoverLink';
 import { SectionHeader } from './sections/SectionHeader';
 
 const AUTHOR_MARK_URL =
@@ -13,9 +16,9 @@ const AUTHOR_MARK_URL =
 function HeroCard({ item }: { item: ContentEntry }) {
   return (
     <Reveal from="left">
-      <a
+      <HoverLink
         href={`/${item.section}/${item.slug}`}
-        className="group block rounded-xl border border-parchment/10 bg-[#f9f6e9] p-3 backdrop-blur-[2px] transition-all duration-300 hover:-translate-y-1 hover:border-sand/40 hover:shadow-lg"
+        className="group block rounded-xl border border-parchment/10 bg-[#f9f6e9] p-3 backdrop-blur-[2px]"
       >
         <div className="overflow-hidden rounded-lg">
           <CoverImage
@@ -32,14 +35,16 @@ function HeroCard({ item }: { item: ContentEntry }) {
               <time className="label text-parchment-faint">{formatDate(item.date)}</time>
             )}
           </div>
-          <h3 className="mt-3 font-display text-2xl font-medium leading-snug text-parchment transition-colors duration-300 group-hover:text-sand">
-            {item.title}
+          <h3 className="mt-3">
+            <AnimatedTitle className="font-display text-xl font-medium leading-snug">
+              {item.title}
+            </AnimatedTitle>
           </h3>
           <p className="mt-3 line-clamp-4 font-rounded text-base leading-relaxed text-parchment/80">
             {item.description}
           </p>
         </div>
-      </a>
+      </HoverLink>
     </Reveal>
   );
 }
@@ -48,17 +53,19 @@ function HeroCard({ item }: { item: ContentEntry }) {
 function EntryRow({ item, delay }: { item: ContentEntry; delay: number }) {
   return (
     <Reveal from="right" delay={delay}>
-      <a
+      <HoverLink
         href={`/${item.section}/${item.slug}`}
-        className="group -mx-3 flex items-start gap-4 overflow-hidden rounded-xl border border-transparent bg-transparent px-3 py-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-rust hover:bg-white/40"
+        className="relative -mx-3 flex items-start gap-4 rounded-xl px-3 py-4"
       >
         <div className="mt-0.5 h-9 w-9 shrink-0 overflow-hidden rounded-full border border-sand/25 bg-sand/10">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={AUTHOR_MARK_URL} alt="" className="h-full w-full object-cover" />
         </div>
-        <div className="min-w-0 flex-1 transition-transform duration-300 group-hover:translate-x-1">
-          <h4 className="font-display text-lg font-medium leading-snug text-parchment transition-colors duration-300 group-hover:text-sand">
-            {item.title}{' '}
+        <div className="min-w-0 flex-1">
+          <h4 className="font-display text-xl font-medium leading-snug">
+            <AnimatedTitle className="font-display text-xl font-medium leading-snug">
+              {item.title}
+            </AnimatedTitle>{' '}
             <TypeBadge type={item.type} className="ml-1 align-middle" />
           </h4>
           {item.date && (
@@ -68,7 +75,8 @@ function EntryRow({ item, delay }: { item: ContentEntry; delay: number }) {
             {item.description}
           </p>
         </div>
-      </a>
+        <HoverDivider />
+      </HoverLink>
     </Reveal>
   );
 }
@@ -94,7 +102,7 @@ export function KnowledgeLibrary({ zone, entries }: { zone: Zone; entries: Conte
           </div>
 
           {rows.length > 0 && (
-            <div className="divide-y divide-parchment/12 lg:col-span-6">
+            <div className="lg:col-span-6">
               {rows.map((item, i) => (
                 <EntryRow key={item.slug} item={item} delay={0.08 * i} />
               ))}
