@@ -49,6 +49,16 @@
      below this, so nothing changes on ordinary screens. */
   --breakpoint-3xl: 120rem;
 
+  /* Ultrawide / XXL displays (~30"+ monitors, 2560px-wide viewports and up).
+     Sits one step above 3xl; used to gently enlarge the type scale — see the
+     root font-size bumps in the base layer below. */
+  --breakpoint-4xl: 160rem;
+
+  /* Widest displays (~34"+ ultrawide monitors, 3440px-wide viewports and up).
+     One step above 4xl; the type scale grows a little more here — see the
+     root font-size bumps in the base layer below. */
+  --breakpoint-5xl: 215rem;
+
   --animate-drift: drift 18s ease-in-out infinite;
   --animate-breathe: breathe 9s ease-in-out infinite;
 
@@ -164,6 +174,31 @@
      without touching a single component. */
   html[data-platform='mac'] {
     font-size: 106%;
+  }
+
+  /* Ultrawide / XXL monitors (~30"+, 2560px viewports and up). Everything on
+     the site is rem-based off the root font-size, so adding two typographic
+     points here enlarges every size at once — headings, body, labels — so the
+     page fills a 30"+ display comfortably instead of reading small across the
+     extra width. Layers on top of the macOS bump above via calc(). */
+  @media (min-width: 160rem) {
+    html {
+      font-size: calc(100% + 2pt);
+    }
+    html[data-platform='mac'] {
+      font-size: calc(106% + 2pt);
+    }
+  }
+
+  /* Widest displays (~34"+ ultrawide, 3440px viewports and up) grow a touch
+     more — four points over the base instead of two. */
+  @media (min-width: 215rem) {
+    html {
+      font-size: calc(100% + 4pt);
+    }
+    html[data-platform='mac'] {
+      font-size: calc(106% + 4pt);
+    }
   }
 
   body {

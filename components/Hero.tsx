@@ -26,7 +26,7 @@ export function Hero() {
           className="max-w-[16ch] font-display text-[clamp(2.25rem,5.2vw,4.5rem)] font-medium leading-[1.08] tracking-[-0.015em] text-parchment lg:max-w-[25ch]"
         >
           Abhirupa architects spaces where{' '}
-          <span className="bg-linear-to-r from-rust-deep via-rust to-rust-soft bg-clip-text pr-1.5 font-semibold italic text-transparent">
+          <span className="box-decoration-clone bg-linear-to-r from-rust-deep via-rust to-rust-soft bg-clip-text pr-[0.14em] font-semibold italic text-transparent">
             AI breathes and thinks
           </span>{' '}
           alongside humans.

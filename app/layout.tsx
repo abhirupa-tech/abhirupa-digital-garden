@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Playfair_Display, Cormorant_Garamond, EB_Garamond, Quicksand } from 'next/font/google';
 import { site } from '@/lib/site';
+import { TopNav } from '@/components/TopNav';
 import './globals.css';
 
 // 4-level serif hierarchy loaded as CSS variables (see tailwind.config.ts).
@@ -187,13 +188,20 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      // PlatformFontFix sets data-platform on <html> in a blocking pre-hydration
+      // script, so the server markup intentionally differs from the first client
+      // render. Suppress the (one-level-deep) attribute mismatch warning here.
+      suppressHydrationWarning
       className={`${playfair.variable} ${cormorant.variable} ${garamond.variable} ${quicksand.variable}`}
     >
       <head>
         <PlatformFontFix />
         <StructuredData />
       </head>
-      <body>{children}</body>
+      <body>
+        <TopNav />
+        {children}
+      </body>
     </html>
   );
 }

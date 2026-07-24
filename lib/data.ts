@@ -75,7 +75,9 @@ export const sitemapLinks: { heading: string; links: { label: string; href: stri
   {
     heading: 'Writing',
     links: [
-      { label: 'Essays', href: '/#field-notes' },
+      { label: 'Essays', href: '/collections/essay' },
+      { label: 'Guides', href: '/collections/guide' },
+      { label: 'Playbooks', href: '/collections/playbook' },
       ...(featureFlags.showKnowledgeSection
         ? [
             { label: 'Research Notes', href: '/#knowledge-library' },

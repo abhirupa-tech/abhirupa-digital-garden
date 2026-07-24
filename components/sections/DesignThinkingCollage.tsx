@@ -59,7 +59,7 @@ export function DesignThinkingCollage({ zone, entries }: { zone: Zone; entries: 
                   />
                 </div>
 
-                <h3 className="mt-3 font-display text-base font-medium leading-snug text-parchment transition-colors duration-300 group-hover:text-sand">
+                <h3 className="mt-3 font-display text-xl font-medium leading-snug text-parchment transition-colors duration-300 group-hover:text-sand">
                   {entry.title}
                 </h3>
                 {entry.date && (

@@ -1,3 +1,6 @@
+'use client';
+
+import { motion, useReducedMotion, type Variants } from 'framer-motion';
 import { site } from '@/lib/site';
 
 const stroke = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.4, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const };
@@ -30,6 +33,20 @@ const socials = [
   { key: 'email' as const, href: site.social.email, label: 'Email' },
 ];
 
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+// The whole link lifts slightly and an underline wipes in on hover. The
+// underline uses currentColor, so it takes the tone's hover color — dark navy
+// (sand) on light backgrounds, warm sand on the dark footer.
+const linkVariants: Variants = {
+  rest: { y: 0 },
+  hover: { y: -2 },
+};
+const underlineVariants: Variants = {
+  rest: { scaleX: 0 },
+  hover: { scaleX: 1 },
+};
+
 export function SocialIcons({
   className,
   tone = 'default',
@@ -38,24 +55,41 @@ export function SocialIcons({
   /** 'light' for use on dark backgrounds (e.g. the footer). */
   tone?: 'default' | 'light';
 }) {
+  const reduce = useReducedMotion();
   const toneClass =
     tone === 'light'
       ? 'text-white/70 hover:text-[#e8c9a0] focus-visible:text-[#e8c9a0]'
       : 'text-parchment-muted hover:text-sand focus-visible:text-sand';
+
   return (
     <ul className={`flex items-center gap-6 ${className ?? ''}`}>
       {socials.map((s) => (
         <li key={s.key}>
-          <a
+          <motion.a
             href={s.href}
             target={s.key === 'email' ? undefined : '_blank'}
             rel={s.key === 'email' ? undefined : 'noopener noreferrer'}
             aria-label={`Abhirupa Mitra on ${s.label}`}
+            initial="rest"
+            animate="rest"
+            whileHover={reduce ? undefined : 'hover'}
+            whileFocus="hover"
+            variants={linkVariants}
+            transition={{ duration: reduce ? 0 : 0.3, ease: EASE }}
             className={`inline-flex items-center gap-2 transition-colors duration-500 focus-visible:outline-hidden ${toneClass}`}
           >
             {icons[s.key]}
-            <span className="label text-[0.62rem] text-current">{s.label}</span>
-          </a>
+            <span className="relative">
+              <span className="label text-[0.62rem] text-current">{s.label}</span>
+              <motion.span
+                aria-hidden="true"
+                variants={underlineVariants}
+                transition={{ duration: reduce ? 0 : 0.4, ease: EASE }}
+                style={{ transformOrigin: 'left' }}
+                className="absolute -bottom-1 left-0 h-0.5 w-full origin-left rounded-full bg-current"
+              />
+            </span>
+          </motion.a>
         </li>
       ))}
     </ul>

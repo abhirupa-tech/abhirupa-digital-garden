@@ -8,7 +8,6 @@ import { FieldNotesCards } from '@/components/sections/FieldNotesCards';
 import { DesignThinkingCollage } from '@/components/sections/DesignThinkingCollage';
 import { KnowledgeLibrary } from '@/components/KnowledgeLibrary';
 import { Footer } from '@/components/Footer';
-import { Wave } from '@/components/Wave';
 import { Sketch } from '@/components/Sketch';
 
 export default function Home() {
@@ -49,18 +48,12 @@ export default function Home() {
           <KnowledgeLibrary zone={zoneById['design-thinking']} entries={designThinking} />
         </section>
 
-        <Wave tone="faint" className="my-2 opacity-70" />
-
         {/* Row C — even, equal-height card row */}
         {featureFlags.showKnowledgeSection && (
-          <section id="knowledge-library" className="zone scroll-mt-24">
+          <section id="knowledge-library" className="zone scroll-mt-24 pt-8 md:pt-16">
             <DesignThinkingCollage zone={zoneById['knowledge-library']} entries={library} />
           </section>
         )}
-
-        <div className="zone flex justify-end py-1">
-          <Sketch name="coastline" className="h-14 w-44 opacity-50" />
-        </div>
       </main>
 
         <Footer />

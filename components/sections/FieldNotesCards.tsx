@@ -41,7 +41,7 @@ export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: Conten
                       <time className="label text-parchment-faint">{formatDate(entry.date)}</time>
                     )}
                   </div>
-                  <h3 className="mt-1 line-clamp-3 font-display text-base leading-snug text-parchment transition-colors duration-300 group-hover:text-sand">
+                  <h3 className="mt-1 line-clamp-3 font-display text-xl leading-snug text-parchment transition-colors duration-300 group-hover:text-sand">
                     {entry.title}
                   </h3>
                 </div>
@@ -68,7 +68,7 @@ export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: Conten
                       <time className="label text-parchment-faint">{formatDate(entry.date)}</time>
                     )}
                   </div>
-                  <h3 className="mt-1 font-display text-lg leading-snug text-parchment transition-colors duration-300 group-hover:text-sand">
+                  <h3 className="mt-1 font-display text-xl leading-snug text-parchment transition-colors duration-300 group-hover:text-sand">
                     {entry.title}
                   </h3>
                   <p className="mt-1.5 line-clamp-2 font-rounded text-sm leading-relaxed text-parchment/85">
