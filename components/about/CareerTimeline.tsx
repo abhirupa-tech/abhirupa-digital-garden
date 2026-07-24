@@ -123,7 +123,7 @@ function RoleCard({ role, index, reduce }: { role: CareerRole; index: number; re
  */
 export function CareerTimeline() {
   const ref = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotion() ?? false;
 
   const { scrollYProgress } = useScroll({
     target: ref,
