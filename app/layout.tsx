@@ -97,6 +97,24 @@ export const metadata: Metadata = {
 };
 
 /**
+ * macOS renders the same CSS pixel sizes visibly smaller/thinner than
+ * Windows does (different font hinting/antialiasing, not an actual size
+ * difference) — the classic "my site looks smaller on my Mac" report.
+ * There's no CSS media feature for OS, so this detects it in a blocking
+ * inline script (before first paint, so no flash of the wrong size) and
+ * flags <html data-platform="mac">; globals.css nudges the root font-size
+ * up slightly for that case so the two platforms read as the same size.
+ */
+function PlatformFontFix() {
+  const script = `(function(){try{
+    var ua = navigator.userAgent || '';
+    var isMac = /Macintosh/.test(ua) && (navigator.maxTouchPoints || 0) <= 1;
+    if (isMac) document.documentElement.setAttribute('data-platform', 'mac');
+  }catch(e){}})();`;
+  return <script dangerouslySetInnerHTML={{ __html: script }} />;
+}
+
+/**
  * Structured data: Person + WebSite + ProfilePage. This is what lets search
  * engines understand *who* Abhirupa is and connect the target queries to her.
  */
@@ -172,6 +190,7 @@ export default function RootLayout({
       className={`${playfair.variable} ${cormorant.variable} ${garamond.variable} ${quicksand.variable}`}
     >
       <head>
+        <PlatformFontFix />
         <StructuredData />
       </head>
       <body>{children}</body>

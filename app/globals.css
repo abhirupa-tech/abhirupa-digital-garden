@@ -157,6 +157,15 @@
     text-rendering: optimizeLegibility;
   }
 
+  /* macOS's font rendering reads visibly smaller than Windows' at the same
+     CSS size (see PlatformFontFix in app/layout.tsx, which sets this
+     attribute). Every rem-based size in the site scales off the root
+     font-size, so nudging it here keeps the two platforms looking the same
+     without touching a single component. */
+  html[data-platform='mac'] {
+    font-size: 106%;
+  }
+
   body {
     @apply font-body text-parchment antialiased;
     /*
