@@ -73,14 +73,14 @@ function RoleCard({ role, index, reduce }: { role: CareerRole; index: number; re
         whileHover={reduce ? undefined : 'hover'}
         variants={cardVariants}
         transition={{ duration: reduce ? 0 : 0.35, ease: EASE }}
-        className="h-full rounded-2xl border bg-[#f9f8f5]/70 p-4 shadow-xs backdrop-blur-[1px]"
+        className="h-full rounded-2xl border bg-[#f9f8f5]/70 p-3.5 shadow-xs backdrop-blur-[1px] sm:p-4"
       >
-        <div className="flex items-start gap-3">
+        <div className="flex items-start gap-2.5 sm:gap-3">
           <motion.span
             aria-hidden="true"
             variants={iconVariants}
             transition={{ duration: reduce ? 0 : 0.35, ease: EASE }}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-parchment/10"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-parchment/10 sm:h-10 sm:w-10"
           >
             {roleIcons[role.icon]}
           </motion.span>
@@ -92,14 +92,12 @@ function RoleCard({ role, index, reduce }: { role: CareerRole; index: number; re
           </div>
         </div>
 
-        <p className="mt-3 label text-sand/80">
-          {role.period} · {role.duration}
-        </p>
+        <p className="mt-2 label text-sand/80 sm:mt-3">{role.period}</p>
         <p className="mt-2 font-rounded text-sm font-light leading-relaxed text-parchment-muted">
           {role.summary}
         </p>
 
-        <ul className="mt-3 flex flex-wrap gap-1.5">
+        <ul className="mt-2.5 flex flex-wrap gap-1.5 sm:mt-3">
           {role.stack.map((tech) => (
             <li
               key={tech}
@@ -150,7 +148,7 @@ export function CareerTimeline() {
         {career.map((group, gi) => (
           <li
             key={`${group.company}-${group.span}`}
-            className="relative pb-16 pl-12 last:pb-0 md:pl-16"
+            className="relative pb-10 pl-10 last:pb-0 sm:pb-16 sm:pl-12 md:pl-16"
           >
             {/* Company node */}
             <motion.span
@@ -172,10 +170,7 @@ export function CareerTimeline() {
                 <span className="font-display text-3xl font-medium text-sand md:text-4xl">
                   {group.year}
                 </span>
-                <span className="label text-parchment-faint">
-                  {group.span}
-                  {group.totalDuration ? ` · ${group.totalDuration}` : ''}
-                </span>
+                <span className="label text-parchment-faint">{group.span}</span>
               </div>
               <h3 className="mt-2 font-display text-2xl font-medium leading-tight text-parchment md:text-3xl">
                 {group.company}
@@ -184,7 +179,7 @@ export function CareerTimeline() {
 
             {/* Roles held here — interactive icon cards */}
             <div
-              className={`mt-6 grid gap-4 ${group.roles.length > 1 ? 'sm:grid-cols-2' : ''}`}
+              className={`mt-5 grid gap-3 sm:mt-6 sm:gap-4 ${group.roles.length > 1 ? 'sm:grid-cols-2' : ''}`}
             >
               {group.roles.map((role, ri) => (
                 <RoleCard key={role.period} role={role} index={ri} reduce={reduce} />

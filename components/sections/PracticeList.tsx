@@ -47,7 +47,7 @@ export function PracticeList({ zone, entries }: { zone: Zone; entries: ContentEn
                 {String(i + 1).padStart(2, '0')}
               </motion.span>
               <span className="flex-1">
-                <AnimatedTitle className="font-rounded text-xl leading-tight">
+                <AnimatedTitle className="font-rounded text-[calc(1.25rem_-_2pt)] leading-tight sm:text-[1.25rem]">
                   {entry.title}
                 </AnimatedTitle>
                 <span className="mt-1.5 flex items-center gap-2">

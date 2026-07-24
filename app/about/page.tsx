@@ -115,7 +115,7 @@ export default function AboutPage() {
                 <h2 className="mt-4 font-display text-3xl font-medium text-parchment md:text-4xl">
                   My career snapshot and contributions that mattered
                 </h2>
-                <p className="mt-3 font-rounded text-lg font-light leading-tight tracking-tight text-parchment-muted">
+                <p className="mt-3 font-rounded text-[calc(1.125rem_-_3pt)] font-light leading-tight tracking-tight text-parchment-muted sm:text-[1.125rem]">
                   From voice and Office at Microsoft to Copilot, and now agentic
                   interfaces at Slack — the roles that shaped how I build.
                 </p>

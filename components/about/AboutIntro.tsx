@@ -28,7 +28,7 @@ export function AboutIntro() {
       </Reveal>
 
       <Reveal delay={0.12} from="left" className="mt-9 max-w-xl">
-        <p className="font-body text-xl leading-relaxed text-parchment/85">
+        <p className="font-rounded text-[calc(1.25rem_-_1pt)] leading-relaxed sm:text-[1.25rem] text-parchment/85">
           I&rsquo;m <span className="font-medium text-parchment">Abhirupa Mitra</span> —
           I build the user experience for agentic solutions: the surfaces where AI
           agents do real work and people stay in control. At Slack, I&rsquo;m on the
@@ -39,24 +39,26 @@ export function AboutIntro() {
       </Reveal>
 
       <Reveal delay={0.2} from="left" className="mt-6 max-w-xl">
-        <p className="font-body text-lg leading-relaxed text-parchment-muted">
+        <p className="font-rounded text-[calc(1.25rem_-_1pt)] leading-relaxed sm:text-[1.25rem] text-parchment-muted">
           My work lives on the surfaces where agents reason out loud, pause, and
           hand control back to a person. I treat the model as a material and start,
           always, from the human on the other side of the screen.
         </p>
       </Reveal>
 
-      {/* What I do — a compact index */}
-      <Reveal delay={0.28} from="left" className="mt-10">
-        <span className="label text-parchment-faint">What I do</span>
-        <ul className="mt-4 grid max-w-md grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
-          {FACETS.map((f) => (
-            <li key={f.k} className="flex items-baseline gap-3">
-              <span className="font-display text-sm text-sand/80 tabular-nums">{f.k}</span>
-              <span className="font-body text-lg text-parchment">{f.label}</span>
-            </li>
-          ))}
-        </ul>
+      {/* What I do — a compact index on a minimalist liquid-glass card */}
+      <Reveal delay={0.28} from="left" className="mt-10 max-w-md">
+        <div className="rounded-3xl bg-white/35 p-6 shadow-[0_12px_40px_-14px_rgba(20,18,16,0.22),inset_0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-xl backdrop-saturate-150 sm:p-7">
+          <span className="label text-parchment-faint">What I do</span>
+          <ul className="mt-4 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
+            {FACETS.map((f) => (
+              <li key={f.k} className="flex items-baseline gap-3">
+                <span className="font-display text-sm text-sand/80 tabular-nums">{f.k}</span>
+                <span className="font-rounded text-[calc(1.25rem_-_1pt)] text-parchment sm:text-[1.25rem]">{f.label}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </Reveal>
 
       <Reveal delay={0.36} from="left" className="mt-10">

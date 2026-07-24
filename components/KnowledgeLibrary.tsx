@@ -36,7 +36,7 @@ function HeroCard({ item }: { item: ContentEntry }) {
             )}
           </div>
           <h3 className="mt-3">
-            <AnimatedTitle className="font-rounded text-xl font-medium leading-snug">
+            <AnimatedTitle className="font-rounded text-[calc(1.25rem_-_2pt)] font-medium leading-snug sm:text-[1.25rem]">
               {item.title}
             </AnimatedTitle>
           </h3>
@@ -62,8 +62,8 @@ function EntryRow({ item, delay }: { item: ContentEntry; delay: number }) {
           <img src={AUTHOR_MARK_URL} alt="" className="h-full w-full object-cover" />
         </div>
         <div className="min-w-0 flex-1">
-          <h4 className="font-rounded text-xl font-medium leading-snug">
-            <AnimatedTitle className="font-rounded text-xl font-medium leading-snug">
+          <h4 className="font-rounded text-[calc(1.25rem_-_2pt)] font-medium leading-snug sm:text-[1.25rem]">
+            <AnimatedTitle className="font-rounded text-[calc(1.25rem_-_2pt)] font-medium leading-snug sm:text-[1.25rem]">
               {item.title}
             </AnimatedTitle>{' '}
             <TypeBadge type={item.type} className="ml-1 align-middle" />
