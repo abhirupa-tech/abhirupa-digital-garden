@@ -166,6 +166,9 @@ function StructuredData() {
         '@id': `${site.url}/#profilepage`,
         url: site.url,
         name: `${site.name} — Agentic AI Interfaces & Frontend for AI`,
+        // Google's Profile Page rich result requires `mainEntity` to identify
+        // the person the page is about; `about` is kept as a valid alias.
+        mainEntity: { '@id': `${site.url}/#person` },
         about: { '@id': `${site.url}/#person` },
         isPartOf: { '@id': `${site.url}/#website` },
         inLanguage: 'en-US',
