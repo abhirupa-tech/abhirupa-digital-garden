@@ -2,7 +2,7 @@
 export function TypeBadge({ type, className }: { type: string; className?: string }) {
   return (
     <span
-      className={`label inline-block rounded-full bg-linear-to-r from-[#8a8e92] to-[#33465e] px-2 py-0.5 text-[0.48rem] text-[#f4f3f0] sm:px-2 sm:py-0.5 sm:text-[0.5rem] ${className ?? ''}`}
+      className={`label inline-block rounded-full border border-[#cabab4] bg-linear-to-r from-[#f9f6ef] to-[#fbe1cf] px-2 py-0.5 text-[0.48rem] font-medium text-[#625b58] sm:px-2 sm:py-0.5 sm:text-[0.5rem] ${className ?? ''}`}
     >
       {type}
     </span>

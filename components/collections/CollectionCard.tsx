@@ -69,7 +69,7 @@ export function CollectionCard({ entry }: { entry: ContentEntry }) {
         <div className="p-4">
           <Meta entry={entry} />
           <h3 className="mt-2">
-            <AnimatedTitle className="font-display text-xl leading-snug">
+            <AnimatedTitle className="font-rounded text-xl leading-snug">
               {entry.title}
             </AnimatedTitle>
           </h3>
@@ -98,7 +98,7 @@ export function CollectionCard({ entry }: { entry: ContentEntry }) {
           <Meta entry={entry} />
         </div>
         <h3 className="mt-2">
-          <AnimatedTitle className="font-display text-xl leading-snug">
+          <AnimatedTitle className="font-rounded text-xl leading-snug">
             {entry.title}
           </AnimatedTitle>
         </h3>
@@ -117,7 +117,7 @@ export function CollectionCard({ entry }: { entry: ContentEntry }) {
     >
       <Meta entry={entry} />
       <h3 className="mt-3">
-        <AnimatedTitle className="font-display text-xl leading-tight">
+        <AnimatedTitle className="font-rounded text-xl leading-tight">
           {entry.title}
         </AnimatedTitle>
       </h3>
