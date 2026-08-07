@@ -5,12 +5,13 @@ type: "Essay"
 description: "A very honest POV on designing user interfaces in a way that lets users take control of the narrative and eliminate LLM bias."
 tags: ["llm", "ux", "mode-collapse", "ui-design", "ai-bias"]
 date: "2025-11-10"
-cover: "https://res.cloudinary.com/ra5tg986/image/upload/v1784036620/img1_1_wje0da.webp"
+cover: "https://miro.medium.com/v2/resize:fit:1400/1*G2a_kBjISoxsgCvdvL22Cg.png"
 aspect: "wide"
 draft: false
 ---
 
 <Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*G2a_kBjISoxsgCvdvL22Cg.png"
   alt="A single confident chat response splintering into several plausible alternatives"
   caption="One answer was never the whole story — it was just the highest-probability guess."
   ratio="landscape"
@@ -27,6 +28,7 @@ Stanford, in its most recent paper, discussed how typicality bias causes mode co
 In simpler terms, this bias — or the tendency to prefer answer A over B — stems from human annotators who systematically favor answer A. In such cases, when faced with a generic question like "What's your favorite fruit?" or "Name a fruit," the first answer will, in the majority of cases, inadvertently be a mango.
 
 <Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*Dz3tw7sXV5Kpi7SkWJti2g.png"
   alt="Several separate ChatGPT conversations, each asked to name, describe, or pick a favorite fruit, all answering mango"
   caption="An LLM's first instinct defaults to the highest-probability answer — often a residue of human annotator preference (typicality bias)."
   ratio="landscape"
@@ -60,6 +62,7 @@ Let's assume that, from a product standpoint, you decide the most optimized numb
 Show *n* multiple answer cards so users can pick among plausible responses, reducing mode collapse.
 
 <Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*Ap3mPUI07tdE63ep7WAmuA.png"
   alt="An LLM conversation where the model returns multiple answers to a prompt, each with a varying probability distribution"
   ratio="landscape"
 />
@@ -73,6 +76,7 @@ This is an upgrade on the previous idea. Instead of overwhelming users with mult
 What else? You could also add a button that lets the user flip the card to see a lower-confidence response — rarer and more diverse — if they don't like the initial answer or want a different perspective. This leverages user choice to encourage exploration and engagement with the data.
 
 <Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*k7Ry0Ucn3FYCVekjSmvEkw.png"
   alt="A response card with a control that flips to reveal an alternate, lower-confidence LLM response"
   ratio="landscape"
 />
@@ -92,6 +96,7 @@ Interpret this as a system governed by three key metrics:
 If any of the above conditions are met, that's a strong signal to bring in a human touch. From that point, the case can either be handed off as a support ticket or transitioned to a live agent — a decision best left to the product owner.
 
 <Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*li6GIgvZ2qoWbLFDLpWMrg.png"
   alt="A low-confidence LLM response card with a button that hands the conversation off to a human agent"
   ratio="landscape"
 />
@@ -113,6 +118,7 @@ Now, how do we design and build to support that behavior pattern?
 The UI should quietly learn from how users interact. If someone keeps flipping for more creative or factual takes, the system can start showing those upfront next time. If a user consistently chooses high-confidence answers, start removing the lower-confidence alternates — the ones with really low distribution scores.
 
 <Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*joxp-le0nr7KXuqO6_7NgQ.png"
   alt="Illustration of a person interacting with a large adaptive interface in an open meadow"
   ratio="landscape"
 />
