@@ -5,7 +5,7 @@ type: "Essay"
 description: "Inside the graph theory powering AI agent orchestration — how DAGs, topological sorting, and Kahn's algorithm enable parallel multi-agent execution, reliable agent-to-agent communication, and dynamic MCP server loading at scale."
 tags: ["agentic-ai", "orchestration", "graph-theory", "multi-agent", "mcp"]
 date: "2026-04-28"
-cover: "https://res.cloudinary.com/ra5tg986/image/upload/v1784036620/img1_1_wje0da.webp"
+cover: "https://miro.medium.com/v2/resize:fit:1400/1*Sh4yVHBsIXGC5oOKaqq9CA.png"
 aspect: "wide"
 draft: false
 ---
@@ -17,7 +17,7 @@ coordinates with multiple agents, and dynamically loads skills and MCP servers
 on demand.
 
 <Figure
-  src="https://res.cloudinary.com/ra5tg986/image/upload/v1784036620/img1_1_wje0da.webp"
+  src="https://miro.medium.com/v2/resize:fit:1400/1*Sh4yVHBsIXGC5oOKaqq9CA.png"
   alt="Robots helping out in a kitchen, a reference to agent-to-agent interaction"
   caption="We're no longer building tools. We're building ecosystems."
   ratio="landscape"
@@ -82,6 +82,7 @@ Before we can answer this, let's revisit Amdahl's law.
 </Quote>
 
 <Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*4C-VZLIGtEWGKwbOGU8rOg.png"
   alt="Amdahl's law curve: speedup plotted against number of workers"
   caption="P = the parallelizable fraction, N = number of workers. As N → ∞, the ceiling is 1/(1−P)."
   ratio="landscape"
@@ -123,6 +124,7 @@ dispatching to fridge, pantry, and preferences simultaneously, is a
 Every non-trivial agent DAG is some combination of these two patterns.
 
 <Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*Nd5rYKlJPoxClZNDPNn73A.png"
   alt="Stan the orchestrator dispatching to fridge, pantry, and preferences agents, converging on the recipe agent"
   caption="Fan-out at the top, fan-in at the recipe agent — the two patterns every agent DAG is built from."
   ratio="landscape"
@@ -154,6 +156,7 @@ at the same step can run together — and it naturally enforces order without
 anyone hand-coding it.
 
 <Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*xb2xN1KTZzchCJ310nOhOw.png"
   alt="A detailed interaction and parallelism diagram between Stan the orchestrator and the agents and MCP servers"
   caption="Stan doesn't need a hardcoded sequence — just a graph and a topological sort."
   ratio="landscape"
