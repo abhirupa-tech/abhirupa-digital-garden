@@ -19,7 +19,7 @@ If you're choosing the latter — if you want to turn AI into your unfair advant
 
 ## Picking the right LLM: Cursor vs Codex vs Claude Code vs Gemini
 
-Choosing the right LLM for your use case isn't optional anymore — it's strategic. I've worked extensively across the major models, and here's what I've learned about when to use what.
+Choosing the right <Subnote note="Large Language Model — an AI trained on massive amounts of text to predict and generate language.">LLM</Subnote> for your use case isn't optional anymore — it's strategic. I've worked extensively across the major models, and here's what I've learned about when to use what.
 
 - **ChatGPT (GPT-4 Turbo & o1).** I use the free model and o1 for specific tasks. o1 is built for research and deep thinking. If you're tackling complex problems that require patience and multi-step reasoning — architectural decisions, debugging gnarly edge cases, refactoring legacy systems — o1 is the move. It's slower, but it thinks harder.
 - **Claude Opus 4.6.** This is my primary coding workhorse, especially through Claude Code. Opus has seen significant quality improvements compared to older models. It's not the fastest, but it's accurate. When I need code that works the first time, that understands context deeply, and that handles complex refactoring without losing the thread — Opus delivers.
@@ -96,7 +96,7 @@ Think of it like <Highlight>USB-C for AI</Highlight>. The server says "here's wh
 
 ### Why do we need this instead of just prompting?
 
-Because prompting is fundamentally just text prediction. When you prompt an LLM, you're asking it to generate the next likely token based on patterns it learned during training. It doesn't do anything — it just predicts what text should come next.
+Because prompting is fundamentally just text prediction. When you prompt an LLM, you're asking it to generate the next likely <Subnote note="The unit an LLM reads and writes in — roughly a word-piece; usage and cost are counted in tokens.">token</Subnote> based on patterns it learned during training. It doesn't do anything — it just predicts what text should come next.
 
 MCP changes that. With MCP servers, the LLM becomes an agent — it can:
 

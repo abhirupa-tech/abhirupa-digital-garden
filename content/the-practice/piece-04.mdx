@@ -65,12 +65,12 @@ Let's assume YouTube has its own MCP server. We'd be trying to get work done on 
 
 - Claude starts by initiating the MCP client handshake. The client queries the YouTube MCP server for its tool manifest. The server responds with a list of capabilities — `searchVideos`, `getVideoDetails`, `listComments`, `uploadAsset`, and so on — each with its own JSON schema for inputs and outputs.
 - You ask Claude, "Search YouTube for the top tutorials on MCP servers." Claude validates your query against the expected schema, and issues a structured MCP call.
-- The YouTube MCP server receives this, maps it to the corresponding YouTube Data API endpoint, handles OAuth, rate limits, pagination, and then returns a normalized MCP-compliant response back to Claude.
+- The YouTube MCP server receives this, maps it to the corresponding YouTube Data API endpoint, handles <Subnote note="An open standard that lets an app access your account on another service without ever seeing your password.">OAuth</Subnote>, rate limits, pagination, and then returns a normalized MCP-compliant response back to Claude.
 - Claude now has real API data and can continue the flow. If you ask for comments on one of those videos, it repeats the process by calling `listComments` with the selected `videoId`. No guessing, no prompt hacks.
 
 The beauty here is that YouTube's internal backend stays exactly the same. MCP is just a thin, standardized protocol layer that abstracts discovery, schema validation, invocation, and error handling.
 
-If you want to peek one layer deeper, MCP actually communicates using a lightweight JSON-RPC–style protocol over transports like stdio or WebSockets.
+If you want to peek one layer deeper, MCP actually communicates using a lightweight <Subnote note="A protocol for calling a function on a remote server by sending a JSON message and getting a JSON result back.">JSON-RPC</Subnote>–style protocol over transports like stdio or WebSockets.
 
 When Claude queries the MCP server, it receives a manifest that lists every available tool along with strict input/output schemas. These schemas are what <Highlight>prevent the model from hallucinating parameters</Highlight> or inventing APIs — it can only call what the manifest explicitly defines.
 

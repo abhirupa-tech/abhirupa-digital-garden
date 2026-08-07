@@ -34,7 +34,7 @@ But here's the thing nobody tells you upfront: <Highlight>AI won't do this part 
 
 Let me give you a quick picture of what I was working with.
 
-A Next.js app, fully client side rendered for now, no SSR yet, that comes later as the project grows. A Node/Express backend with a bunch of API routes. And SuperTokens handling authentication, which was pointing to the backend.
+A Next.js app, fully client side rendered for now, no <Subnote note="Server-Side Rendering — the server builds each page's HTML before sending it, instead of the browser assembling it with JavaScript.">SSR</Subnote> yet, that comes later as the project grows. A Node/Express backend with a bunch of API routes. And SuperTokens handling authentication, which was pointing to the backend.
 
 For hosting, I went with Vercel for the frontend and Render for the backend. Both have free tiers, and at this stage I'm not paying to host something that isn't making me money yet.
 
@@ -50,7 +50,7 @@ src="https://res.cloudinary.com/ra5tg986/image/upload/v1784737340/fd6241a2-071d-
 
 ## Fix the CORS errors before anything else
 
-Before every API call your frontend makes, a preflight request goes out first. You can see it in your network tab. It checks if the server allows the request, and only then does your actual fetch go through.
+Before every API call your frontend makes, a <Subnote note="The browser's pre-check for a cross-origin (CORS) request — it asks the server whether the real call is allowed before sending it.">preflight request</Subnote> goes out first. You can see it in your network tab. It checks if the server allows the request, and only then does your actual fetch go through.
 
 <Highlight>When CORS fails, your frontend screams. Your backend doesn't even flinch.</Highlight>
 

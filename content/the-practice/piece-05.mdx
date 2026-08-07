@@ -64,7 +64,7 @@ Design choices to make the LLM DM performant and the user experience consistent.
 
 A few points to note before we head to a deep analysis:
 
-- **Transport.** We'd prefer to use SSE for all non text heavy conversations, and WebSocket for all images and voice conversations that require a two way open path between client and server.
+- **Transport.** We'd prefer to use <Subnote note="Server-Sent Events — a one-way channel that streams updates from server to browser over a single HTTP connection.">SSE</Subnote> for all non text heavy conversations, and WebSocket for all images and voice conversations that require a two way open path between client and server.
 - **Input modality.** Besides text, we have audio inputs or video feeds. As soon as we get an audio input, we live transcribe it and show the text flowing through the composer section. It's best to use the native transcription tool if the system has one, instead of making a separate call to a separate AI or LLM to transcribe it.
 - **Handling an unstable connection.** We update the UI optimistically and dispatch, and the dispatch failing is how we learn there's no connection.
 
