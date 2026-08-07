@@ -5,7 +5,7 @@ type: "Guide"
 description: "A clear, practical look at MCP servers and their real value in today's tech world — what they are, why LLMs need them, and how one actually works under the hood."
 tags: ["mcp", "llm", "ai-tooling", "javascript", "agentic-ai"]
 date: "2025-12-11"
-cover: "https://res.cloudinary.com/ra5tg986/image/upload/v1784036620/img1_1_wje0da.webp"
+cover: "https://miro.medium.com/v2/resize:fit:1400/1*q4sce4BhgARPZNV3Iha3JQ.png"
 aspect: "wide"
 draft: false
 ---
@@ -46,6 +46,7 @@ Imagine you have three tools in your product: a flight search API, a hotel booki
 With MCP, you expose them as <Highlight>clean, schema-defined tools</Highlight> that any LLM can discover and call without custom glue code.
 
 <Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*q4sce4BhgARPZNV3Iha3JQ.png"
   alt="Three separate product APIs unified behind a single MCP interface"
   ratio="landscape"
 />
@@ -74,6 +75,7 @@ If you want to peek one layer deeper, MCP actually communicates using a lightwei
 When Claude queries the MCP server, it receives a manifest that lists every available tool along with strict input/output schemas. These schemas are what <Highlight>prevent the model from hallucinating parameters</Highlight> or inventing APIs — it can only call what the manifest explicitly defines.
 
 <Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*v-MtFO_rHoi7eN_YUXduEA.png"
   alt="A manifest of MCP tools with strict JSON input and output schemas"
   ratio="landscape"
 />
