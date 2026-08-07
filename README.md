@@ -101,3 +101,7 @@ Update the SEO surface and identity in [`lib/site.ts`](lib/site.ts).
 ## Roadmap
 
 Dedicated pages per zone (each becomes its own route) in a later iteration.
+
+---
+
+_Maintained by [abhirupa-tech](https://github.com/abhirupa-tech)._
