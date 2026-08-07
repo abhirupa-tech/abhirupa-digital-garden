@@ -3,7 +3,6 @@ import { site } from '@/lib/site';
 import { sitemapLinks } from '@/lib/data';
 import { featureFlags } from '@/lib/featureflag';
 import { Newsletter } from './Newsletter';
-import { SocialIcons } from './SocialIcons';
 import { Reveal } from './motion/Reveal';
 
 export function Footer() {
@@ -100,9 +99,8 @@ export function Footer() {
               {site.role} · Agentic AI Interfaces
             </p>
           </div>
-          <SocialIcons tone="light" />
           <p className="label text-white/55">
-            © {year} {site.name}. Tended with care.
+            © {year} {site.name}. Built with ❤️
           </p>
         </div>
       </div>
