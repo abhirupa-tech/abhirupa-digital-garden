@@ -64,6 +64,8 @@ export const sitemapLinks: { heading: string; links: { label: string; href: stri
   {
     heading: 'The Garden',
     links: [
+      { label: 'Home', href: '/' },
+      { label: 'About', href: '/about' },
       { label: 'The Practice', href: '/#the-practice' },
       { label: 'Field Notes', href: '/#field-notes' },
       { label: 'Design Thinking', href: '/#design-thinking' },
@@ -89,9 +91,10 @@ export const sitemapLinks: { heading: string; links: { label: string; href: stri
   {
     heading: 'Elsewhere',
     links: [
-      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/abhirupa' },
-      { label: 'Medium', href: 'https://medium.com/@abhirupa' },
-      { label: 'Email', href: 'mailto:hello@abhirupa.com' },
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/abhirupa-mitra' },
+      { label: 'Medium', href: 'https://medium.com/@mitra.abhirupa' },
+      { label: 'GitHub', href: 'https://github.com/abhirupa-tech' },
+      { label: 'Email', href: 'mailto:mitra.abhirupa@gmail.com' },
     ],
   },
 ];

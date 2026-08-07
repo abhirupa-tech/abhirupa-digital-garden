@@ -36,7 +36,7 @@ function HeroCard({ item }: { item: ContentEntry }) {
             )}
           </div>
           <h3 className="mt-3">
-            <AnimatedTitle className="font-rounded text-[calc(1.25rem_-_2pt)] font-medium leading-snug sm:text-[1.25rem]">
+            <AnimatedTitle className="font-rounded text-[calc(1.25rem_-_2pt)] leading-snug sm:text-[1.25rem]">
               {item.title}
             </AnimatedTitle>
           </h3>
@@ -62,15 +62,17 @@ function EntryRow({ item, delay }: { item: ContentEntry; delay: number }) {
           <img src={AUTHOR_MARK_URL} alt="" className="h-full w-full object-cover" />
         </div>
         <div className="min-w-0 flex-1">
-          <h4 className="font-rounded text-[calc(1.25rem_-_2pt)] font-medium leading-snug sm:text-[1.25rem]">
-            <AnimatedTitle className="font-rounded text-[calc(1.25rem_-_2pt)] font-medium leading-snug sm:text-[1.25rem]">
+          <div className="flex items-center gap-2">
+            <TypeBadge type={item.type} />
+            {item.date && (
+              <time className="label text-parchment-faint">{formatDate(item.date)}</time>
+            )}
+          </div>
+          <h4 className="mt-1.5">
+            <AnimatedTitle className="font-rounded text-[calc(1.25rem_-_2pt)] leading-snug sm:text-[1.25rem]">
               {item.title}
-            </AnimatedTitle>{' '}
-            <TypeBadge type={item.type} className="ml-1 align-middle" />
+            </AnimatedTitle>
           </h4>
-          {item.date && (
-            <time className="label mt-1 block text-parchment-faint">{formatDate(item.date)}</time>
-          )}
           <p className="mt-1.5 line-clamp-2 font-rounded text-sm leading-relaxed text-parchment/70">
             {item.description}
           </p>
