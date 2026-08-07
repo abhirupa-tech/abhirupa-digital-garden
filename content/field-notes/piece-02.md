@@ -5,12 +5,13 @@ type: "Essay"
 description: "Exploring how modern frontend design can make an AI's hidden reasoning visible — turning abstract model introspection into human-understandable insight."
 tags: ["llm-introspection", "frontend-architecture", "agentic-ai", "ui-design", "anthropic"]
 date: "2025-11-13"
-cover: "https://res.cloudinary.com/ra5tg986/image/upload/v1784036620/img1_1_wje0da.webp"
+cover: "https://miro.medium.com/v2/resize:fit:1400/1*uqcLiMxXFwfgFQFSyS2IGA.png"
 aspect: "wide"
 draft: false
 ---
 
 <Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*uqcLiMxXFwfgFQFSyS2IGA.png"
   alt="AI-generated illustration of a robot sitting and thinking, against a teal background"
   ratio="landscape"
 />
@@ -26,6 +27,7 @@ Does this mean LLMs have a conscience? Is the inevitable happening? Well — not
 It's the kind of result that opens up way more questions than it answers — and the next part goes deeper into exactly that.
 
 <Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/0*Ggix34kDwaGt2V-E.png"
   alt="Visualization of Anthropic's concept-injection experiment"
   caption="Source: Anthropic Research — a visualization of how, across a series of experiments, an LLM successfully detected an injected thought."
   ratio="landscape"
@@ -60,6 +62,7 @@ A frontend interface on the client (let's call it a Thought Interface) would use
 **Subscribe by choice.** The client (read: frontend) will essentially subscribe on a need basis to these events — reasoning steps, confidence scores, and anomaly warnings. This is a user-driven choice, since we do not want to put too much information out there.
 
 <Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*_mtd5T8Pm1C9ERbnWg4KAw.png"
   alt="Notebook-style sketch depicting the Thought Interface, Event Manager, and LLM"
   caption="A notebook-style sketch of the Thought Interface, Event Manager, and LLM."
   ratio="landscape"
@@ -78,6 +81,7 @@ Even without real introspection today, we can design the UI interactions that fu
 A high-level interaction would look somewhat like the diagram below.
 
 <Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*tc_XYujqkOUvX64v8RaibA.png"
   alt="Swimlane diagram of interactions between the UI, Event Manager, and LLM"
   caption="A swimlane diagram depicting the interactions between the UI, Event Manager, and LLM."
   ratio="landscape"
