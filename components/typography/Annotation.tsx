@@ -30,12 +30,14 @@ export function Annotation({ trigger, note, triggerClassName, icon, noteClassNam
         onBlur={() => setOpen(false)}
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        className={`cursor-help align-baseline focus-visible:outline-hidden ${triggerClassName ?? ''}`}
+        className={`cursor-help align-baseline focus-visible:outline-hidden ${
+          icon ? 'inline-flex items-center' : ''
+        } ${triggerClassName ?? ''}`}
       >
         {icon && (
           <span
             aria-hidden="true"
-            className="mr-[0.35em] inline-flex h-[1.05em] w-[1.05em] translate-y-[0.06em] items-center justify-center rounded-full border border-sand/60 bg-sand/10 font-rounded text-[0.62em] font-semibold not-italic leading-none text-sand"
+            className="mr-[0.35em] inline-flex h-[1.05em] w-[1.05em] items-center justify-center rounded-full border border-sand/60 bg-sand/10 font-rounded text-[0.62em] font-semibold not-italic leading-none text-sand"
           >
             i
           </span>
