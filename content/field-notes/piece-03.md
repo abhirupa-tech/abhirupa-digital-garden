@@ -5,7 +5,7 @@ type: "Guide"
 description: "Offload the repetitive chaos to AI-powered tools and MCP servers, and save your focus for the tasks that actually make you a better engineer."
 tags: ["frontend", "ai-tooling", "developer-workflow", "mcp", "react"]
 date: "2025-12-01"
-cover: "https://res.cloudinary.com/ra5tg986/image/upload/v1784036620/img1_1_wje0da.webp"
+cover: "https://miro.medium.com/v2/resize:fit:1400/1*ox4sYu3OFbiW1UhqYtF0xA.png"
 aspect: "wide"
 draft: false
 ---
@@ -29,6 +29,7 @@ We no longer live in the era where you manually sit and write every line of code
 Given how much AI and agents are automating now, it's honestly counterproductive if we don't use that power to our advantage.
 
 <Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*S6LVbtsGg4ZFZWCZbbb5bA.png"
   alt="A frontend engineer's day split between boring maintenance work and the small slice of fun architecture work"
   ratio="landscape"
 />
@@ -142,6 +143,7 @@ structure.
 ```
 
 <Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*DV8U1mr4YEQA4U1xdi3YLA.png"
   alt="A before-and-after of a messy codebase cleaned up by an AI refactoring pass"
   ratio="landscape"
 />
