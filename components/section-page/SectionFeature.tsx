@@ -16,7 +16,7 @@ export function SectionFeature({ entry }: { entry: ContentEntry }) {
     <Reveal className="mt-8 md:mt-10">
       <HoverLink
         href={`/${entry.section}/${entry.slug}/`}
-        className="group grid items-center gap-6 md:grid-cols-2 md:gap-10"
+        className="group grid items-start gap-6 md:grid-cols-2 md:gap-10"
       >
         <div className="overflow-hidden rounded-2xl border border-parchment/10 shadow-sm">
           <CoverImage
@@ -37,7 +37,7 @@ export function SectionFeature({ entry }: { entry: ContentEntry }) {
           </div>
 
           <h2 className="mt-4">
-            <AnimatedTitle className="font-rounded text-2xl font-medium leading-snug md:text-3xl">
+            <AnimatedTitle className="font-display text-2xl font-medium leading-snug md:text-3xl">
               {entry.title}
             </AnimatedTitle>
           </h2>

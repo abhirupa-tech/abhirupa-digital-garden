@@ -192,7 +192,7 @@ export function SideNav() {
           onClick={() => setOpen((o) => !o)}
           aria-label={open ? 'Close navigation' : 'Open navigation'}
           aria-expanded={open}
-          className="fixed right-4 top-4 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-linear-to-b from-[#f5f1e9] to-[#ddd6c4] text-[#0b0c10] shadow-xs transition-colors duration-300 hover:text-[#274a80]"
+          className="fixed right-4 top-16 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-linear-to-b from-[#f5f1e9] to-[#ddd6c4] text-[#0b0c10] shadow-xs transition-colors duration-300 hover:text-[#274a80]"
         >
           {open ? icons.close : icons.menu}
         </button>
@@ -205,7 +205,7 @@ export function SideNav() {
               animate={{ opacity: 1, x: 0 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, x: 16 }}
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed right-4 top-19 z-40 flex flex-col items-center gap-2 rounded-3xl bg-linear-to-b from-[#f5f1e9] to-[#ddd6c4] p-2.5 shadow-lg"
+              className="fixed right-4 top-30 z-40 flex flex-col items-center gap-2 rounded-3xl bg-linear-to-b from-[#f5f1e9] to-[#ddd6c4] p-2.5 shadow-lg"
             >
               <a
                 href="/#top"

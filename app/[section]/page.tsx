@@ -155,7 +155,7 @@ export default async function SectionPage({ params }: { params: Promise<PagePara
             <span className="font-rounded text-lg font-medium text-sand/90">{zone.index}</span>
             <span className="label text-parchment-muted">{zone.kicker}</span>
           </div>
-          <h1 className="mt-3 font-rounded text-3xl font-medium leading-tight text-parchment md:text-[2.6rem]">
+          <h1 className="mt-3 font-display text-3xl font-medium leading-tight text-parchment md:text-[2.6rem]">
             {zone.title}
           </h1>
           <p className="mt-3 font-rounded text-lg font-light leading-snug text-parchment-muted">

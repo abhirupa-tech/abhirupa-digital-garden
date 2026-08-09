@@ -36,11 +36,13 @@ export function PracticeIndex({ entries }: { entries: ContentEntry[] }) {
             href={`/${entry.section}/${entry.slug}/`}
             className="group relative block py-5 md:py-6"
           >
-            <div className="flex items-baseline gap-5 md:gap-8">
+            <div className="flex items-start gap-5 md:gap-8">
+              {/* Same size + line-height as the title, top-aligned, so the
+                  number sits on the title's first line even when it wraps. */}
               <motion.span
                 variants={indexVariants}
                 transition={{ duration: 0.4, ease: EASE }}
-                className="shrink-0 font-rounded text-xl font-medium tabular-nums md:text-2xl"
+                className="shrink-0 font-rounded text-xl font-medium leading-snug tabular-nums md:text-2xl"
               >
                 {String(i + 2).padStart(2, '0')}
               </motion.span>
