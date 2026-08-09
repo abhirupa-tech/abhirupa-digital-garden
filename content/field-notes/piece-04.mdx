@@ -1,0 +1,116 @@
+---
+title: "Can LLMs Jump? A Beginner's Guide to JEPA and Multi-Modality World Models"
+section: "field-notes"
+type: "Guide"
+description: "Why LLMs can't make the creative leap from data to discovery, and how JEPA — Yann LeCun's world-model architecture — might finally close the gap between language models and real reasoning."
+tags: ["jepa", "world-models", "llm", "yann-lecun", "ai-reasoning"]
+date: "2026-08-09"
+cover: "https://miro.medium.com/v2/resize:fit:1400/1*XK5ExC213y4eh3kWvdI8Qw.png"
+medium: "https://medium.com/@mitra.abhirupa/can-llms-jump-a-beginners-guide-to-jepa-and-multi-modality-world-models-b4ac2a944fcb"
+aspect: "wide"
+draft: false
+---
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*XK5ExC213y4eh3kWvdI8Qw.png"
+  alt="Illustration for a beginner's guide to JEPA and world models"
+  ratio="landscape"
+/>
+
+Did we just use too many words and make the whole blog incomprehensible?
+
+No — but stick with me.
+
+Because by the end of this you'll see how the algorithms of the future could help us stumble into new scientific discoveries, new inventions, entire fields we haven't named yet.
+
+And to get there, we have to start somewhere a little unexpected. Not with transformers, not with neural networks, not even with AI. We have to start with three old, quiet words that philosophers have been arguing about for centuries:
+
+<Highlight>Induction, deduction, and abduction.</Highlight>
+
+## The three moves of reasoning
+
+**Induction** is when you observe something happen and then create a general rule out of it. You're in your room, it starts to rain, and the lights go off. You see this happen a few times, and you induce a rule: when it rains here, the power gets cut. Induction proposed a pattern.
+
+**Deduction** is the reverse. You start with a rule and a specific case, and you predict the result. You know the rule (heavy rain in your area cuts the power) and you see a specific case (a storm is rolling in). You deduce that the lights are about to go off.
+
+**Abduction** is the interesting one. Abduction is when you observe something in the world and reach for the best possible explanation, even when you can't prove it yet. Newton watching an apple fall is the classic case: he saw the phenomenon and made the creative leap to a rule — universal gravitation — that could explain it.
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*sjKwoY3-jiw_cQ0gWJ6nfg.png"
+  alt="Newton's abductive leap from a falling apple to a rule of gravitation"
+  ratio="landscape"
+/>
+
+Neither jump was forced by the data. Both were abductive leaps — from sensing the world to hypothesizing a rule about how it works.
+
+## Tom Zahavy and Yann LeCun's proposals to make AI smarter
+
+To get here we'll bring out two ideas: Tom Zahavy from Google DeepMind (ref. [LLMs can't jump](https://philsci-archive.pitt.edu/28024/1/Scientific_Invention_Position_Paper%20%2817%29.pdf)), and Yann LeCun, formerly Meta's chief AI scientist (ref. [JEPA — Joint Embedding Predictive Architecture](https://www.geeksforgeeks.org/artificial-intelligence/jepa/)). These are the concepts they've been casually throwing around.
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*t135KniwlT-CN6QNAKX-Kw.png"
+  alt="Diagram contrasting induction, deduction, and abduction"
+  caption="Induction finds patterns, deduction uses these patterns, but abduction creates patterns."
+  ratio="landscape"
+/>
+
+Zahavy, in his paper, claims that this particular leap — from being able to induce and deduce to actually coming up with new ideas and new observations, and making true abductive jumps — needs AI to move beyond just processing text, images, and videos. It needs to move to processing and conceptualizing physically consistent world models.
+
+In layman's language: imagine the AI models of today as students who have memorized something — the training data, or the data that's available on the internet. They know what is already available, but they don't really have any experience in it.
+
+This concept of a world model can be considered a thought experiment. If an AI can understand, simulate, and experience gravity, balance, momentum, and the simple cause and effect of an event that strictly follows the laws of physics, then the AI can actually develop an intuition. And that would let it come up with new scientific concepts and solve new problems — instead of just working on basic use cases of induction and deduction, which is really just repeating patterns it has already experienced, or read about and learned.
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*dRkdt1wpJCA1OaB2B_rNtw.png"
+  alt="A depiction of a world model and how it helps AI understand physics concepts"
+  caption="A depiction of what a world model is — and how it helps AI understand physics concepts."
+  ratio="landscape"
+/>
+
+## JEPA, or Joint Embedding Predictive Architecture
+
+Meta is currently running extensive, continuous research on using world models to train AI, and the whole architecture of using such world models to give AI intuition is what they're calling JEPA.
+
+So what exactly are these world models?
+
+Traditional models burn a lot of power trying to render every detail and understand it. What the JEPA world model does is skip trying to understand every detail of a piece of data. It just takes in what it can see — the current context — maps it to a concept it can understand, and then uses that to predict what happens next.
+
+It does all of this by ignoring the noise. This helps it set cross-cutting physics concepts like causality and cause-and-effect, and it can simulate the results of an action before actually taking it. That ends up saving a lot of compute, and we need less raw data to train the model.
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*bgmJ-wYNSTiJb_zdskJ7iw.png"
+  alt="How a JEPA world model maps context to concepts and predicts what happens next"
+  ratio="landscape"
+/>
+
+## Let's talk about Meta's V-JEPA 2
+
+The current architecture of Meta's V-JEPA 2 looks something like this. It has two main components: an **encoder** and a **predictor**.
+
+Both are pre-trained on video using self-supervised learning — meaning no one hand-labels anything; the model figures out patterns on its own by watching a lot of footage.
+
+The encoder takes in raw video and builds embeddings that capture useful information about the state of the observed world. It looks at a scene and turns it into a compact mathematical description of what's going on. The predictor then takes these video embeddings, plus some additional context, and outputs predicted embeddings — its best guess of what should come next.
+
+The workflow, step by step:
+
+- **Input preparation.** The input — not text, but usually an image or a video — is split into a context part and a target part. Think of it as showing the model half a scene and asking it to imagine the other half.
+- **Encoding.** The context encoder processes the context, and the target encoder processes the target, producing a context embedding and a target embedding respectively.
+- **Prediction.** The predictor takes the context embedding, uses some additional context, and predicts what the target embedding should look like.
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*LBtbuXUtv03iiJ7PH8qkWQ.png"
+  alt="Breaking down Meta's V-JEPA 2 model architecture"
+  caption="Breaking down Meta's V-JEPA 2 model architecture."
+  ratio="landscape"
+/>
+
+The important thing to notice is that JEPA isn't predicting pixels. It's predicting embeddings. That's the whole trick. Instead of trying to hallucinate what the next frame looks like down to every leaf blowing in the wind, JEPA predicts the abstract *meaning* of what should come next — which is much closer to how humans anticipate the world.
+
+Meta's V-JEPA is specifically for the video modality. Its goal is to learn representations across video frames by predicting abstract features of the masked, hidden portions of a video. In other words: give it half a clip, and it teaches itself to guess what the rest was doing — but at the level of concepts, not pixels.
+
+### Further reading
+
+- [LLMs can't jump](https://philsci-archive.pitt.edu/28024/1/Scientific_Invention_Position_Paper%20%2817%29.pdf) (Tom Zahavy)
+- [JEPA — Joint Embedding Predictive Architecture](https://www.geeksforgeeks.org/artificial-intelligence/jepa/)
+- [V-JEPA 2 world model & benchmarks](https://ai.meta.com/blog/v-jepa-2-world-model-benchmarks/) (Meta)
+- [V-JEPA 2: Self-Supervised Video Models — white paper](https://arxiv.org/abs/2506.09985)
