@@ -20,24 +20,18 @@ const arrowVariants: Variants = {
 };
 
 /**
- * The Practice archive: a large-type editorial index, no imagery. Each row
- * steps a little further right than the last, so the list reads as a cascade
- * rather than a stack — the section's home-page "table of contents" character,
- * scaled up to fill its own page. Descriptions ride along for context.
+ * The Practice archive: a large-type editorial index, no imagery. Pieces run in
+ * plain reading order — a straight list that flows into two columns on wider
+ * screens (rows × two columns), so a long archive stays compact without ever
+ * staggering or indenting. Descriptions ride along for context.
  */
 export function PracticeIndex({ entries }: { entries: ContentEntry[] }) {
   if (entries.length === 0) return null;
 
   return (
-    <ol className="mt-10 border-t border-parchment/12 md:mt-12">
+    <ol className="mt-10 grid border-t border-parchment/12 sm:grid-cols-2 sm:gap-x-12 md:mt-12">
       {entries.map((entry, i) => (
-        <Reveal
-          key={`${entry.section}/${entry.slug}`}
-          delay={0.06 * i}
-          as="li"
-          // Cascade: every third row resets, so the indent never runs off-screen.
-          className={['', 'md:pl-10', 'lg:pl-24'][i % 3]}
-        >
+        <Reveal key={`${entry.section}/${entry.slug}`} delay={0.06 * i} as="li">
           <HoverLink
             href={`/${entry.section}/${entry.slug}/`}
             className="group relative block py-5 md:py-6"
