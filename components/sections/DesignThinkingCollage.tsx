@@ -139,7 +139,7 @@ export function DesignThinkingCollage({ zone, entries }: { zone: Zone; entries: 
                   />
                 </div>
 
-                <h3 className="mt-3 font-rounded text-[calc(1.25rem_-_2pt)] font-medium leading-snug text-parchment transition-colors duration-300 group-hover:text-sand sm:text-[1.25rem]">
+                <h3 className="mt-3 font-rounded text-sm font-normal leading-snug text-parchment transition-colors duration-300 group-hover:text-sand sm:text-base">
                   {entry.title}
                 </h3>
               </a>
