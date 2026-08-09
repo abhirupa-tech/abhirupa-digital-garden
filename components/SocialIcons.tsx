@@ -71,7 +71,9 @@ export function SocialIcons({
       : 'text-sand hover:text-sand-soft focus-visible:text-sand-soft';
 
   return (
-    <ul className={`flex items-center gap-6 ${className ?? ''}`}>
+    <ul
+      className={`grid grid-cols-2 gap-x-6 gap-y-4 sm:flex sm:items-center sm:gap-6 ${className ?? ''}`}
+    >
       {socials.map((s) => (
         <li key={s.key}>
           <motion.a
