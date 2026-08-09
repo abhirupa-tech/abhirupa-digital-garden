@@ -1,20 +1,13 @@
 ---
-title: "Knowledge Library · Piece 04"
+title: "Below the Edge of Darkness: A Memoir of Exploring Light and Life in the Deep Sea"
 section: "knowledge-library"
-type: "Art"
-description: "Placeholder summary standing in for the real piece. One or two lines that hint at the idea without giving everything away."
-tags: ["placeholder", "draft"]
-date: "2026-07-04"
-cover: "https://res.cloudinary.com/ra5tg986/image/upload/v1784036620/img1_1_wje0da.webp"
-aspect: "square"
-draft: true
+type: "Book"
+description: "Deep-sea biologist Edith Widder's memoir of a life spent chasing bioluminescence — the living light of the ocean's darkest depths."
+tags: ["memoir", "deep-sea", "bioluminescence", "edith-widder", "science"]
+date: ""
+cover: ""
+link: "https://share.google/CeLf3dhtsi424RsRJ"
+aspect: "tall"
+draft: false
 ---
-Placeholder body copy. This is where the full piece will live once Abhirupa
-writes it — an essay, a case study, a reading note, or a quiet journal entry.
-
-For now every entry carries the same dummy text so the layouts can be judged on
-form, not content. The prose is intentionally neutral: a few unhurried
-paragraphs about designing interfaces where AI thinks alongside people, tended
-slowly like a garden rather than shipped like a feature.
-
-Replace this file's front matter and body with the real thing when ready.
+A curated reference — read it at the source.

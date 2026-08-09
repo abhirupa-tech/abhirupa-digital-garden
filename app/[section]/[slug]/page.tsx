@@ -29,7 +29,11 @@ function pieceImage(entry: ContentEntry) {
  */
 export function generateStaticParams() {
   return visibleZones.flatMap((zone) =>
-    getEntries(zone.id).map((entry) => ({ section: zone.id, slug: entry.slug })),
+    getEntries(zone.id)
+      // Curated references (entries with an external `link`) live elsewhere —
+      // their cards link out, so we don't build an internal page for them.
+      .filter((entry) => !entry.link)
+      .map((entry) => ({ section: zone.id, slug: entry.slug })),
   );
 }
 
@@ -153,7 +157,8 @@ export default async function PiecePage({ params }: { params: Promise<PageParams
   const { section, slug } = await params;
   const zone = zoneById[section];
   const entry = zone ? getEntry(section, slug) : null;
-  if (!zone || !entry) notFound();
+  // External references have no internal page — they're reached via their link.
+  if (!zone || !entry || entry.link) notFound();
 
   const url = pieceUrl(section, slug);
   // Other pieces in the same section, for the "More in …" cross-links.

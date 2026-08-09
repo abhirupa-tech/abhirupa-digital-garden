@@ -32,6 +32,12 @@ export type ContentEntry = {
   cover: string;
   /** Optional URL of the original Medium post, for attribution — this site stays canonical. */
   medium: string;
+  /**
+   * Optional external source URL. When set, the entry is a curated reference
+   * (a book, paper, or post that lives elsewhere): its card links out to the
+   * source and no internal article page is generated for it.
+   */
+  link: string;
   aspect: 'tall' | 'wide' | 'square';
   draft: boolean;
   body: string;
@@ -81,6 +87,7 @@ export function getEntries(section: string): ContentEntry[] {
         date: String(data.date ?? ''),
         cover: coverOverrides[`${section}/${fileId}`] || String(data.cover ?? ''),
         medium: String(data.medium ?? ''),
+        link: String(data.link ?? ''),
         aspect: coerceAspect(data.aspect),
         draft: Boolean(data.draft),
         body: content.trim(),
@@ -105,7 +112,9 @@ export function typeSlug(type: string): string {
 export function getEntriesByType(type: string, sections: string[]): ContentEntry[] {
   return sections
     .flatMap((section) => getEntries(section))
-    .filter((e) => !e.draft && typeSlug(e.type) === typeSlug(type))
+    // Curated references (external `link`) aren't authored pieces — they live
+    // on the shelf and link out, so they're kept out of the format collections.
+    .filter((e) => !e.draft && !e.link && typeSlug(e.type) === typeSlug(type))
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
@@ -114,7 +123,7 @@ export function getAllTypes(sections: string[]): { label: string; slug: string }
   const bySlug = new Map<string, string>();
   sections
     .flatMap((section) => getEntries(section))
-    .filter((e) => !e.draft)
+    .filter((e) => !e.draft && !e.link)
     .forEach((e) => bySlug.set(typeSlug(e.type), e.type));
   return [...bySlug.entries()].map(([slug, label]) => ({ slug, label }));
 }
