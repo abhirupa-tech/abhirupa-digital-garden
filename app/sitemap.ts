@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { site } from '@/lib/site';
 import { visibleZones } from '@/lib/data';
-import { getEntries, getAllTypes } from '@/lib/content';
+import { getEntries, getSectionEntries, getAllTypes } from '@/lib/content';
 
 // Emit as a static file for `output: 'export'`.
 export const dynamic = 'force-static';
@@ -30,6 +30,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   };
 
+  // Section landing pages (The Practice, Field Notes, Design Thinking) — only
+  // those with page-backed pieces get their own indexable hub.
+  const sections = visibleZones
+    .filter((zone) => getSectionEntries(zone.id).length > 0)
+    .map((zone) => ({
+      url: `${site.url}/${zone.id}/`,
+      lastModified: now,
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
+    }));
+
   // Format collection pages (Guides, Playbooks, Essays, …).
   const collections = getAllTypes(sectionIds).map((t) => ({
     url: `${site.url}/collections/${t.slug}/`,
@@ -49,5 +60,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
       })),
   );
 
-  return [home, about, ...collections, ...articles];
+  return [home, about, ...sections, ...collections, ...articles];
 }

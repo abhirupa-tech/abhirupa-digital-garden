@@ -66,9 +66,9 @@ export const sitemapLinks: { heading: string; links: { label: string; href: stri
     links: [
       { label: 'Home', href: '/' },
       { label: 'About', href: '/about' },
-      { label: 'The Practice', href: '/#the-practice' },
-      { label: 'Field Notes', href: '/#field-notes' },
-      { label: 'Design Thinking', href: '/#design-thinking' },
+      { label: 'The Practice', href: '/the-practice' },
+      { label: 'Field Notes', href: '/field-notes' },
+      { label: 'Design Thinking', href: '/design-thinking' },
       ...(featureFlags.showKnowledgeSection
         ? [{ label: 'Knowledge Library', href: '/#knowledge-library' }]
         : []),

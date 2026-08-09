@@ -100,6 +100,47 @@ export function getEntry(section: string, slug: string): ContentEntry | null {
   return getEntries(section).find((e) => e.slug === slug) ?? null;
 }
 
+/**
+ * Published, page-backed entries for a section — no drafts, no external
+ * references (curated links live on the shelf, not on a section page) — sorted
+ * newest first. The data source for both the homepage previews and the
+ * dedicated /<section> landing pages, so a freshly published piece surfaces at
+ * the top of both automatically.
+ */
+export function getSectionEntries(section: string): ContentEntry[] {
+  return getEntries(section)
+    .filter((e) => !e.draft && !e.link)
+    .sort((a, b) => (a.date < b.date ? 1 : -1));
+}
+
+/** Every content folder under /content (the section ids). */
+function allSections(): string[] {
+  if (!fs.existsSync(CONTENT_DIR)) return [];
+  return fs
+    .readdirSync(CONTENT_DIR, { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .map((d) => d.name);
+}
+
+/**
+ * Up to `limit` other published pieces most related to the given one — ranked
+ * by how many tags they share, then by recency. Falls back to recency alone so
+ * the "you might also like" block is always filled when enough content exists.
+ * Draws from every section (cross-linking spreads reader attention and link
+ * equity); drafts and external references are excluded.
+ */
+export function getRelatedEntries(section: string, slug: string, limit = 3): ContentEntry[] {
+  const current = getEntry(section, slug);
+  const tags = new Set(current?.tags ?? []);
+  return allSections()
+    .flatMap((s) => getEntries(s))
+    .filter((e) => !e.draft && !e.link && !(e.section === section && e.slug === slug))
+    .map((e) => ({ e, score: e.tags.reduce((n, t) => n + (tags.has(t) ? 1 : 0), 0) }))
+    .sort((a, b) => b.score - a.score || (a.e.date < b.e.date ? 1 : -1))
+    .slice(0, limit)
+    .map((x) => x.e);
+}
+
 /** "Guide" -> "guide"; used for /collections/<type> URLs. */
 export function typeSlug(type: string): string {
   return slugify(type);

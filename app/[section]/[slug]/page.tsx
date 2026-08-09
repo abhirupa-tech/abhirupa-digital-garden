@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { compileMDX } from 'next-mdx-remote/rsc';
-import { getEntries, getEntry, type ContentEntry } from '@/lib/content';
+import { getEntries, getEntry, getRelatedEntries, type ContentEntry } from '@/lib/content';
 import { zoneById, visibleZones, type Zone } from '@/lib/data';
 import { site } from '@/lib/site';
 import { cloudinaryUrl } from '@/lib/cloudinary';
@@ -161,10 +161,9 @@ export default async function PiecePage({ params }: { params: Promise<PageParams
   if (!zone || !entry || entry.link) notFound();
 
   const url = pieceUrl(section, slug);
-  // Other pieces in the same section, for the "More in …" cross-links.
-  const siblings = getEntries(section)
-    .filter((e) => e.slug !== slug)
-    .slice(0, 4);
+  // Three most-related pieces across the whole garden, for the end-of-article
+  // "you might also like" cross-links (ranked by shared tags, then recency).
+  const related = getRelatedEntries(section, slug, 3);
 
   const { content } = await compileMDX({
     source: entry.body,
@@ -182,14 +181,7 @@ export default async function PiecePage({ params }: { params: Promise<PageParams
       <div className="lg:pl-20">
         <main>
           <article className="zone max-w-4xl pb-10 pt-10 sm:pb-16 sm:pt-16 md:pt-28">
-            <a
-              href={`/#${zone.id}`}
-              className="label inline-flex items-center gap-2 text-sand/80 transition-colors duration-300 hover:text-sand"
-            >
-              ← {zone.kicker}
-            </a>
-
-            <div className="mt-6 flex items-baseline gap-4">
+            <div className="flex items-baseline gap-4">
               <span className="font-display text-lg text-sand/70">{zone.index}</span>
               <span className="label">{entry.type}</span>
               {entry.date && <span className="label text-parchment-faint">{entry.date}</span>}
@@ -204,7 +196,7 @@ export default async function PiecePage({ params }: { params: Promise<PageParams
             <div className="mt-9 sm:mt-16">{content}</div>
           </article>
 
-          <ArticleFooter zone={zone} entry={entry} siblings={siblings} />
+          <ArticleFooter entry={entry} related={related} />
         </main>
 
         <Footer />

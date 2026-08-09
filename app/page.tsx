@@ -1,5 +1,5 @@
 import { zoneById } from '@/lib/data';
-import { getEntries } from '@/lib/content';
+import { getEntries, getSectionEntries } from '@/lib/content';
 import { featureFlags } from '@/lib/featureflag';
 import { Hero } from '@/components/Hero';
 import { SideNav } from '@/components/SideNav';
@@ -12,9 +12,11 @@ import { Sketch } from '@/components/Sketch';
 
 export default function Home() {
   // Content is read from the /content folders at build time.
-  const practice = getEntries('the-practice');
-  const fieldNotes = getEntries('field-notes');
-  const designThinking = getEntries('design-thinking');
+  // Section previews: published, page-backed pieces, newest first.
+  const practice = getSectionEntries('the-practice');
+  const fieldNotes = getSectionEntries('field-notes');
+  const designThinking = getSectionEntries('design-thinking');
+  // The library shelf is curated external references, kept in file order.
   const library = getEntries('knowledge-library');
 
   return (

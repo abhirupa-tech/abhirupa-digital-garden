@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useReducedMotion, type Variants } from 'framer-motion';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState, type ReactNode } from 'react';
 import { zones } from '@/lib/data';
 
@@ -13,8 +13,8 @@ const SECTION_IDS = new Set(zones.map((z) => z.id));
  *
  * - Two links, About and Contact. When a link's page is active it rests in
  *   rust with its underline already drawn.
- * - On subpages a "← Back" affordance appears at the left (returns to the
- *   previous page, or home if there's no history).
+ * - On every non-home page a "← Home" affordance sits at the left, sticky in
+ *   the same fixed bar as About/Contact — one consistent way back to the top.
  * - Transparent at the top of the page; once scrolled it fades in an opaque
  *   canvas-colored background so page content never bleeds through behind it.
  * - Layout avoids the fixed left SideNav (desktop) and its hamburger (mobile,
@@ -75,19 +75,18 @@ function NavLink({
 
 export function TopNav() {
   const pathname = usePathname();
-  const router = useRouter();
   const reduce = useReducedMotion();
   const [scrolled, setScrolled] = useState(false);
   // The site exports with trailingSlash, so usePathname yields e.g. "/about/".
   // Normalize the trailing slash before matching routes.
   const path = pathname && pathname !== '/' ? pathname.replace(/\/$/, '') : '/';
   const isHome = path === '/';
-  // The Back affordance appears wherever there's no SideNav to navigate from.
-  // SideNav renders on the home page and on article pages (/section/slug), so
-  // Back shows everywhere else — /about, /collections/*, and any future page.
+  // Article pages (/section/slug) render the fixed left SideNav on desktop, so
+  // the Home affordance is inset past it there to avoid sitting under the bar.
   const segments = isHome ? [] : path.split('/').filter(Boolean);
   const isArticle = segments.length >= 2 && SECTION_IDS.has(segments[0]);
-  const showBack = !isHome && !isArticle;
+  // One consistent "← Home" on every non-home page, sticky in the top bar.
+  const showHome = !isHome;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -96,23 +95,20 @@ export function TopNav() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const goBack = () => {
-    if (window.history.length > 1) router.back();
-    else router.push('/');
-  };
-
   return (
     <div
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
         scrolled ? 'border-b border-parchment/10 bg-[#f5f4f1]/95 backdrop-blur-sm' : 'bg-transparent'
       }`}
     >
-      <nav aria-label="Primary" className="flex items-center px-6 py-4 md:px-10 lg:pr-12">
-        {showBack && (
-          <motion.button
-            type="button"
-            onClick={goBack}
-            aria-label="Go back"
+      <nav
+        aria-label="Primary"
+        className={`flex items-center px-6 py-4 md:px-10 lg:pr-12 ${isArticle ? 'lg:pl-24' : ''}`}
+      >
+        {showHome && (
+          <motion.a
+            href="/"
+            aria-label="Home"
             initial="rest"
             animate="rest"
             whileHover="hover"
@@ -130,9 +126,9 @@ export function TopNav() {
               variants={{ rest: { color: INK }, hover: { color: RUST } }}
               transition={{ duration: reduce ? 0 : 0.35, ease: EASE }}
             >
-              Back
+              Home
             </motion.span>
-          </motion.button>
+          </motion.a>
         )}
 
         <div className={`flex items-center gap-8 ${isHome ? 'lg:ml-auto' : 'ml-auto'}`}>

@@ -5,17 +5,18 @@ import { Reveal } from '../motion/Reveal';
 import { CoverImage } from '../CoverImage';
 import { TypeBadge } from '../TypeBadge';
 import { SectionHeader } from './SectionHeader';
+import { ViewAllLink } from './ViewAllLink';
 
 /**
  * Format: stacked horizontal cards — a small square thumbnail beside a title
  * and a one-line snippet. Reads like a newspaper's column of briefs.
  */
 export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: ContentEntry[] }) {
-  // Newest first, so a freshly added post surfaces on the home page.
-  const items = [...entries].sort((a, b) => (a.date < b.date ? 1 : -1)).slice(0, 4);
+  // Entries arrive newest-first (getSectionEntries), so the latest post leads.
+  const items = entries.slice(0, 8);
   return (
     <div>
-      <SectionHeader zone={zone} from="right" />
+      <SectionHeader zone={zone} from="right" href={`/${zone.id}`} />
 
       <div className="mt-9 space-y-4">
         {items.map((entry, i) => (
@@ -81,6 +82,10 @@ export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: Conten
           </Reveal>
         ))}
       </div>
+
+      <Reveal from="right" delay={0.2} className="mt-6">
+        <ViewAllLink href={`/${zone.id}`} count={entries.length} />
+      </Reveal>
     </div>
   );
 }

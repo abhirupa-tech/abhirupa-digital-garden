@@ -8,6 +8,7 @@ import { Reveal } from '../motion/Reveal';
 import { HoverLink, AnimatedTitle, HoverDivider } from '../motion/HoverLink';
 import { TypeBadge } from '../TypeBadge';
 import { SectionHeader } from './SectionHeader';
+import { ViewAllLink } from './ViewAllLink';
 
 const RUST = '#d1480f';
 
@@ -27,10 +28,10 @@ const arrowVariants: Variants = {
  * Proves that not every section needs a picture to have presence.
  */
 export function PracticeList({ zone, entries }: { zone: Zone; entries: ContentEntry[] }) {
-  const items = entries.slice(0, 4);
+  const items = entries.slice(0, 8);
   return (
     <div>
-      <SectionHeader zone={zone} from="left" />
+      <SectionHeader zone={zone} from="left" href={`/${zone.id}`} />
 
       <Reveal from="left" delay={0.1} as="ol" className="mt-9 border-t border-parchment/12">
         {items.map((entry, i) => (
@@ -68,6 +69,10 @@ export function PracticeList({ zone, entries }: { zone: Zone; entries: ContentEn
             </HoverLink>
           </li>
         ))}
+      </Reveal>
+
+      <Reveal from="left" delay={0.2} className="mt-6">
+        <ViewAllLink href={`/${zone.id}`} count={entries.length} />
       </Reveal>
     </div>
   );
