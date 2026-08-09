@@ -11,7 +11,8 @@ import { SectionHeader } from './SectionHeader';
  * and a one-line snippet. Reads like a newspaper's column of briefs.
  */
 export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: ContentEntry[] }) {
-  const items = entries.slice(0, 3);
+  // Newest first, so a freshly added post surfaces on the home page.
+  const items = [...entries].sort((a, b) => (a.date < b.date ? 1 : -1)).slice(0, 4);
   return (
     <div>
       <SectionHeader zone={zone} from="right" />
