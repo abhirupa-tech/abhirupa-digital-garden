@@ -8,9 +8,11 @@ type HeadingProps = {
 };
 
 const sizes: Record<NonNullable<HeadingProps['level']>, string> = {
+  // Level 1 is the article masthead — stays on the display serif.
+  // Levels 2–3 are in-body sub-headings — set on the rounded sans (Quicksand).
   1: 'font-display text-section font-medium',
-  2: 'font-display text-2xl md:text-3xl font-bold',
-  3: 'font-display text-xl md:text-2xl font-bold text-parchment/90',
+  2: 'font-rounded text-2xl md:text-3xl font-bold',
+  3: 'font-rounded text-xl md:text-2xl font-bold text-parchment/90',
 };
 
 const tags = { 1: 'h1', 2: 'h2', 3: 'h3' } as const;
