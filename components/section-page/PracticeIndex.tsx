@@ -7,16 +7,17 @@ import { Reveal } from '../motion/Reveal';
 import { HoverLink, AnimatedTitle, HoverDivider } from '../motion/HoverLink';
 import { TypeBadge } from '../TypeBadge';
 
-const RUST = '#d1480f';
 const EASE = [0.16, 1, 0.3, 1] as const;
 
+// Index number + arrow read through the theme tokens so their rest state stays
+// legible on both the light and dark canvas; hover warms to the highlight.
 const indexVariants: Variants = {
-  rest: { color: 'rgb(29 58 99 / 0.45)' },
-  hover: { color: RUST },
+  rest: { color: 'var(--c-accent)' },
+  hover: { color: 'var(--c-highlight)' },
 };
 const arrowVariants: Variants = {
-  rest: { color: '#605a50', x: 0 },
-  hover: { color: RUST, x: 6 },
+  rest: { color: 'var(--c-faint-text)', x: 0 },
+  hover: { color: 'var(--c-highlight)', x: 6 },
 };
 
 /**

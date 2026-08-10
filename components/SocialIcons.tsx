@@ -71,7 +71,7 @@ export function SocialIcons({
   const toneClass =
     tone === 'light'
       ? 'text-white/70 hover:text-[#e8c9a0] focus-visible:text-[#e8c9a0]'
-      : 'text-sand hover:text-sand-soft focus-visible:text-sand-soft';
+      : 'text-sand hover:text-sand-soft focus-visible:text-sand-soft dark:text-white dark:hover:text-highlight dark:focus-visible:text-highlight';
   const listClass = mobileIconsOnly
     ? 'flex items-center gap-5 sm:gap-6'
     : 'grid grid-cols-2 gap-x-6 gap-y-4 sm:flex sm:items-center sm:gap-6';

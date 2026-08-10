@@ -73,7 +73,7 @@ function RoleCard({ role, index, reduce }: { role: CareerRole; index: number; re
         whileHover={reduce ? undefined : 'hover'}
         variants={cardVariants}
         transition={{ duration: reduce ? 0 : 0.35, ease: EASE }}
-        className="h-full rounded-2xl border bg-[#f9f8f5]/70 p-3.5 shadow-xs backdrop-blur-[1px] sm:p-4"
+        className="h-full rounded-2xl border bg-[#f9f8f5]/70 p-3.5 shadow-xs backdrop-blur-[1px] dark:bg-secondary-bg/70 sm:p-4"
       >
         <div className="flex items-start gap-2.5 sm:gap-3">
           <motion.span

@@ -14,9 +14,12 @@ import type { ReactNode } from 'react';
  * state or context needed.
  */
 
-const RUST = '#d1480f';
-// Matches the static `border-parchment/12` dividers: parchment is rgb(20 18 16).
-const LINE_GREY = 'rgb(20 18 16 / 0.12)';
+// Hover accent + rest colors read through the semantic theme tokens so titles
+// and dividers stay legible in both light and dark (the raw hex would leave
+// near-black text on the dark canvas).
+const HIGHLIGHT = 'var(--c-highlight)';
+// Matches the static `border-hairline` dividers, which flip with the theme.
+const LINE_GREY = 'var(--c-hairline)';
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 export function HoverLink({
@@ -57,18 +60,18 @@ export function HoverLink({
 export function AnimatedTitle({
   children,
   className,
-  restColor = '#141210',
+  restColor = 'var(--c-primary-text)',
 }: {
   children: ReactNode;
   className?: string;
-  /** Base (non-hover) text color; hover always resolves to rust. */
+  /** Base (non-hover) text color; hover always resolves to the highlight. */
   restColor?: string;
 }) {
   const reduce = useReducedMotion();
 
   const titleVariants: Variants = {
     rest: { color: restColor, scale: 1 },
-    hover: { color: RUST, scale: reduce ? 1 : 1.04 },
+    hover: { color: HIGHLIGHT, scale: reduce ? 1 : 1.04 },
   };
 
   return (
@@ -93,7 +96,7 @@ export function HoverDivider({ className }: { className?: string }) {
 
   const dividerVariants: Variants = {
     rest: { backgroundColor: LINE_GREY },
-    hover: { backgroundColor: RUST },
+    hover: { backgroundColor: HIGHLIGHT },
   };
 
   return (

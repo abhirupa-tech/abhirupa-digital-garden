@@ -78,8 +78,8 @@ const spyIds = ['top', ...iconItems.map((i) => i.id)];
 
 // Black by default; muted blue on hover / when active.
 function iconClass(active: boolean) {
-  return `flex h-11 w-11 items-center justify-center rounded-xl transition-colors duration-300 hover:text-[#274a80] focus-visible:text-[#274a80] focus-visible:outline-hidden ${
-    active ? 'text-[#274a80]' : 'text-[#0b0c10]'
+  return `flex h-11 w-11 items-center justify-center rounded-xl transition-colors duration-300 hover:text-[#274a80] focus-visible:text-[#274a80] focus-visible:outline-hidden dark:hover:text-accent dark:focus-visible:text-accent ${
+    active ? 'text-[#274a80] dark:text-accent' : 'text-[#0b0c10] dark:text-secondary-text'
   }`;
 }
 
@@ -115,7 +115,7 @@ function NavIcon({
       aria-current={active ? 'true' : undefined}
       onClick={onClick}
       className={`group relative flex h-11 w-11 items-center justify-center rounded-full focus-visible:outline-hidden ${
-        active ? 'text-[#274a80]' : 'text-[#0b0c10]'
+        active ? 'text-[#274a80] dark:text-accent' : 'text-[#0b0c10] dark:text-secondary-text'
       }`}
     >
       <span
@@ -127,7 +127,7 @@ function NavIcon({
       </span>
       <span
         role="tooltip"
-        className={`pointer-events-none absolute top-1/2 z-20 -translate-y-1/2 whitespace-nowrap rounded-md border border-rust/50 bg-[#faf9f6] px-2.5 py-1 font-rounded text-[0.72rem] text-parchment opacity-0 shadow-md transition-all duration-200 ease-out group-hover:opacity-100 group-focus-visible:opacity-100 ${tooltipSide}`}
+        className={`pointer-events-none absolute top-1/2 z-20 -translate-y-1/2 whitespace-nowrap rounded-md border border-rust/50 bg-[#faf9f6] px-2.5 py-1 font-rounded text-[0.72rem] text-parchment opacity-0 shadow-md transition-all duration-200 ease-out group-hover:opacity-100 group-focus-visible:opacity-100 dark:bg-tertiary-bg ${tooltipSide}`}
       >
         {label}
       </span>
@@ -162,15 +162,15 @@ export function SideNav() {
       {/* Desktop full-height bar — soft ivory-to-taupe gradient */}
       <nav
         aria-label="Section navigation"
-        className="fixed inset-y-0 left-0 z-40 hidden w-20 flex-col items-center border-r border-black/10 bg-linear-to-b from-[#f5f1e9]/95 to-[#ddd6c4]/95 lg:flex"
+        className="fixed inset-y-0 left-0 z-40 hidden w-20 flex-col items-center border-r border-black/10 bg-linear-to-b from-[#f5f1e9]/95 to-[#ddd6c4]/95 dark:border-white/10 dark:from-secondary-bg/95 dark:to-tertiary-bg/95 lg:flex"
       >
         <a
           href="/#top"
           aria-label="Top"
           title="Top"
           aria-current={active === 'top' ? 'true' : undefined}
-          className={`mt-7 font-display text-2xl leading-none transition-colors duration-300 hover:text-[#274a80] ${
-            active === 'top' ? 'text-[#274a80]' : 'text-[#0b0c10]'
+          className={`mt-7 font-display text-2xl leading-none transition-colors duration-300 hover:text-[#274a80] dark:hover:text-accent ${
+            active === 'top' ? 'text-[#274a80] dark:text-accent' : 'text-[#0b0c10] dark:text-secondary-text'
           }`}
         >
           A
@@ -192,7 +192,7 @@ export function SideNav() {
           onClick={() => setOpen((o) => !o)}
           aria-label={open ? 'Close navigation' : 'Open navigation'}
           aria-expanded={open}
-          className="fixed right-4 top-4 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-linear-to-b from-[#f5f1e9] to-[#ddd6c4] text-[#0b0c10] shadow-xs transition-colors duration-300 hover:text-[#274a80]"
+          className="fixed right-4 top-4 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-linear-to-b from-[#f5f1e9] to-[#ddd6c4] text-[#0b0c10] shadow-xs transition-colors duration-300 hover:text-[#274a80] dark:from-secondary-bg dark:to-tertiary-bg dark:text-secondary-text dark:hover:text-accent"
         >
           {open ? icons.close : icons.menu}
         </button>
@@ -205,7 +205,7 @@ export function SideNav() {
               animate={{ opacity: 1, x: 0 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, x: 16 }}
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed right-4 top-19 z-40 flex flex-col items-center gap-2 rounded-3xl bg-linear-to-b from-[#f5f1e9] to-[#ddd6c4] p-2.5 shadow-lg"
+              className="fixed right-4 top-19 z-40 flex flex-col items-center gap-2 rounded-3xl bg-linear-to-b from-[#f5f1e9] to-[#ddd6c4] p-2.5 shadow-lg dark:from-secondary-bg dark:to-tertiary-bg"
             >
               <a
                 href="/#top"

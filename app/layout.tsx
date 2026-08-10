@@ -35,8 +35,11 @@ const quicksand = Quicksand({
 });
 
 export const viewport: Viewport = {
-  themeColor: '#f2ede2',
-  colorScheme: 'light',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f2ede2' },
+    { media: '(prefers-color-scheme: dark)', color: '#1a1a1a' },
+  ],
+  colorScheme: 'light dark',
   width: 'device-width',
   initialScale: 1,
 };
@@ -106,6 +109,23 @@ export const metadata: Metadata = {
  * flags <html data-platform="mac">; globals.css nudges the root font-size
  * up slightly for that case so the two platforms read as the same size.
  */
+/**
+ * Sets the initial theme before first paint so there's no flash of the wrong
+ * palette. Prefers an explicit saved choice; otherwise follows the OS / browser
+ * `prefers-color-scheme`. Runs synchronously in <head>, ahead of any render.
+ */
+function ThemeInit() {
+  const script = `(function(){try{
+    var saved = localStorage.getItem('theme');
+    var dark = saved ? saved === 'dark'
+      : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var r = document.documentElement;
+    if (dark) r.classList.add('dark');
+    r.style.colorScheme = dark ? 'dark' : 'light';
+  }catch(e){}})();`;
+  return <script dangerouslySetInnerHTML={{ __html: script }} />;
+}
+
 function PlatformFontFix() {
   const script = `(function(){try{
     var ua = navigator.userAgent || '';
@@ -201,6 +221,7 @@ export default function RootLayout({
       className={`${playfair.variable} ${cormorant.variable} ${garamond.variable} ${quicksand.variable}`}
     >
       <head>
+        <ThemeInit />
         <PlatformFontFix />
         <StructuredData />
       </head>

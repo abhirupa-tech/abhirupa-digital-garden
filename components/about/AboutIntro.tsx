@@ -48,7 +48,7 @@ export function AboutIntro() {
 
       {/* What I do — a compact index on a minimalist liquid-glass card */}
       <Reveal delay={0.28} from="left" className="mt-10 max-w-md">
-        <div className="rounded-3xl bg-white/35 p-6 shadow-[0_12px_40px_-14px_rgba(20,18,16,0.22),inset_0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-xl backdrop-saturate-150 sm:p-7">
+        <div className="rounded-3xl bg-white/35 p-6 shadow-[0_12px_40px_-14px_rgba(20,18,16,0.22),inset_0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-xl backdrop-saturate-150 dark:bg-white/5 dark:shadow-[0_12px_40px_-14px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] sm:p-7">
           <span className="label text-parchment-faint">What I do</span>
           <ul className="mt-4 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
             {FACETS.map((f) => (

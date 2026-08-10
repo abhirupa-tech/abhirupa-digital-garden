@@ -1,6 +1,29 @@
 @import 'tailwindcss';
 
+/* Enable class-based dark mode: `dark:` utilities and the palette swap below
+   activate whenever <html> (or any ancestor) carries the `dark` class, which
+   the ThemeToggle + no-flash script manage. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
+  /* ── Semantic palette ────────────────────────────────────────────────
+     Meaningful, role-based color tokens usable directly as Tailwind
+     utilities: bg-primary-bg, bg-secondary-bg, text-primary-text,
+     text-highlight, border-hairline, and so on. Each maps to a CSS
+     variable whose value is defined for light mode in :root and swapped
+     for dark mode under .dark (see the base layer below), so a single
+     class resolves to the right color for the active theme. */
+  --color-primary-bg: var(--c-primary-bg); /* app canvas */
+  --color-secondary-bg: var(--c-secondary-bg); /* raised cards */
+  --color-tertiary-bg: var(--c-tertiary-bg); /* insets, pills */
+  --color-primary-text: var(--c-primary-text); /* body + headings */
+  --color-secondary-text: var(--c-secondary-text); /* supporting copy */
+  --color-faint-text: var(--c-faint-text); /* labels, meta */
+  --color-highlight: var(--c-highlight); /* primary accent — rust/orange */
+  --color-highlight-strong: var(--c-highlight-strong); /* deeper rust */
+  --color-accent: var(--c-accent); /* secondary accent — blue */
+  --color-hairline: var(--c-hairline); /* dividers, borders */
+
   --color-ink-400: rgb(var(--raw-ink-400));
   --color-ink-500: rgb(var(--raw-ink-500));
   --color-ink-600: rgb(var(--raw-ink-600));
@@ -120,6 +143,22 @@
   :root {
     color-scheme: light;
 
+    /* Semantic palette — LIGHT values. These feed the role-based tokens
+       declared in @theme above (primary-bg, primary-text, highlight, …).
+       The .dark block below re-declares the same variables with dark
+       values, so every component styled with these tokens flips theme
+       without any component-level changes. */
+    --c-primary-bg: #fbfaf7;
+    --c-secondary-bg: #f4f1e8;
+    --c-tertiary-bg: #e8e2d2;
+    --c-primary-text: #141210;
+    --c-secondary-text: #3a3630;
+    --c-faint-text: #605a50;
+    --c-highlight: #d1480f;
+    --c-highlight-strong: #a83a12;
+    --c-accent: #1d3a63;
+    --c-hairline: rgba(20, 18, 16, 0.1);
+
     /* Single light palette — a deep off-white canvas (not stark white), a
      * near-black warm grey for body text, dark navy as the primary highlight,
      * and a bold rust-orange as the secondary highlight. Every component
@@ -161,6 +200,69 @@
     --selection-fg: #f4f3ef;
   }
 
+  /* ── DARK THEME ──────────────────────────────────────────────────────
+     Activated by the `dark` class on <html>. It re-declares the semantic
+     palette AND the legacy raw palette (parchment / ink / sand / rust /
+     canvas), so both new token-based components and every existing
+     component switch together. Backgrounds settle on #1a1a1a, body text on
+     #e0e0e0, and the orange/rust/blue accents are lifted a few steps so
+     they keep AA contrast against the dark canvas. */
+  .dark {
+    color-scheme: dark;
+
+    /* Semantic palette — dark values */
+    --c-primary-bg: #1a1a1a;
+    --c-secondary-bg: #242424;
+    --c-tertiary-bg: #2e2e2e;
+    --c-primary-text: #e0e0e0;
+    --c-secondary-text: #b7b3ad;
+    --c-faint-text: #928d85;
+    --c-highlight: #f2692f;
+    --c-highlight-strong: #f4834f;
+    --c-accent: #6ea3dc;
+    --c-hairline: rgba(224, 224, 224, 0.12);
+
+    /* Legacy raw palette, retuned for dark. Higher ink numbers stay the
+       lighter surfaces, just inverted into near-blacks. */
+    --raw-ink-900: 26 26 26;
+    --raw-ink-800: 34 34 34;
+    --raw-ink-700: 44 44 44;
+    --raw-ink-600: 58 58 58;
+    --raw-ink-500: 74 74 74;
+    --raw-ink-400: 92 92 92;
+
+    /* Blue accent, lifted for legibility on dark */
+    --raw-sand: 110 163 220;
+    --raw-sand-soft: 138 183 230;
+    --raw-sand-deep: 86 138 194;
+
+    /* Rust accent, lifted for legibility on dark */
+    --raw-rust: 242 105 47;
+    --raw-rust-soft: 244 131 79;
+    --raw-rust-deep: 214 88 40;
+
+    /* Hover wash: a light-on-dark surface instead of white */
+    --raw-wash: 46 46 46;
+
+    --raw-teal-whisper: 110 176 165;
+    --raw-blush-whisper: 210 130 150;
+
+    /* Text ramp: #e0e0e0 → muted → faint */
+    --raw-parchment: 224 224 224;
+    --raw-parchment-muted: 183 179 173;
+    --raw-parchment-faint: 143 138 130;
+
+    /* Canvas gradient — near-black, easing a touch deeper toward the base */
+    --bg-canvas-1: #1a1a1a;
+    --bg-canvas-2: #191919;
+    --bg-canvas-3: #171717;
+    --bg-canvas-4: #151515;
+    --bg-canvas-5: #121212;
+
+    --selection-bg: rgba(242, 105, 47, 0.32);
+    --selection-fg: #f4f3ef;
+  }
+
   html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
@@ -174,6 +276,19 @@
      without touching a single component. */
   html[data-platform='mac'] {
     font-size: 106%;
+  }
+
+  /* Mobile (below the sm breakpoint, ~640px). Every rem-based size scales off
+     the root font-size, so trimming it a touch here reads the whole type scale
+     down a step on small screens — headings, body, labels, tags — without
+     editing any component. The mac variant keeps its relative bump via calc(). */
+  @media (max-width: 40rem) {
+    html {
+      font-size: 93.75%;
+    }
+    html[data-platform='mac'] {
+      font-size: calc(106% * 0.9375);
+    }
   }
 
   /* Ultrawide / XXL monitors (~30"+, 2560px viewports and up). Everything on

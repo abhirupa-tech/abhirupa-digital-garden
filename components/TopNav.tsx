@@ -1,9 +1,9 @@
 'use client';
 
-import { motion, useReducedMotion, type Variants } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState, type ReactNode } from 'react';
 import { zones } from '@/lib/data';
+import { ThemeToggle } from './ThemeToggle';
 
 // Sections whose article pages (/section/slug) render the fixed left SideNav.
 const SECTION_IDS = new Set(zones.map((z) => z.id));
@@ -11,20 +11,19 @@ const SECTION_IDS = new Set(zones.map((z) => z.id));
 /**
  * Minimal, page-aware top navigation.
  *
- * - Two links, About and Contact. When a link's page is active it rests in
- *   rust with its underline already drawn.
+ * - Two links, About and Contact, plus a light/dark theme toggle. When a
+ *   link's page is active it rests in the highlight color with its underline
+ *   already drawn.
  * - On every non-home page a "← Home" affordance sits at the left, sticky in
  *   the same fixed bar as About/Contact — one consistent way back to the top.
  * - Transparent at the top of the page; once scrolled it fades in an opaque
  *   canvas-colored background so page content never bleeds through behind it.
+ * - Colors read through the semantic theme tokens (secondary-text, highlight),
+ *   so the bar adapts to light and dark without per-mode overrides.
  * - Layout avoids the fixed left SideNav (desktop) and its hamburger (mobile,
  *   home only) by aligning the links left on the home page's small screens and
  *   right everywhere else.
  */
-
-const RUST = '#d1480f';
-const INK = '#3a3630';
-const EASE = [0.16, 1, 0.3, 1] as const;
 
 function NavLink({
   href,
@@ -35,47 +34,32 @@ function NavLink({
   active: boolean;
   children: ReactNode;
 }) {
-  const reduce = useReducedMotion();
-
-  const labelVariants: Variants = {
-    rest: { color: active ? RUST : INK },
-    hover: { color: RUST },
-  };
-  const underlineVariants: Variants = {
-    rest: { scaleX: active ? 1 : 0 },
-    hover: { scaleX: 1 },
-  };
-
   return (
-    <motion.a
+    <a
       href={href}
       aria-current={active ? 'page' : undefined}
-      initial="rest"
-      animate="rest"
-      whileHover="hover"
-      whileFocus="hover"
-      className="relative inline-block font-body text-base tracking-wide focus-visible:outline-hidden"
+      className="group relative inline-block font-body text-base tracking-wide focus-visible:outline-hidden"
     >
-      <motion.span
-        variants={labelVariants}
-        transition={{ duration: reduce ? 0 : 0.35, ease: EASE }}
+      <span
+        className={`transition-colors duration-300 ${
+          active ? 'text-highlight' : 'text-secondary-text group-hover:text-highlight'
+        }`}
       >
         {children}
-      </motion.span>
-      <motion.span
+      </span>
+      <span
         aria-hidden="true"
-        variants={underlineVariants}
-        transition={{ duration: reduce ? 0 : 0.4, ease: EASE }}
         style={{ transformOrigin: 'left' }}
-        className="absolute -bottom-1 left-0 h-px w-full origin-left rounded-full bg-rust"
+        className={`absolute -bottom-1 left-0 h-px w-full rounded-full bg-highlight transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+        }`}
       />
-    </motion.a>
+    </a>
   );
 }
 
 export function TopNav() {
   const pathname = usePathname();
-  const reduce = useReducedMotion();
   const [scrolled, setScrolled] = useState(false);
   // The site exports with trailingSlash, so usePathname yields e.g. "/about/".
   // Normalize the trailing slash before matching routes.
@@ -98,7 +82,7 @@ export function TopNav() {
   return (
     <div
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        scrolled ? 'border-b border-parchment/10 bg-[#f5f4f1]/95 backdrop-blur-sm' : 'bg-transparent'
+        scrolled ? 'border-b border-hairline bg-primary-bg/95 backdrop-blur-sm' : 'bg-transparent'
       }`}
     >
       <nav
@@ -106,29 +90,16 @@ export function TopNav() {
         className={`flex items-center gap-6 px-6 py-4 md:px-10 lg:pr-12 ${isArticle ? 'lg:pl-24' : ''}`}
       >
         {showHome && (
-          <motion.a
+          <a
             href="/"
             aria-label="Home"
-            initial="rest"
-            animate="rest"
-            whileHover="hover"
-            whileFocus="hover"
-            className="flex items-center gap-2 font-body text-base tracking-wide focus-visible:outline-hidden"
+            className="group flex items-center gap-2 font-body text-base tracking-wide text-secondary-text transition-colors duration-300 hover:text-highlight focus-visible:outline-hidden"
           >
-            <motion.span
-              variants={{ rest: { x: 0, color: INK }, hover: { x: -4, color: RUST } }}
-              transition={{ duration: reduce ? 0 : 0.35, ease: EASE }}
-              className="text-lg leading-none"
-            >
+            <span className="text-lg leading-none transition-transform duration-300 group-hover:-translate-x-1">
               ←
-            </motion.span>
-            <motion.span
-              variants={{ rest: { color: INK }, hover: { color: RUST } }}
-              transition={{ duration: reduce ? 0 : 0.35, ease: EASE }}
-            >
-              Home
-            </motion.span>
-          </motion.a>
+            </span>
+            <span>Home</span>
+          </a>
         )}
 
         {/* Links rest on the left on mobile so the fixed top-right hamburger
@@ -141,6 +112,7 @@ export function TopNav() {
           <NavLink href="/#stay-updated" active={false}>
             Contact
           </NavLink>
+          <ThemeToggle />
         </div>
       </nav>
     </div>

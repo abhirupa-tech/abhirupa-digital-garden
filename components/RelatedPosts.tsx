@@ -28,7 +28,7 @@ export function RelatedPosts({ entries }: { entries: ContentEntry[] }) {
           <Reveal key={`${entry.section}/${entry.slug}`} delay={0.08 * i}>
             <HoverLink
               href={`/${entry.section}/${entry.slug}/`}
-              className="group flex h-full flex-col overflow-hidden rounded-2xl border border-black/10 bg-[#f9f8f4] transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+              className="group flex h-full flex-col overflow-hidden rounded-2xl border border-black/10 bg-[#f9f8f4] transition-all duration-300 hover:-translate-y-1 hover:shadow-md dark:border-white/10 dark:bg-secondary-bg"
             >
               <div className="overflow-hidden">
                 <CoverImage

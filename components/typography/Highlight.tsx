@@ -8,7 +8,7 @@ import type { ReactNode } from 'react';
  */
 export function Highlight({ children }: { children: ReactNode }) {
   return (
-    <mark className="rounded-xs bg-[#fce0c0] px-1 font-rounded text-[1.02rem] leading-[1.6] text-parchment sm:text-[1.15rem]">
+    <mark className="rounded-xs bg-[#fce0c0] px-1 font-rounded text-[1.02rem] leading-[1.6] text-parchment sm:text-[1.15rem] dark:bg-highlight/25">
       {children}
     </mark>
   );

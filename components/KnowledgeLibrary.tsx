@@ -11,17 +11,17 @@ import { HoverLink, AnimatedTitle, HoverDivider } from './motion/HoverLink';
 import { SectionHeader } from './sections/SectionHeader';
 import { ViewAllLink } from './sections/ViewAllLink';
 
-const RUST = '#d1480f';
-
-// Index number + arrow warm to rust alongside the title, driven by the link's
-// rest/hover variant state — matching the Practice list exactly.
+// Index number + arrow warm to the highlight alongside the title, driven by the
+// link's rest/hover variant state — matching the Practice list exactly. Colors
+// read through the theme tokens (accent / faint-text / highlight) so the rest
+// state stays legible on both the light and dark canvas.
 const numberVariants: Variants = {
-  rest: { color: 'rgb(29 58 99 / 0.8)' },
-  hover: { color: RUST },
+  rest: { color: 'var(--c-accent)' },
+  hover: { color: 'var(--c-highlight)' },
 };
 const arrowVariants: Variants = {
-  rest: { color: '#605a50', x: 0 },
-  hover: { color: RUST, x: 4 },
+  rest: { color: 'var(--c-faint-text)', x: 0 },
+  hover: { color: 'var(--c-highlight)', x: 4 },
 };
 
 /** The one featured piece — image, and up to five lines of subtext. */
@@ -30,7 +30,7 @@ function HeroCard({ item }: { item: ContentEntry }) {
     <Reveal from="left">
       <HoverLink
         href={`/${item.section}/${item.slug}/`}
-        className="group block rounded-xl border border-parchment/10 bg-[#f9f6e9] p-3 backdrop-blur-[2px]"
+        className="group block rounded-xl border border-parchment/10 bg-[#f9f6e9] p-3 backdrop-blur-[2px] dark:bg-secondary-bg"
       >
         <div className="overflow-hidden rounded-lg">
           <CoverImage

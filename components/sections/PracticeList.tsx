@@ -10,17 +10,16 @@ import { TypeBadge } from '../TypeBadge';
 import { SectionHeader } from './SectionHeader';
 import { ViewAllLink } from './ViewAllLink';
 
-const RUST = '#d1480f';
-
-// Number + arrow warm to rust alongside the title, driven by the link's
-// rest/hover variant state (see HoverLink).
+// Number + arrow warm to the highlight alongside the title, driven by the
+// link's rest/hover variant state (see HoverLink). Colors read through the
+// theme tokens so the rest state stays legible on the light and dark canvas.
 const numberVariants: Variants = {
-  rest: { color: 'rgb(29 58 99 / 0.8)' },
-  hover: { color: RUST },
+  rest: { color: 'var(--c-accent)' },
+  hover: { color: 'var(--c-highlight)' },
 };
 const arrowVariants: Variants = {
-  rest: { color: '#605a50', x: 0 },
-  hover: { color: RUST, x: 4 },
+  rest: { color: 'var(--c-faint-text)', x: 0 },
+  hover: { color: 'var(--c-highlight)', x: 4 },
 };
 
 /**

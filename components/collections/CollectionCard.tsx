@@ -58,7 +58,7 @@ export function CollectionCard({ entry }: { entry: ContentEntry }) {
     return (
       <HoverLink
         href={href}
-        className="group block overflow-hidden rounded-2xl border border-black/10 bg-[#f9f8f4]"
+        className="group block overflow-hidden rounded-2xl border border-black/10 bg-[#f9f8f4] dark:border-white/10 dark:bg-secondary-bg"
       >
         <CoverImage
           src={entry.cover}
@@ -86,7 +86,7 @@ export function CollectionCard({ entry }: { entry: ContentEntry }) {
     return (
       <HoverLink
         href={href}
-        className="group block rounded-2xl border border-rust/20 bg-[#fbe8dd] p-5"
+        className="group block rounded-2xl border border-rust/20 bg-[#fbe8dd] p-5 dark:bg-rust/10"
       >
         <div className="flex items-center gap-3">
           <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-rust/30 bg-rust/10 text-rust">
@@ -113,7 +113,7 @@ export function CollectionCard({ entry }: { entry: ContentEntry }) {
   return (
     <HoverLink
       href={href}
-      className="group block rounded-2xl border border-parchment/12 bg-[#f9f8f5]/60 p-5"
+      className="group block rounded-2xl border border-parchment/12 bg-[#f9f8f5]/60 p-5 dark:bg-secondary-bg/60"
     >
       <Meta entry={entry} />
       <h3 className="mt-3">

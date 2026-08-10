@@ -20,7 +20,7 @@ export function Portrait() {
         />
       </div>
       {/* Floating annotation overlapping the portrait's lower-left */}
-      <div className="absolute -bottom-5 -left-4 max-w-[13rem] rounded-xl border border-parchment/10 bg-[#f9f8f5] px-4 py-3 shadow-xs backdrop-blur-sm sm:-left-8">
+      <div className="absolute -bottom-5 -left-4 max-w-[13rem] rounded-xl border border-parchment/10 bg-[#f9f8f5] px-4 py-3 shadow-xs backdrop-blur-sm dark:bg-secondary-bg sm:-left-8">
         <span className="label text-parchment-faint">Based in</span>
         <p className="mt-1 font-display text-lg leading-tight text-parchment">
           Bengaluru, India
