@@ -22,33 +22,6 @@ export const site = {
     email: 'mailto:mitra.abhirupa@gmail.com',
     github: 'https://github.com/abhirupa-tech',
   },
-  /**
-   * Keyword surface for discoverability. These phrases are the search
-   * intents this site is built to rank for.
-   */
-  keywords: [
-    'Abhirupa Mitra',
-    'senior software engineer',
-    'staff software engineer',
-    'senior frontend engineer',
-    'frontend engineer Slack',
-    'agentic UI',
-    'agentic AI interfaces',
-    'frontend for AI',
-    'frontend for AI interfaces',
-    'AI interaction design',
-    'UI UX research',
-    'human-AI interaction',
-    'design thinking',
-    'Slack engineer',
-    'women in technology',
-    'women in tech',
-    'women in AI',
-    'AI enthusiast',
-    'design engineer',
-    'human-centered AI',
-    'slow living',
-  ],
 } as const;
 
 export type SiteConfig = typeof site;

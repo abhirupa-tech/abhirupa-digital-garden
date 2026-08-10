@@ -7,73 +7,35 @@ type SectionHeaderProps = {
   size?: 'compact' | 'grand';
   align?: 'left' | 'center';
   from?: 'up' | 'left' | 'right';
-  /**
-   * When set, the number + kicker + title become a link to the section's own
-   * landing page. Used on the home page so each section header opens its hub.
-   */
-  href?: string;
 };
 
 /**
  * Shared section framing: number + kicker, a title, and only one to two lines
  * of subtext explaining what the section is. Entries do the rest of the talking.
+ * The header is presentational only — per-section navigation lives in the
+ * "View all" link at the foot of each list, not on the heading itself.
  */
 export function SectionHeader({
   zone,
   size = 'compact',
   align = 'left',
   from = 'up',
-  href,
 }: SectionHeaderProps) {
   const titleClass =
     size === 'grand'
       ? 'font-display text-section font-medium'
       : 'font-display text-3xl md:text-4xl font-medium';
 
-  const head = (
-    <>
-      <div
-        className={`flex items-baseline gap-4 ${align === 'center' ? 'justify-center' : ''}`}
-      >
-        <span className="font-display text-lg text-sand/90">{zone.index}</span>
-        <span className="label text-parchment-muted transition-colors duration-300 group-hover:text-sand">
-          {zone.kicker}
-        </span>
-        {href && (
-          <span
-            aria-hidden="true"
-            className="text-sand/70 transition-all duration-300 group-hover:translate-x-1 group-hover:text-rust"
-          >
-            →
-          </span>
-        )}
-      </div>
-      <h2
-        className={`mt-4 text-parchment transition-colors duration-300 ${titleClass} ${
-          href ? 'group-hover:text-sand' : ''
-        }`}
-      >
-        {zone.title}
-      </h2>
-    </>
-  );
-
   return (
     <Reveal
       from={from}
       className={align === 'center' ? 'mx-auto max-w-2xl text-center' : 'max-w-xl'}
     >
-      {href ? (
-        <a
-          href={href}
-          className="group block focus-visible:outline-hidden"
-          aria-label={`${zone.kicker} — view all`}
-        >
-          {head}
-        </a>
-      ) : (
-        head
-      )}
+      <div className={`flex items-baseline gap-4 ${align === 'center' ? 'justify-center' : ''}`}>
+        <span className="font-display text-lg text-sand/90">{zone.index}</span>
+        <span className="label text-parchment-muted">{zone.kicker}</span>
+      </div>
+      <h2 className={`mt-4 text-parchment ${titleClass}`}>{zone.title}</h2>
       <p className="mt-3 font-rounded text-lg font-light not-italic leading-tight tracking-tight text-parchment-muted">
         {zone.blurb}
       </p>

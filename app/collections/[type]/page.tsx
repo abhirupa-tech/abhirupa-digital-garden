@@ -35,7 +35,6 @@ export async function generateMetadata({
   return {
     title,
     description,
-    keywords: [`${match.label.toLowerCase()}s`, ...site.keywords],
     alternates: { canonical: `/collections/${type}/` },
     openGraph: {
       type: 'website',

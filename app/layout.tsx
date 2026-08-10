@@ -51,7 +51,6 @@ export const metadata: Metadata = {
     template: `%s · ${site.name}`,
   },
   description: site.description,
-  keywords: [...site.keywords],
   authors: [{ name: site.name, url: site.url }],
   creator: site.name,
   publisher: site.name,
@@ -165,7 +164,7 @@ function StructuredData() {
       'Frontend engineering',
       'Women in technology',
     ],
-    sameAs: [site.social.linkedin, site.social.medium],
+    sameAs: [site.social.linkedin, site.social.medium, site.social.github],
   };
 
   const graph = {

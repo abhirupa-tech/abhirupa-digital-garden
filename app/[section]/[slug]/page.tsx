@@ -50,14 +50,10 @@ export async function generateMetadata({
   const url = pieceUrl(section, slug);
   const description = entry.description || site.description;
   const image = pieceImage(entry);
-  // Per-article keywords: the piece's own tags first, then the site's target
-  // search intents (agentic UI, frontend for AI, human–AI interaction, …).
-  const keywords = [...entry.tags, entry.type, zone.kicker, ...site.keywords];
 
   return {
     title: entry.title,
     description,
-    keywords,
     authors: [{ name: site.name, url: site.url }],
     creator: site.name,
     publisher: site.name,

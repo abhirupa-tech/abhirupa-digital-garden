@@ -35,13 +35,16 @@ export function Hero() {
           alongside humans.
         </motion.h1>
 
-        <motion.p
+        {/* The H1 above carries the poetry; this H2 carries the search intent —
+            plain, keyword-bearing copy ("frontend engineering for agentic AI
+            interfaces") so the hero ranks for what the work actually is. */}
+        <motion.h2
           {...rise(0.5)}
           className="mt-5 max-w-2xl font-serif text-sub font-light text-parchment-muted sm:mt-8"
         >
-          {site.subline} — designing the frontend where agents reason, and
-          thrive.
-        </motion.p>
+          Frontend engineering for agentic AI interfaces — designing the
+          surfaces where agents reason, pause, and hand control back to people.
+        </motion.h2>
 
         <motion.div {...rise(0.7)} className="mt-8 flex flex-wrap items-center gap-x-10 gap-y-6 sm:mt-12">
           <SocialIcons mobileIconsOnly />

@@ -30,7 +30,7 @@ export function PracticeList({ zone, entries }: { zone: Zone; entries: ContentEn
   const items = entries.slice(0, 8);
   return (
     <div>
-      <SectionHeader zone={zone} from="left" href={`/${zone.id}/`} />
+      <SectionHeader zone={zone} from="left" />
 
       <Reveal from="left" delay={0.1} as="ol" className="mt-9 border-t border-parchment/12">
         {items.map((entry, i) => (

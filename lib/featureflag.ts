@@ -4,5 +4,5 @@
  */
 export const featureFlags = {
   showNewsletterSection: false,
-  showKnowledgeSection: true,
+  showKnowledgeSection: false,
 } as const;

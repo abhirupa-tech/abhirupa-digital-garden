@@ -28,11 +28,6 @@ export function generateStaticParams() {
   return PAGE_ZONES.map((z) => ({ section: z.id }));
 }
 
-/** Extra, section-tuned keywords layered on top of the site-wide set. */
-function sectionKeywords(zone: Zone): string[] {
-  return [zone.kicker, zone.title, `${zone.kicker} by ${site.name}`, ...site.keywords];
-}
-
 export async function generateMetadata({
   params,
 }: {
@@ -54,7 +49,6 @@ export async function generateMetadata({
   return {
     title: zone.kicker,
     description,
-    keywords: sectionKeywords(zone),
     authors: [{ name: site.name, url: site.url }],
     creator: site.name,
     publisher: site.name,

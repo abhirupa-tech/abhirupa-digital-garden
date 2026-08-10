@@ -1,82 +1,65 @@
 import type { Zone } from '@/lib/data';
 import type { ContentEntry } from '@/lib/content';
 import { formatDate } from '@/lib/format';
+import { cloudinaryUrl } from '@/lib/cloudinary';
 import { Reveal } from '../motion/Reveal';
-import { CoverImage } from '../CoverImage';
 import { TypeBadge } from '../TypeBadge';
 import { SectionHeader } from './SectionHeader';
 import { ViewAllLink } from './ViewAllLink';
 
 /**
- * Format: stacked horizontal cards — a small square thumbnail beside a title
- * and a one-line snippet. Reads like a newspaper's column of briefs.
+ * Field Notes as a column of split cards: one piece per row, the cover image
+ * filling the left half and the type · date · title · summary the right half.
+ * The tall 50/50 rows give the column enough height to stand level with The
+ * Practice list it shares a row with, so neither side dangles short.
  */
 export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: ContentEntry[] }) {
   // Entries arrive newest-first (getSectionEntries), so the latest post leads.
-  const items = entries.slice(0, 8);
+  const items = entries.slice(0, 6);
   return (
     <div>
-      <SectionHeader zone={zone} from="right" href={`/${zone.id}/`} />
+      <SectionHeader zone={zone} from="right" />
 
-      <div className="mt-9 space-y-4">
+      <div className="mt-9 space-y-5">
         {items.map((entry, i) => (
           <Reveal from="right" delay={0.08 * i} key={entry.slug} as="article">
             <a
               href={`/${entry.section}/${entry.slug}/`}
-              className="group block rounded-2xl border border-black/10 bg-[#f9f8f4] p-3 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#f5efe0] hover:shadow-md md:border-transparent md:bg-transparent dark:border-white/10 dark:bg-secondary-bg dark:hover:bg-tertiary-bg md:dark:border-transparent md:dark:bg-transparent"
+              // Minimalist row: a thin hairline frame with the cover flush to the
+              // edge — no inner padding on the image, so it reads as one clean tile.
+              // Border warms to rust on hover.
+              className="group flex items-stretch overflow-hidden rounded-xl border border-black/[0.12] transition-all duration-300 hover:-translate-y-0.5 hover:border-highlight/60 hover:bg-white/70 hover:shadow-sm dark:border-white/[0.08] dark:hover:border-highlight/60 dark:hover:bg-white/[0.06]"
             >
-              {/* Mobile only: image + heading share a row (same height), description breaks to its own full-width row below */}
-              <div className="flex items-center gap-4 md:hidden">
-                <div className="h-20 w-20 shrink-0 overflow-hidden rounded-[28%]">
-                  <CoverImage
-                    src={entry.cover}
+              {/* Left — the cover image, flush to the card edge */}
+              <div className="aspect-4/3 w-2/5 shrink-0 overflow-hidden md:aspect-2/1">
+                {entry.cover ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={cloudinaryUrl(entry.cover, { width: 800 })}
                     alt={entry.title}
-                    ratio="square"
-                    shape="squircle"
-                    className="h-full w-full transition-transform duration-500 group-hover:scale-110"
+                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <TypeBadge type={entry.type} />
-                    {entry.date && (
-                      <time className="label text-parchment-faint">{formatDate(entry.date)}</time>
-                    )}
-                  </div>
-                  <h3 className="mt-1 line-clamp-3 font-rounded text-[calc(1.25rem_-_2pt)] leading-snug text-parchment transition-colors sm:text-[1.25rem] duration-300 group-hover:text-sand">
-                    {entry.title}
-                  </h3>
-                </div>
+                ) : (
+                  <div className="h-full w-full bg-linear-to-br from-sand-deep via-sand to-sand-soft" />
+                )}
               </div>
-              <p className="mt-2 line-clamp-3 font-rounded text-sm leading-relaxed text-parchment/85 md:hidden">
-                {entry.description}
-              </p>
 
-              {/* Tablet/desktop: original single-row layout, unchanged */}
-              <div className="hidden items-center gap-5 md:flex">
-                <div className="w-28 shrink-0 overflow-hidden rounded-[28%] md:w-32">
-                  <CoverImage
-                    src={entry.cover}
-                    alt={entry.title}
-                    ratio="square"
-                    shape="squircle"
-                    className="transition-transform duration-500 group-hover:scale-110"
-                  />
+              {/* Right — the writing */}
+              <div className="flex min-w-0 flex-1 flex-col justify-center px-3 py-2 sm:px-4">
+                <div className="flex flex-wrap items-center gap-2">
+                  <TypeBadge type={entry.type} />
+                  {entry.date && (
+                    <time className="label text-parchment-faint">{formatDate(entry.date)}</time>
+                  )}
                 </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <TypeBadge type={entry.type} />
-                    {entry.date && (
-                      <time className="label text-parchment-faint">{formatDate(entry.date)}</time>
-                    )}
-                  </div>
-                  <h3 className="mt-1 font-rounded text-[calc(1.25rem_-_2pt)] leading-snug text-parchment transition-colors sm:text-[1.25rem] duration-300 group-hover:text-sand">
-                    {entry.title}
-                  </h3>
-                  <p className="mt-1.5 line-clamp-2 font-rounded text-sm leading-relaxed text-parchment/85">
+                <h3 className="mt-1.5 line-clamp-3 font-rounded text-base leading-snug text-parchment transition-colors duration-300 group-hover:text-highlight sm:text-lg md:line-clamp-2">
+                  {entry.title}
+                </h3>
+                {entry.description && (
+                  <p className="mt-1.5 line-clamp-2 font-rounded text-sm leading-relaxed text-parchment/80 sm:line-clamp-3 md:line-clamp-2 md:text-[0.9375rem]">
                     {entry.description}
                   </p>
-                </div>
+                )}
               </div>
             </a>
           </Reveal>

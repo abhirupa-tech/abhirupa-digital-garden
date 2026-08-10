@@ -28,7 +28,7 @@ export function ArticleFooter({
             href={entry.medium}
             rel="noopener noreferrer"
             target="_blank"
-            className="text-sand underline decoration-sand/40 underline-offset-4 hover:text-sand-soft"
+            className="text-sand underline decoration-sand/40 underline-offset-4 hover:text-highlight"
           >
             Medium
           </a>
@@ -52,23 +52,23 @@ export function ArticleFooter({
               About the author
             </h2>
             <p className="mt-4 font-body text-base leading-relaxed text-parchment/85">
-              <a href="/" className="text-parchment underline decoration-sand/40 underline-offset-4 hover:text-sand">
+              <a href="/" className="text-parchment underline decoration-sand/40 underline-offset-4 hover:text-highlight">
                 {site.name}
               </a>{' '}
               is a {site.role} designing{' '}
-              <a href="/#the-practice" className="text-sand underline decoration-sand/40 underline-offset-4 hover:text-sand-soft">
+              <a href="/#the-practice" className="text-sand underline decoration-sand/40 underline-offset-4 hover:text-highlight">
                 agentic AI interfaces
               </a>{' '}
               — the frontend for AI where agents reason alongside people. She writes on{' '}
-              <a href="/#field-notes" className="text-sand underline decoration-sand/40 underline-offset-4 hover:text-sand-soft">
+              <a href="/#field-notes" className="text-sand underline decoration-sand/40 underline-offset-4 hover:text-highlight">
                 human–AI interaction
               </a>
               ,{' '}
-              <a href="/#design-thinking" className="text-sand underline decoration-sand/40 underline-offset-4 hover:text-sand-soft">
+              <a href="/#design-thinking" className="text-sand underline decoration-sand/40 underline-offset-4 hover:text-highlight">
                 design thinking for intelligent systems
               </a>
               , and the craft of{' '}
-              <a href="/#field-notes" className="text-sand underline decoration-sand/40 underline-offset-4 hover:text-sand-soft">
+              <a href="/#field-notes" className="text-sand underline decoration-sand/40 underline-offset-4 hover:text-highlight">
                 frontend engineering
               </a>
               .

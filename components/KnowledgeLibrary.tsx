@@ -127,7 +127,7 @@ export function KnowledgeLibrary({
   if (!hero) {
     return (
       <div>
-        <SectionHeader zone={zone} href={`/${zone.id}/`} />
+        <SectionHeader zone={zone} />
       </div>
     );
   }
@@ -135,7 +135,7 @@ export function KnowledgeLibrary({
   if (layout === 'stacked') {
     return (
       <div>
-        <SectionHeader zone={zone} href={`/${zone.id}/`} />
+        <SectionHeader zone={zone} />
         <div className="mt-8">
           <HeroCard item={hero} />
         </div>
@@ -160,7 +160,7 @@ export function KnowledgeLibrary({
             card, so the right column's row list — which starts at the
             same grid row — begins level with the heading, not the card. */}
         <div className="lg:col-span-6">
-          <SectionHeader zone={zone} href={`/${zone.id}/`} />
+          <SectionHeader zone={zone} />
           <div className="mt-8">
             <HeroCard item={hero} />
           </div>

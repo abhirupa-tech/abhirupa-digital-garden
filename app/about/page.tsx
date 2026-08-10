@@ -12,7 +12,6 @@ const ABOUT_DESCRIPTION =
 export const metadata: Metadata = {
   title: 'About',
   description: ABOUT_DESCRIPTION,
-  keywords: [...site.keywords],
   alternates: { canonical: '/about/' },
   openGraph: {
     type: 'profile',

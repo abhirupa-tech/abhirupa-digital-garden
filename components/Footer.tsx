@@ -32,7 +32,7 @@ export function Footer() {
         </svg>
       </div>
 
-      <div className="zone pt-20 pb-12">
+      <div className="zone pt-12 pb-8 md:pt-20 md:pb-12">
         {/* Coastline side-mark / visual bookmark */}
         <div className="pointer-events-none absolute left-0 top-24 hidden h-40 w-1 bg-linear-to-b from-[#e8c9a0]/60 to-transparent md:block" />
 
@@ -55,25 +55,30 @@ export function Footer() {
 
         {/* Brand + sitemap, balanced across the row so the footer reads as one
             composed block rather than a stray column of links. */}
-        <div className="grid gap-12 md:grid-cols-12 md:gap-10">
+        <div className="grid gap-8 md:grid-cols-12 md:gap-10">
           <Reveal className="md:col-span-4">
-            <p className="font-display text-2xl leading-none text-white">{site.name}</p>
-            <p className="mt-4 max-w-xs font-body text-base leading-relaxed text-white/60">
+            <p className="font-display text-xl leading-none text-white md:text-2xl">{site.name}</p>
+            <p className="mt-3 max-w-xs font-body text-sm leading-relaxed text-white/60 md:mt-4 md:text-base">
               {site.role} designing agentic AI interfaces — the surfaces where
               agents reason, and thrive.
             </p>
           </Reveal>
 
           <Reveal delay={0.1} className="md:col-span-8">
-            <nav aria-label="Site" className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3">
+            <nav
+              aria-label="Site"
+              className="grid grid-cols-3 gap-x-4 gap-y-6 sm:gap-x-8 md:gap-y-10"
+            >
               {sitemapLinks.map((group) => (
                 <div key={group.heading}>
-                  <h3 className="label mb-4 text-white/45">{group.heading}</h3>
-                  <ul className="space-y-3">
+                  <h3 className="label mb-2.5 text-[0.62rem] text-white/45 md:mb-4 md:text-[0.7rem]">
+                    {group.heading}
+                  </h3>
+                  <ul className="space-y-2 md:space-y-3">
                     {group.links.map((link) => {
                       const external = link.href.startsWith('http') || link.href.startsWith('mailto');
                       const className =
-                        'font-body text-base text-white/70 transition-colors duration-300 hover:text-[#e8c9a0]';
+                        'font-body text-sm text-white/70 transition-colors duration-300 hover:text-rust-soft md:text-base';
                       return (
                         <li key={link.label}>
                           {external ? (
@@ -100,11 +105,13 @@ export function Footer() {
           </Reveal>
         </div>
 
-        <div className="mt-16 flex flex-col gap-3 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="label text-white/45">
+        <div className="mt-10 flex flex-col gap-2 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between md:mt-16 md:gap-3 md:pt-6">
+          <p className="label text-[0.62rem] text-white/45 md:text-[0.7rem]">
             © {year} {site.name}
           </p>
-          <p className="label text-white/45">Built with ❤️ in the garden</p>
+          <p className="label text-[0.62rem] text-white/45 md:text-[0.7rem]">
+            Built with ❤️ in the garden
+          </p>
         </div>
       </div>
     </footer>

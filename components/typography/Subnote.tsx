@@ -11,7 +11,7 @@ export function Subnote({ children, note }: { children: ReactNode; note: ReactNo
       trigger={children}
       note={note}
       icon
-      triggerClassName="border-b border-dotted border-sand/60 text-sand hover:text-sand-soft"
+      triggerClassName="border-b border-dotted border-sand/60 text-sand hover:text-highlight"
       noteClassName="font-rounded text-base text-sand"
     />
   );
