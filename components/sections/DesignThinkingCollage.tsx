@@ -91,7 +91,7 @@ export function DesignThinkingCollage({ zone, entries }: { zone: Zone; entries: 
       <div className="-mx-6 mt-10 flex snap-x snap-mandatory gap-x-8 overflow-x-auto px-6 pb-4 scrollbar-thin md:-mx-10 md:px-10">
         {items.map((entry, i) => {
           const external = Boolean(entry.link);
-          const href = entry.link || `/${entry.section}/${entry.slug}`;
+          const href = entry.link || `/${entry.section}/${entry.slug}/`;
           return (
             <Reveal delay={0.06 * i} key={entry.slug} as="article" className="w-44 shrink-0 snap-start sm:w-52">
               <a

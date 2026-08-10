@@ -51,7 +51,7 @@ function Meta({ entry }: { entry: ContentEntry }) {
 }
 
 export function CollectionCard({ entry }: { entry: ContentEntry }) {
-  const href = `/${entry.section}/${entry.slug}`;
+  const href = `/${entry.section}/${entry.slug}/`;
 
   // Field Notes → image card (thumbnail on top, brief beneath).
   if (entry.section === 'field-notes') {

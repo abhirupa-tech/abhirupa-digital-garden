@@ -70,7 +70,7 @@ export async function generateMetadata({
       url,
       title: `${zone.kicker} · ${site.name}`,
       description,
-      siteName: `${site.name} — Digital Garden`,
+      siteName: site.name,
       locale: site.locale,
       images: [{ url: image, width: 1200, height: 630, alt: `${zone.kicker} · ${site.name}` }],
     },
@@ -149,7 +149,7 @@ export default async function SectionPage({ params }: { params: Promise<PagePara
     <>
       <SectionStructuredData zone={zone} entries={entries} />
 
-      <main className="zone relative pt-24 pb-8 md:pt-28 md:pb-14">
+      <main className="zone relative max-md:px-4 pt-24 pb-8 md:pt-28 md:pb-14">
         <Reveal className="max-w-2xl">
           <div className="flex items-baseline gap-4">
             <span className="font-rounded text-lg font-medium text-sand/90">{zone.index}</span>

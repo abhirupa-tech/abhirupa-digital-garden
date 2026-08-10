@@ -16,13 +16,13 @@ export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: Conten
   const items = entries.slice(0, 8);
   return (
     <div>
-      <SectionHeader zone={zone} from="right" href={`/${zone.id}`} />
+      <SectionHeader zone={zone} from="right" href={`/${zone.id}/`} />
 
       <div className="mt-9 space-y-4">
         {items.map((entry, i) => (
           <Reveal from="right" delay={0.08 * i} key={entry.slug} as="article">
             <a
-              href={`/${entry.section}/${entry.slug}`}
+              href={`/${entry.section}/${entry.slug}/`}
               className="group block rounded-2xl border border-black/10 bg-[#f9f8f4] p-3 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#f5efe0] hover:shadow-md md:border-transparent md:bg-transparent"
             >
               {/* Mobile only: image + heading share a row (same height), description breaks to its own full-width row below */}
@@ -84,7 +84,7 @@ export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: Conten
       </div>
 
       <Reveal from="right" delay={0.2} className="mt-6">
-        <ViewAllLink href={`/${zone.id}`} count={entries.length} />
+        <ViewAllLink href={`/${zone.id}/`} count={entries.length} />
       </Reveal>
     </div>
   );

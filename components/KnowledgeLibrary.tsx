@@ -18,7 +18,7 @@ function HeroCard({ item }: { item: ContentEntry }) {
   return (
     <Reveal from="left">
       <HoverLink
-        href={`/${item.section}/${item.slug}`}
+        href={`/${item.section}/${item.slug}/`}
         className="group block rounded-xl border border-parchment/10 bg-[#f9f6e9] p-3 backdrop-blur-[2px]"
       >
         <div className="overflow-hidden rounded-lg">
@@ -55,7 +55,7 @@ function EntryRow({ item, delay }: { item: ContentEntry; delay: number }) {
   return (
     <Reveal from="right" delay={delay}>
       <HoverLink
-        href={`/${item.section}/${item.slug}`}
+        href={`/${item.section}/${item.slug}/`}
         className="relative -mx-3 flex items-start gap-4 rounded-xl px-3 py-4"
       >
         <div className="mt-0.5 h-9 w-9 shrink-0 overflow-hidden rounded-full border border-sand/25 bg-sand/10">
@@ -91,7 +91,7 @@ export function KnowledgeLibrary({ zone, entries }: { zone: Zone; entries: Conte
 
   return (
     <div>
-      {!hero && <SectionHeader zone={zone} href={`/${zone.id}`} />}
+      {!hero && <SectionHeader zone={zone} href={`/${zone.id}/`} />}
 
       {hero && (
         <div className="grid gap-x-10 gap-y-8 lg:grid-cols-12 lg:items-start">
@@ -99,7 +99,7 @@ export function KnowledgeLibrary({ zone, entries }: { zone: Zone; entries: Conte
               card, so the right column's row list — which starts at the
               same grid row — begins level with the heading, not the card. */}
           <div className="lg:col-span-6">
-            <SectionHeader zone={zone} href={`/${zone.id}`} />
+            <SectionHeader zone={zone} href={`/${zone.id}/`} />
             <div className="mt-8">
               <HeroCard item={hero} />
             </div>
@@ -111,7 +111,7 @@ export function KnowledgeLibrary({ zone, entries }: { zone: Zone; entries: Conte
                 <EntryRow key={item.slug} item={item} delay={0.08 * i} />
               ))}
               <Reveal from="right" delay={0.08 * rows.length} className="mt-6 px-3">
-                <ViewAllLink href={`/${zone.id}`} count={entries.length} />
+                <ViewAllLink href={`/${zone.id}/`} count={entries.length} />
               </Reveal>
             </div>
           )}

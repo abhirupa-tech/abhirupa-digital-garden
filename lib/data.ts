@@ -65,10 +65,10 @@ export const sitemapLinks: { heading: string; links: { label: string; href: stri
     heading: 'The Garden',
     links: [
       { label: 'Home', href: '/' },
-      { label: 'About', href: '/about' },
-      { label: 'The Practice', href: '/the-practice' },
-      { label: 'Field Notes', href: '/field-notes' },
-      { label: 'Design Thinking', href: '/design-thinking' },
+      { label: 'About', href: '/about/' },
+      { label: 'The Practice', href: '/the-practice/' },
+      { label: 'Field Notes', href: '/field-notes/' },
+      { label: 'Design Thinking', href: '/design-thinking/' },
       ...(featureFlags.showKnowledgeSection
         ? [{ label: 'Knowledge Library', href: '/#knowledge-library' }]
         : []),
@@ -77,15 +77,9 @@ export const sitemapLinks: { heading: string; links: { label: string; href: stri
   {
     heading: 'Writing',
     links: [
-      { label: 'Essays', href: '/collections/essay' },
-      { label: 'Guides', href: '/collections/guide' },
-      { label: 'Playbooks', href: '/collections/playbook' },
-      ...(featureFlags.showKnowledgeSection
-        ? [
-            { label: 'Research Notes', href: '/#knowledge-library' },
-            { label: 'Reading List', href: '/#knowledge-library' },
-          ]
-        : []),
+      { label: 'Essays', href: '/collections/essay/' },
+      { label: 'Guides', href: '/collections/guide/' },
+      { label: 'Playbooks', href: '/collections/playbook/' },
     ],
   },
   {

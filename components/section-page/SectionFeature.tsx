@@ -37,13 +37,13 @@ export function SectionFeature({ entry }: { entry: ContentEntry }) {
           </div>
 
           <h2 className="mt-4">
-            <AnimatedTitle className="font-display text-2xl font-medium leading-snug md:text-3xl">
+            <AnimatedTitle className="font-display text-[1.7rem] font-medium leading-snug md:text-3xl">
               {entry.title}
             </AnimatedTitle>
           </h2>
 
           {entry.description && (
-            <p className="mt-3 max-w-xl font-rounded text-lg leading-relaxed text-parchment/80">
+            <p className="mt-3 max-w-xl font-rounded text-base leading-relaxed text-parchment/80 md:text-lg">
               {entry.description}
             </p>
           )}

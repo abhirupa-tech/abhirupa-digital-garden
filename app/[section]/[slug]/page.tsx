@@ -78,7 +78,7 @@ export async function generateMetadata({
       url,
       title: entry.title,
       description,
-      siteName: `${site.name} — Digital Garden`,
+      siteName: site.name,
       locale: site.locale,
       publishedTime: entry.date || undefined,
       modifiedTime: entry.date || undefined,

@@ -151,11 +151,11 @@
     --raw-parchment-muted: 58 54 48;
     --raw-parchment-faint: 96 90 80;
 
-    --bg-canvas-1: #f5f4f1;
-    --bg-canvas-2: #f1efe9;
-    --bg-canvas-3: #ece9e1;
-    --bg-canvas-4: #e6e2d7;
-    --bg-canvas-5: #ddd8c9;
+    --bg-canvas-1: #fbfaf7;
+    --bg-canvas-2: #f8f6f0;
+    --bg-canvas-3: #f4f1e8;
+    --bg-canvas-4: #efeade;
+    --bg-canvas-5: #e8e2d2;
 
     --selection-bg: rgba(29, 58, 99, 0.18);
     --selection-fg: #f4f3ef;

@@ -18,12 +18,15 @@ export function Hero() {
     <header id="top" className="relative flex min-h-svh flex-col justify-center overflow-hidden">
       <div className="zone flex-1 flex flex-col justify-center pt-14 pb-10 md:pt-28 md:pb-16">
         <motion.p {...rise(0.1)} className="label mb-5 sm:mb-8">
-          {site.name} · Senior Frontend Engineer · Agentic AI Interfaces
+          <span className="sm:hidden">AI Frontend Engineer</span>
+          <span className="hidden sm:inline">
+            {site.name} · Senior Frontend Engineer · Agentic AI Interfaces
+          </span>
         </motion.p>
 
         <motion.h1
           {...rise(0.25)}
-          className="max-w-[16ch] font-display text-[clamp(2.25rem,5.2vw,4.5rem)] font-medium leading-[1.08] tracking-[-0.015em] text-parchment lg:max-w-[25ch]"
+          className="max-w-[16ch] font-display text-[clamp(1.8rem,5.2vw,4.5rem)] font-medium leading-[1.08] tracking-[-0.015em] text-parchment lg:max-w-[25ch]"
         >
           Abhirupa architects spaces where{' '}
           <span className="box-decoration-clone bg-linear-to-r from-rust-deep via-rust to-rust-soft bg-clip-text pr-[0.14em] font-semibold italic text-transparent">
@@ -36,12 +39,12 @@ export function Hero() {
           {...rise(0.5)}
           className="mt-5 max-w-2xl font-serif text-sub font-light text-parchment-muted sm:mt-8"
         >
-          {site.subline} — designing the frontend where agents reason, and a
-          quieter practice of slow living behind the work.
+          {site.subline} — designing the frontend where agents reason, and
+          thrive.
         </motion.p>
 
         <motion.div {...rise(0.7)} className="mt-8 flex flex-wrap items-center gap-x-10 gap-y-6 sm:mt-12">
-          <SocialIcons />
+          <SocialIcons mobileIconsOnly />
           <div className="flex items-center gap-3 text-parchment-faint">
             <span className="accent-rule" />
             <span className="label text-[0.62rem]">Scroll to wander</span>

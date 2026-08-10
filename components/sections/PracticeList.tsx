@@ -31,13 +31,13 @@ export function PracticeList({ zone, entries }: { zone: Zone; entries: ContentEn
   const items = entries.slice(0, 8);
   return (
     <div>
-      <SectionHeader zone={zone} from="left" href={`/${zone.id}`} />
+      <SectionHeader zone={zone} from="left" href={`/${zone.id}/`} />
 
       <Reveal from="left" delay={0.1} as="ol" className="mt-9 border-t border-parchment/12">
         {items.map((entry, i) => (
           <li key={entry.slug}>
             <HoverLink
-              href={`/${entry.section}/${entry.slug}`}
+              href={`/${entry.section}/${entry.slug}/`}
               className="relative -mx-3 flex items-baseline gap-5 rounded-xl px-3 py-5"
             >
               <motion.span
@@ -72,7 +72,7 @@ export function PracticeList({ zone, entries }: { zone: Zone; entries: ContentEn
       </Reveal>
 
       <Reveal from="left" delay={0.2} className="mt-6">
-        <ViewAllLink href={`/${zone.id}`} count={entries.length} />
+        <ViewAllLink href={`/${zone.id}/`} count={entries.length} />
       </Reveal>
     </div>
   );

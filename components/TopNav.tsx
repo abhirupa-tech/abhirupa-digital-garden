@@ -103,7 +103,7 @@ export function TopNav() {
     >
       <nav
         aria-label="Primary"
-        className={`flex items-center px-6 py-4 md:px-10 lg:pr-12 ${isArticle ? 'lg:pl-24' : ''}`}
+        className={`flex items-center gap-6 px-6 py-4 md:px-10 lg:pr-12 ${isArticle ? 'lg:pl-24' : ''}`}
       >
         {showHome && (
           <motion.a
@@ -131,8 +131,11 @@ export function TopNav() {
           </motion.a>
         )}
 
-        <div className={`flex items-center gap-8 ${isHome ? 'lg:ml-auto' : 'ml-auto'}`}>
-          <NavLink href="/about" active={path === '/about'}>
+        {/* Links rest on the left on mobile so the fixed top-right hamburger
+            (home + article pages) never overlaps them; they move to the right
+            edge from lg up, where the hamburger is replaced by the side rail. */}
+        <div className="flex items-center gap-8 lg:ml-auto">
+          <NavLink href="/about/" active={path === '/about'}>
             About
           </NavLink>
           <NavLink href="/#stay-updated" active={false}>

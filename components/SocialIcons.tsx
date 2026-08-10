@@ -59,21 +59,25 @@ const underlineVariants: Variants = {
 export function SocialIcons({
   className,
   tone = 'default',
+  mobileIconsOnly = false,
 }: {
   className?: string;
   /** 'light' for use on dark backgrounds (e.g. the footer). */
   tone?: 'default' | 'light';
+  /** On mobile, drop the labels and keep the icons in a single row. */
+  mobileIconsOnly?: boolean;
 }) {
   const reduce = useReducedMotion();
   const toneClass =
     tone === 'light'
       ? 'text-white/70 hover:text-[#e8c9a0] focus-visible:text-[#e8c9a0]'
       : 'text-sand hover:text-sand-soft focus-visible:text-sand-soft';
+  const listClass = mobileIconsOnly
+    ? 'flex items-center gap-5 sm:gap-6'
+    : 'grid grid-cols-2 gap-x-6 gap-y-4 sm:flex sm:items-center sm:gap-6';
 
   return (
-    <ul
-      className={`grid grid-cols-2 gap-x-6 gap-y-4 sm:flex sm:items-center sm:gap-6 ${className ?? ''}`}
-    >
+    <ul className={`${listClass} ${className ?? ''}`}>
       {socials.map((s) => (
         <li key={s.key}>
           <motion.a
@@ -90,7 +94,7 @@ export function SocialIcons({
             className={`inline-flex items-center gap-2 transition-colors duration-500 focus-visible:outline-hidden ${toneClass}`}
           >
             {icons[s.key]}
-            <span className="relative">
+            <span className={`relative ${mobileIconsOnly ? 'hidden sm:inline' : ''}`}>
               <span className="label text-[0.72rem] text-current">{s.label}</span>
               <motion.span
                 aria-hidden="true"

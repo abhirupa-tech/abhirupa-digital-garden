@@ -75,7 +75,7 @@ export const metadata: Metadata = {
     title: `${site.name} — Agentic AI Interfaces & Frontend for AI`,
     description: site.description,
     url: site.url,
-    siteName: `${site.name} — Digital Garden`,
+    siteName: site.name,
     locale: site.locale,
     images: [
       {
@@ -156,7 +156,10 @@ function StructuredData() {
         '@type': 'WebSite',
         '@id': `${site.url}/#website`,
         url: site.url,
-        name: `${site.name} — Digital Garden`,
+        // The concise site name Google shows in results (the domain is used as
+        // a fallback when this is missing or reads as a long descriptive title).
+        name: site.name,
+        alternateName: `${site.name} — Digital Garden`,
         description: site.description,
         publisher: { '@id': `${site.url}/#person` },
         inLanguage: 'en-US',

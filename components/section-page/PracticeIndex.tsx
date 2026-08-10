@@ -60,7 +60,7 @@ export function PracticeIndex({ entries }: { entries: ContentEntry[] }) {
                 </div>
 
                 {entry.description && (
-                  <p className="mt-2 max-w-2xl font-rounded text-base leading-relaxed text-parchment/70">
+                  <p className="mt-2 max-w-2xl font-rounded text-sm leading-relaxed text-parchment/70 md:text-base">
                     {entry.description}
                   </p>
                 )}
