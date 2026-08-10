@@ -203,12 +203,24 @@
 
   body {
     @apply font-body text-parchment antialiased;
-    /*
-     * The single, imperceptible gradient of the whole ecosystem: the off-white
-     * canvas at the top, easing into a deeper warm tone below. Fixed so
-     * scrolling reveals the transition slowly.
-     */
     background-color: var(--bg-canvas-1);
+  }
+
+  /*
+   * The single, imperceptible gradient of the whole ecosystem: the off-white
+   * canvas at the top, easing into a deeper warm tone below. Painted on a
+   * fixed layer *behind* content (a negative-z pseudo-element) rather than via
+   * `background-attachment: fixed` on <body>. A fixed body background forces
+   * Chrome to repaint the whole page on every scroll/pointer tick — that
+   * repaint churn is what made the cursor flicker and never settle into the
+   * pointer over links. This layer is composited once and never repaints.
+   */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
     background-image: linear-gradient(
       180deg,
       var(--bg-canvas-1) 0%,
@@ -217,8 +229,15 @@
       var(--bg-canvas-4) 70%,
       var(--bg-canvas-5) 100%
     );
-    background-attachment: fixed;
-    background-repeat: no-repeat;
+  }
+
+  /* Interactive elements always show the hand pointer, so a link never reads
+     as plain text under the cursor. */
+  a[href],
+  button:not(:disabled),
+  [role='button'],
+  summary {
+    cursor: pointer;
   }
 
   ::selection {

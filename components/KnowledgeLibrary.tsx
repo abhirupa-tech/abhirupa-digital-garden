@@ -10,9 +10,6 @@ import { HoverLink, AnimatedTitle, HoverDivider } from './motion/HoverLink';
 import { SectionHeader } from './sections/SectionHeader';
 import { ViewAllLink } from './sections/ViewAllLink';
 
-const AUTHOR_MARK_URL =
-  'https://res.cloudinary.com/ra5tg986/image/upload/v1784392260/Gemini_Generated_Image_k6ew92k6ew92k6ew_wfy2kp.png';
-
 /** The one featured piece — image, and up to five lines of subtext. */
 function HeroCard({ item }: { item: ContentEntry }) {
   return (
@@ -41,7 +38,7 @@ function HeroCard({ item }: { item: ContentEntry }) {
               {item.title}
             </AnimatedTitle>
           </h3>
-          <p className="mt-3 line-clamp-4 font-rounded text-base leading-relaxed text-parchment/80">
+          <p className="mt-3 line-clamp-4 font-rounded text-sm leading-relaxed text-parchment/85">
             {item.description}
           </p>
         </div>
@@ -50,73 +47,114 @@ function HeroCard({ item }: { item: ContentEntry }) {
   );
 }
 
-/** A text-only row — no image, two lines of subtext at most. */
+/**
+ * A single clean index row: a small type · date label, the title, and an arrow
+ * that slides on hover. No imagery, no ragged descriptions — every row is the
+ * same shape, so the list reads as one uniform, minimal set beneath the hero.
+ */
 function EntryRow({ item, delay }: { item: ContentEntry; delay: number }) {
   return (
     <Reveal from="right" delay={delay}>
       <HoverLink
         href={`/${item.section}/${item.slug}/`}
-        className="relative -mx-3 flex items-start gap-4 rounded-xl px-3 py-4"
+        className="group relative -mx-3 flex items-center gap-4 rounded-xl px-3 py-4"
       >
-        <div className="mt-0.5 h-9 w-9 shrink-0 overflow-hidden rounded-full border border-sand/25 bg-sand/10">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={AUTHOR_MARK_URL} alt="" className="h-full w-full object-cover" />
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
+        <span className="min-w-0 flex-1">
+          <span className="mb-2 flex items-center gap-2">
             <TypeBadge type={item.type} />
             {item.date && (
               <time className="label text-parchment-faint">{formatDate(item.date)}</time>
             )}
-          </div>
-          <h4 className="mt-1.5">
-            <AnimatedTitle className="font-rounded text-[calc(1.25rem_-_2pt)] leading-snug sm:text-[1.25rem]">
-              {item.title}
-            </AnimatedTitle>
-          </h4>
-          <p className="mt-1.5 line-clamp-2 font-rounded text-sm leading-relaxed text-parchment/70">
-            {item.description}
-          </p>
-        </div>
+          </span>
+          <AnimatedTitle className="font-rounded text-[calc(1.25rem_-_2pt)] leading-snug sm:text-[1.25rem]">
+            {item.title}
+          </AnimatedTitle>
+        </span>
+        <span
+          aria-hidden="true"
+          className="shrink-0 text-lg text-parchment-faint transition-all duration-300 group-hover:translate-x-1 group-hover:text-rust"
+        >
+          →
+        </span>
         <HoverDivider />
       </HoverLink>
     </Reveal>
   );
 }
 
-export function KnowledgeLibrary({ zone, entries }: { zone: Zone; entries: ContentEntry[] }) {
+export function KnowledgeLibrary({
+  zone,
+  entries,
+  /**
+   * `split` (default) lays the hero card and the row list side by side —
+   * used when this section owns a full-width row. `stacked` puts the hero
+   * "model" on top with the rows in a single column beneath it — used when
+   * the section sits in the narrower left column of a shared row.
+   */
+  layout = 'split',
+}: {
+  zone: Zone;
+  entries: ContentEntry[];
+  layout?: 'split' | 'stacked';
+}) {
   const [hero, ...rest] = entries;
-  // Hero + up to seven rows = eight pieces at most on the home page.
-  const rows = rest.slice(0, 7);
+  // Hero + rows. The stacked column runs vertically, so it shows fewer rows to
+  // stay balanced against its neighbor; the split layout can hold more.
+  const rows = rest.slice(0, layout === 'stacked' ? 5 : 7);
+
+  if (!hero) {
+    return (
+      <div>
+        <SectionHeader zone={zone} href={`/${zone.id}/`} />
+      </div>
+    );
+  }
+
+  if (layout === 'stacked') {
+    return (
+      <div>
+        <SectionHeader zone={zone} href={`/${zone.id}/`} />
+        <div className="mt-8">
+          <HeroCard item={hero} />
+        </div>
+        {rows.length > 0 && (
+          <div className="mt-4 border-t border-parchment/12">
+            {rows.map((item, i) => (
+              <EntryRow key={item.slug} item={item} delay={0.06 * i} />
+            ))}
+            <Reveal from="right" delay={0.06 * rows.length} className="mt-4 px-3">
+              <ViewAllLink href={`/${zone.id}/`} count={entries.length} />
+            </Reveal>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div>
-      {!hero && <SectionHeader zone={zone} href={`/${zone.id}/`} />}
-
-      {hero && (
-        <div className="grid gap-x-10 gap-y-8 lg:grid-cols-12 lg:items-start">
-          {/* Left column: the section heading sits directly above the hero
-              card, so the right column's row list — which starts at the
-              same grid row — begins level with the heading, not the card. */}
-          <div className="lg:col-span-6">
-            <SectionHeader zone={zone} href={`/${zone.id}/`} />
-            <div className="mt-8">
-              <HeroCard item={hero} />
-            </div>
+      <div className="grid gap-x-10 gap-y-8 lg:grid-cols-12 lg:items-start">
+        {/* Left column: the section heading sits directly above the hero
+            card, so the right column's row list — which starts at the
+            same grid row — begins level with the heading, not the card. */}
+        <div className="lg:col-span-6">
+          <SectionHeader zone={zone} href={`/${zone.id}/`} />
+          <div className="mt-8">
+            <HeroCard item={hero} />
           </div>
-
-          {rows.length > 0 && (
-            <div className="lg:col-span-6">
-              {rows.map((item, i) => (
-                <EntryRow key={item.slug} item={item} delay={0.08 * i} />
-              ))}
-              <Reveal from="right" delay={0.08 * rows.length} className="mt-6 px-3">
-                <ViewAllLink href={`/${zone.id}/`} count={entries.length} />
-              </Reveal>
-            </div>
-          )}
         </div>
-      )}
+
+        {rows.length > 0 && (
+          <div className="lg:col-span-6">
+            {rows.map((item, i) => (
+              <EntryRow key={item.slug} item={item} delay={0.08 * i} />
+            ))}
+            <Reveal from="right" delay={0.08 * rows.length} className="mt-6 px-3">
+              <ViewAllLink href={`/${zone.id}/`} count={entries.length} />
+            </Reveal>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

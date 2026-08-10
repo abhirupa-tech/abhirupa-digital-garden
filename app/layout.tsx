@@ -31,7 +31,7 @@ const quicksand = Quicksand({
   subsets: ['latin'],
   variable: '--font-quicksand',
   display: 'swap',
-  weight: ['300', '400', '500'],
+  weight: ['300', '400', '500', '600'],
 });
 
 export const viewport: Viewport = {

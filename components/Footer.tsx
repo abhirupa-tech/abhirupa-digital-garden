@@ -32,35 +32,43 @@ export function Footer() {
         </svg>
       </div>
 
-      <div className="zone pt-20 pb-14">
+      <div className="zone pt-20 pb-12">
         {/* Coastline side-mark / visual bookmark */}
         <div className="pointer-events-none absolute left-0 top-24 hidden h-40 w-1 bg-linear-to-b from-[#e8c9a0]/60 to-transparent md:block" />
 
-        <div className="grid gap-16 md:grid-cols-12">
-          {/* Call to action + newsletter */}
-          {featureFlags.showNewsletterSection && (
-            <Reveal className="md:col-span-6">
-              <span className="label text-white/55">Stay updated</span>
-              <h2 className="mt-5 max-w-md font-display text-section font-medium text-white">
-                Notes from the garden, now and then.
-              </h2>
-              <p className="mt-4 max-w-md font-body text-lg leading-relaxed text-white/75">
-                Subscribe for Abhirupa’s articles, research, and quiet thoughts on
-                agentic AI interfaces, design thinking, and slow living. No noise —
-                only what’s worth your attention.
-              </p>
-              <div className="mt-8">
-                <Newsletter />
-              </div>
-            </Reveal>
-          )}
+        {featureFlags.showNewsletterSection && (
+          <Reveal className="mb-16 max-w-md">
+            <span className="label text-white/55">Stay updated</span>
+            <h2 className="mt-5 font-display text-section font-medium text-white">
+              Notes from the garden, now and then.
+            </h2>
+            <p className="mt-4 font-body text-lg leading-relaxed text-white/75">
+              Subscribe for Abhirupa’s articles, research, and quiet thoughts on
+              agentic AI interfaces, design thinking, and slow living. No noise —
+              only what’s worth your attention.
+            </p>
+            <div className="mt-8">
+              <Newsletter />
+            </div>
+          </Reveal>
+        )}
 
-          {/* Detailed sitemap */}
-          <Reveal delay={0.1} className={featureFlags.showNewsletterSection ? 'md:col-span-6' : 'md:col-span-12'}>
-            <nav aria-label="Site" className="grid grid-cols-2 gap-10 sm:grid-cols-3">
+        {/* Brand + sitemap, balanced across the row so the footer reads as one
+            composed block rather than a stray column of links. */}
+        <div className="grid gap-12 md:grid-cols-12 md:gap-10">
+          <Reveal className="md:col-span-4">
+            <p className="font-display text-2xl leading-none text-white">{site.name}</p>
+            <p className="mt-4 max-w-xs font-body text-base leading-relaxed text-white/60">
+              {site.role} designing agentic AI interfaces — the surfaces where
+              agents reason, and thrive.
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.1} className="md:col-span-8">
+            <nav aria-label="Site" className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3">
               {sitemapLinks.map((group) => (
                 <div key={group.heading}>
-                  <h3 className="label mb-4 text-white/55">{group.heading}</h3>
+                  <h3 className="label mb-4 text-white/45">{group.heading}</h3>
                   <ul className="space-y-3">
                     {group.links.map((link) => {
                       const external = link.href.startsWith('http') || link.href.startsWith('mailto');
@@ -92,16 +100,11 @@ export function Footer() {
           </Reveal>
         </div>
 
-        <div className="mt-16 flex flex-col gap-6 border-t border-white/15 pt-8 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="font-display text-lg text-white">{site.name}</p>
-            <p className="label mt-2 text-white/55">
-              {site.role} · Agentic AI Interfaces
-            </p>
-          </div>
-          <p className="label text-white/55">
-            © {year} {site.name}. Built with ❤️
+        <div className="mt-16 flex flex-col gap-3 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="label text-white/45">
+            © {year} {site.name}
           </p>
+          <p className="label text-white/45">Built with ❤️ in the garden</p>
         </div>
       </div>
     </footer>

@@ -48,7 +48,7 @@ export function PracticeIndex({ entries }: { entries: ContentEntry[] }) {
               </motion.span>
 
               <div className="min-w-0 flex-1">
-                <AnimatedTitle className="font-rounded text-xl font-medium leading-snug md:text-2xl">
+                <AnimatedTitle className="font-rounded text-xl font-semibold leading-snug tracking-tight subpixel-antialiased md:text-2xl">
                   {entry.title}
                 </AnimatedTitle>
 

@@ -5,3 +5,28 @@ export function formatDate(date: string): string {
   if (Number.isNaN(parsed.getTime())) return date;
   return parsed.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
+
+/**
+ * Strip Markdown syntax down to readable prose — used to preview a piece's
+ * actual opening in surfaces that show a body excerpt (e.g. the section-page
+ * hero). Not a full parser: it drops code blocks, images, list/heading/quote
+ * markers, and emphasis, unwraps links to their text, then collapses
+ * whitespace and trims to `max` characters on a word boundary.
+ */
+export function plainExcerpt(markdown: string, max = 500): string {
+  const text = markdown
+    .replace(/```[\s\S]*?```/g, ' ') // fenced code blocks
+    .replace(/`([^`]+)`/g, '$1') // inline code
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ') // images
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1') // links -> label
+    .replace(/^\s{0,3}#{1,6}\s+/gm, '') // ATX headings
+    .replace(/^\s{0,3}>+\s?/gm, '') // blockquotes
+    .replace(/^\s{0,3}(?:[-*+]|\d+\.)\s+/gm, '') // list markers
+    .replace(/^\s*([-=*_]){3,}\s*$/gm, ' ') // horizontal rules
+    .replace(/[*_~]{1,3}([^*_~]+)[*_~]{1,3}/g, '$1') // emphasis / strikethrough
+    .replace(/\|/g, ' ') // table pipes
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (text.length <= max) return text;
+  return `${text.slice(0, max).replace(/\s+\S*$/, '')}…`;
+}

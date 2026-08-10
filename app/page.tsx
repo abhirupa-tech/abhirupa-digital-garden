@@ -45,17 +45,31 @@ export default function Home() {
           <Sketch name="wave-line" className="h-10 w-36 opacity-40" />
         </div>
 
-        {/* Row B — discovery masonry */}
-        <section id="design-thinking" className="zone scroll-mt-24 pb-8 md:pb-16">
-          <KnowledgeLibrary zone={zoneById['design-thinking']} entries={designThinking} />
-        </section>
+        {/* Row B — Design Thinking (the hero "model" + a list of the rest) shares
+            one row with the Knowledge Library shelf: the writing takes the wide
+            left column, the curated shelf a compact grid on the right. */}
+        <section
+          id="design-thinking"
+          className="zone scroll-mt-24 grid gap-x-14 gap-y-12 pb-8 md:grid-cols-12 md:pb-16"
+        >
+          <div className={featureFlags.showKnowledgeSection ? 'md:col-span-8' : 'md:col-span-12'}>
+            <KnowledgeLibrary
+              zone={zoneById['design-thinking']}
+              entries={designThinking}
+              layout={featureFlags.showKnowledgeSection ? 'stacked' : 'split'}
+            />
+          </div>
 
-        {/* Row C — even, equal-height card row */}
-        {featureFlags.showKnowledgeSection && (
-          <section id="knowledge-library" className="zone scroll-mt-24 pt-8 md:pt-16">
-            <DesignThinkingCollage zone={zoneById['knowledge-library']} entries={library} />
-          </section>
-        )}
+          {featureFlags.showKnowledgeSection && (
+            <div id="knowledge-library" className="scroll-mt-24 md:col-span-4">
+              <DesignThinkingCollage
+                zone={zoneById['knowledge-library']}
+                entries={library}
+                layout="compact"
+              />
+            </div>
+          )}
+        </section>
       </main>
 
         <Footer />

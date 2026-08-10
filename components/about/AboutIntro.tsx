@@ -18,7 +18,7 @@ export function AboutIntro() {
     <div>
       <Reveal>
         <span className="label text-parchment-muted">About</span>
-        <h1 className="mt-6 font-display text-[clamp(2.5rem,6vw,5rem)] font-medium leading-[1.04] tracking-[-0.015em] text-parchment">
+        <h1 className="mt-6 font-display text-[clamp(1.8rem,5.2vw,4.5rem)] font-medium leading-[1.08] tracking-[-0.015em] text-parchment">
           I design the quiet places where{' '}
           <span className="box-decoration-clone bg-linear-to-r from-rust-deep via-rust to-rust-soft bg-clip-text pr-[0.14em] font-semibold italic text-transparent">
             people and AI
