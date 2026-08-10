@@ -30,8 +30,9 @@ export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: Conten
               // Border warms to rust on hover.
               className="group flex items-stretch overflow-hidden rounded-xl border border-black/[0.12] transition-all duration-300 hover:-translate-y-0.5 hover:border-highlight/60 hover:bg-white/70 hover:shadow-sm dark:border-white/[0.08] dark:hover:border-highlight/60 dark:hover:bg-white/[0.06]"
             >
-              {/* Left — the cover image, flush to the card edge */}
-              <div className="aspect-4/3 w-2/5 shrink-0 overflow-hidden md:aspect-2/1">
+              {/* Left — the cover image, flush to the card edge. A near-square
+                  width paired with the row-height stretch keeps it roughly 1:1. */}
+              <div className="w-2/5 shrink-0 overflow-hidden md:w-1/4">
                 {entry.cover ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
