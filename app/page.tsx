@@ -52,7 +52,7 @@ export default function Home() {
           id="design-thinking"
           className="zone scroll-mt-24 grid gap-x-14 gap-y-12 pb-8 md:grid-cols-12 md:pb-16"
         >
-          <div className={featureFlags.showKnowledgeSection ? 'md:col-span-8' : 'md:col-span-12'}>
+          <div className={featureFlags.showKnowledgeSection ? 'md:col-span-6' : 'md:col-span-12'}>
             <KnowledgeLibrary
               zone={zoneById['design-thinking']}
               entries={designThinking}
@@ -61,7 +61,7 @@ export default function Home() {
           </div>
 
           {featureFlags.showKnowledgeSection && (
-            <div id="knowledge-library" className="scroll-mt-24 md:col-span-4">
+            <div id="knowledge-library" className="scroll-mt-24 md:col-span-6">
               <DesignThinkingCollage
                 zone={zoneById['knowledge-library']}
                 entries={library}

@@ -1,5 +1,6 @@
 'use client';
 
+import { motion, type Variants } from 'framer-motion';
 import type { Zone } from '@/lib/data';
 import type { ContentEntry } from '@/lib/content';
 import { formatDate } from '@/lib/format';
@@ -9,6 +10,19 @@ import { Reveal } from './motion/Reveal';
 import { HoverLink, AnimatedTitle, HoverDivider } from './motion/HoverLink';
 import { SectionHeader } from './sections/SectionHeader';
 import { ViewAllLink } from './sections/ViewAllLink';
+
+const RUST = '#d1480f';
+
+// Index number + arrow warm to rust alongside the title, driven by the link's
+// rest/hover variant state — matching the Practice list exactly.
+const numberVariants: Variants = {
+  rest: { color: 'rgb(29 58 99 / 0.8)' },
+  hover: { color: RUST },
+};
+const arrowVariants: Variants = {
+  rest: { color: '#605a50', x: 0 },
+  hover: { color: RUST, x: 4 },
+};
 
 /** The one featured piece — image, and up to five lines of subtext. */
 function HeroCard({ item }: { item: ContentEntry }) {
@@ -52,30 +66,38 @@ function HeroCard({ item }: { item: ContentEntry }) {
  * that slides on hover. No imagery, no ragged descriptions — every row is the
  * same shape, so the list reads as one uniform, minimal set beneath the hero.
  */
-function EntryRow({ item, delay }: { item: ContentEntry; delay: number }) {
+function EntryRow({ item, index, delay }: { item: ContentEntry; index: number; delay: number }) {
   return (
     <Reveal from="right" delay={delay}>
       <HoverLink
         href={`/${item.section}/${item.slug}/`}
-        className="group relative -mx-3 flex items-center gap-4 rounded-xl px-3 py-4"
+        className="group relative -mx-3 flex items-baseline gap-5 rounded-xl px-3 py-4"
       >
+        <motion.span
+          variants={numberVariants}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="w-8 shrink-0 font-display text-sm tabular-nums"
+        >
+          {String(index + 1).padStart(2, '0')}
+        </motion.span>
         <span className="min-w-0 flex-1">
-          <span className="mb-2 flex items-center gap-2">
+          <AnimatedTitle className="font-rounded text-[calc(1.25rem_-_2pt)] leading-snug sm:text-[1.25rem]">
+            {item.title}
+          </AnimatedTitle>
+          <span className="mt-1.5 flex items-center gap-2">
             <TypeBadge type={item.type} />
             {item.date && (
               <time className="label text-parchment-faint">{formatDate(item.date)}</time>
             )}
           </span>
-          <AnimatedTitle className="font-rounded text-[calc(1.25rem_-_2pt)] leading-snug sm:text-[1.25rem]">
-            {item.title}
-          </AnimatedTitle>
         </span>
-        <span
-          aria-hidden="true"
-          className="shrink-0 text-lg text-parchment-faint transition-all duration-300 group-hover:translate-x-1 group-hover:text-rust"
+        <motion.span
+          variants={arrowVariants}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="translate-y-[2px]"
         >
           →
-        </span>
+        </motion.span>
         <HoverDivider />
       </HoverLink>
     </Reveal>
@@ -120,7 +142,7 @@ export function KnowledgeLibrary({
         {rows.length > 0 && (
           <div className="mt-4 border-t border-parchment/12">
             {rows.map((item, i) => (
-              <EntryRow key={item.slug} item={item} delay={0.06 * i} />
+              <EntryRow key={item.slug} item={item} index={i} delay={0.06 * i} />
             ))}
             <Reveal from="right" delay={0.06 * rows.length} className="mt-4 px-3">
               <ViewAllLink href={`/${zone.id}/`} count={entries.length} />
@@ -147,7 +169,7 @@ export function KnowledgeLibrary({
         {rows.length > 0 && (
           <div className="lg:col-span-6">
             {rows.map((item, i) => (
-              <EntryRow key={item.slug} item={item} delay={0.08 * i} />
+              <EntryRow key={item.slug} item={item} index={i} delay={0.08 * i} />
             ))}
             <Reveal from="right" delay={0.08 * rows.length} className="mt-6 px-3">
               <ViewAllLink href={`/${zone.id}/`} count={entries.length} />
