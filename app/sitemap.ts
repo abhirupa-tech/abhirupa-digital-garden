@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next';
 import { site } from '@/lib/site';
 import { visibleZones } from '@/lib/data';
 import { getEntries, getSectionEntries, getAllTypes } from '@/lib/content';
+import { labProjects } from '@/lib/lab';
 
 // Emit as a static file for `output: 'export'`.
 export const dynamic = 'force-static';
@@ -29,6 +30,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: 'monthly',
     priority: 0.7,
   };
+
+  // The Lab hub plus each experiment's own page.
+  const lab: MetadataRoute.Sitemap = [
+    {
+      url: `${site.url}/lab/`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    ...labProjects.map((p) => ({
+      url: `${site.url}${p.href}`,
+      lastModified: now,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
+  ];
 
   // Section landing pages (The Practice, Field Notes, Design Thinking) — only
   // those with page-backed pieces get their own indexable hub.
@@ -60,5 +77,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
       })),
   );
 
-  return [home, about, ...sections, ...collections, ...articles];
+  return [home, about, ...lab, ...sections, ...collections, ...articles];
 }
