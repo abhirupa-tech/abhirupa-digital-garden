@@ -43,6 +43,13 @@ const icons = {
       <path {...S} d="M19 5h-6a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h6z" />
     </svg>
   ),
+  flask: (
+    <svg viewBox="0 0 24 24" className="h-6 w-6">
+      <path {...S} d="M10 3h4" />
+      <path {...S} d="M10 3v6l-4.5 8a2 2 0 0 0 1.8 3h9.4a2 2 0 0 0 1.8-3L14 9V3" />
+      <path {...S} d="M7.5 15h9" />
+    </svg>
+  ),
   mail: (
     <svg viewBox="0 0 24 24" className="h-6 w-6">
       <rect {...S} x="3.5" y="6" width="17" height="12" rx="2" />
@@ -68,6 +75,7 @@ const iconItems: { id: string; label: string; icon: keyof typeof icons }[] = [
   { id: 'the-practice', label: 'The Practice', icon: 'cursor' },
   { id: 'field-notes', label: 'Field Notes', icon: 'pen' },
   { id: 'design-thinking', label: 'Design Thinking', icon: 'compass' },
+  { id: 'lab', label: 'Lab', icon: 'flask' },
   ...(featureFlags.showKnowledgeSection
     ? [{ id: 'knowledge-library', label: 'Knowledge Library', icon: 'book' as const }]
     : []),
