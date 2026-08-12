@@ -7,6 +7,8 @@ import { PracticeList } from '@/components/sections/PracticeList';
 import { FieldNotesCards } from '@/components/sections/FieldNotesCards';
 import { DesignThinkingCollage } from '@/components/sections/DesignThinkingCollage';
 import { KnowledgeLibrary } from '@/components/KnowledgeLibrary';
+import { LabBento } from '@/components/sections/LabBento';
+import { labProjects } from '@/lib/lab';
 import { Footer } from '@/components/Footer';
 import { Sketch } from '@/components/Sketch';
 
@@ -69,6 +71,15 @@ export default function Home() {
               />
             </div>
           )}
+        </section>
+
+        <div className="zone flex justify-center py-1">
+          <Sketch name="wave-line" className="h-10 w-36 opacity-40" />
+        </div>
+
+        {/* Row C — Lab: a full-width bento of live agentic-interface experiments */}
+        <section id="lab" className="zone scroll-mt-24 pb-8 md:pb-16">
+          <LabBento zone={zoneById['lab']} projects={labProjects} />
         </section>
       </main>
 
