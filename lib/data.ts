@@ -47,6 +47,14 @@ export const zones: Zone[] = [
     title: 'The things I read, keep, and return to',
     blurb: 'Papers, essays, books, and art — a place for finding, not browsing.',
   },
+  {
+    id: 'lab',
+    index: '05',
+    kicker: 'Lab',
+    title: 'Live experiments in agentic interface morphology',
+    blurb:
+      'Working prototypes for agentic AI — interfaces that reveal an agent’s state, confidence, and thinking, beyond loaders and progress bars.',
+  },
 ];
 
 export const zoneById = Object.fromEntries(zones.map((z) => [z.id, z])) as Record<
@@ -69,6 +77,7 @@ export const sitemapLinks: { heading: string; links: { label: string; href: stri
       { label: 'The Practice', href: '/the-practice/' },
       { label: 'Field Notes', href: '/field-notes/' },
       { label: 'Design Thinking', href: '/design-thinking/' },
+      { label: 'Lab', href: '/lab/' },
       ...(featureFlags.showKnowledgeSection
         ? [{ label: 'Knowledge Library', href: '/#knowledge-library' }]
         : []),
