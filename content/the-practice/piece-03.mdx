@@ -1,0 +1,189 @@
+---
+title: "An AI Frontend Engineer's Guide to Building the Best AI-Assisted Coding Setup"
+slug: "ai-assisted-coding-setup-guide"
+section: "the-practice"
+type: "Guide"
+description: "Months of what worked and what didn't — context engineering, spec-driven development, sub-agents, skills, and harness engineering, plus what the research actually says about token cost."
+tags: ["ai-tooling", "context-engineering", "claude-code", "agents-md", "spec-driven-development", "developer-workflow"]
+date: "2026-08-19"
+cover: "https://miro.medium.com/v2/resize:fit:1400/1*oJ5TgnDs1UL4bzKqWpcnrA.png"
+aspect: "wide"
+medium: "https://medium.com/design-bootcamp/an-ai-frontend-engineers-guide-to-building-the-best-ai-assisted-coding-setup-2e6da71b9a4c"
+draft: false
+---
+
+I'm writing this after months of playing around with what works and what doesn't. Consider these notes on what failed, and what actually sped up my development process.
+
+We'll talk about setting up your entire process so that all you need is a CLI, and all you should be doing is <Highlight>writing sentences in English</Highlight>.
+
+But before everything — here's a pre-cap on the terms you need to be aware of.
+
+## A Quick not-so-technical Ramp-up
+
+- **CLI:** a command line interface, which is where we'll be writing our prompts. I use [Ghostty](https://ghostty.org), but you could use anything.
+- **IDE:** an integrated development environment (Cursor, and friends).
+- **Context Engineering:** deciding what the model can see at the moment it does the work. It's a way to tell an LLM what it needs to know before coming up with a response.
+- **.md files:** plain markdown files that your agent reads as instructions.
+
+We are going to break up our instructions into multiple .md files, structure it in an LLM-understandable way and use this as a system to write technically correct, scalable, maintainable and error-free code. Keep in mind though, you will never be able to completely automate everything — manual intervention, review, and a human-in-the-loop is always going to be an integral part of this.
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*VboAkoWk-1E2YYKV4gj8tw.png"
+  alt="Folder structure with a context file system in place"
+  caption="How your folder structuring may look like if you have a great context file system in place"
+  ratio="landscape"
+/>
+
+## Context files: Building CLAUDE.md or AGENTS.md with the correct context
+
+CLAUDE.md is the file Claude Code auto-loads at the start of every session.
+
+AGENTS.md is the one nearly every other tool or agent reads. It showed up when OpenAI launched Codex in mid-2025 and has since spread to more than 60,000 public repositories, with GitHub, Google, Anthropic and Cursor all supporting their own flavour of it.
+
+You don't need both. AGENTS.md exists to solve one problem: to prevent maintaining separate files for separate LLMs (.cursorrules, CLAUDE.md, .github/copilot-instructions.md). AGENTS.md is the cross-tool standard. <Highlight>One file, every agent.</Highlight>
+
+## Writing your context file
+
+There's actual research on what works and what doesn't when it comes to building these files:
+
+- LLM-generated context files are observed to reduce LLM efficiency, or burn more tokens — human-written context files are more efficient.
+
+Which means the `/init` command that scaffolds a CLAUDE.md for you is generating the exact category of file that measured worse than having nothing at all. It writes things like this:
+
+```
+## Project Structure
+- src/components/ contains React components
+- src/hooks/ contains custom hooks
+- src/utils/ contains utility functions
+```
+
+Every one of those lines is true. Every one of them is also something the agent can see by running `ls`. You just paid tokens on every single session to tell it something it already knows, and worse, you nudged it into exploring more files than it needed to.
+
+- Context files should be limited to around 200 lines — if you're exceeding that, best break it down into sub-directories.
+
+## What to write in your AGENTS.md
+
+AGENTS.md has no required fields. The spec describes it as a README for agents. What you could include here is a set of human-written instructions around the following areas. [[Source]](https://www.morphllm.com/agents-md-guide)
+
+- **Project overview:** what the project is, primary language and framework with versions.
+- **Build and test commands:** exact commands with flags, not vague tool names.
+- **Code style guidelines:** only rules that differ from language defaults.
+- **Testing instructions:** how to run test suites, how to study screenshots if you are using Playwright.
+- **Security considerations:** secrets handling, files to never read or commit, PII (or Personally Identifiable Information — like user data).
+- **Commit and PR guidelines:** branch naming, commit format, merge strategy, when to take a master pull etc.
+
+> A [study from Princeton researchers](https://arxiv.org/abs/2601.20404) measured the impact of AGENTS.md on real-world coding tasks. The research states using AGENTS.md resulted in a 28.6% runtime reduction and 16.6% token consumption reduction — which is fascinating!
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*EHOi5i5TlAuaxD0m2a-QOQ.png"
+  alt="An AGENTS.md file showing setup and standards sections"
+  caption="An AGENTS.md file with its contents — Setup, standards etc"
+  ratio="landscape"
+/>
+
+## Deep dive into Spec-Driven development
+
+Gone are the days when we used to single-shot prompt our way to glory — because let's confess, that never really succeeded. The agent barely had context of what you require, how to go about it, what files to look at, what test cases to cover.
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*jrgtEztHYLZ7juimNr_foA.png"
+  alt="An iterative loop for spec-driven development"
+  caption="An iterative approach to Spec driven development"
+  ratio="landscape"
+/>
+
+### This is where we are going to use a four-pronged approach
+
+1. **Spec.** Ask the agent to write a spec before it writes anything else. Not "build me a bookstore site," but a document covering what the feature does, who uses it, and what "working" means. Start vague and let it interrogate you.
+
+```
+Write a spec for a website that tracks the book inventory of a
+bookstore cafe. Ask me questions before you write anything.
+```
+
+Output goes to `specs/**/spec.md`.
+
+2. **Human in the loop.** Read the spec and edit it. This is the step everyone skips and it's the only one that isn't optional. The agent will have invented requirements you never asked for and quietly dropped ones you did.
+
+3. **Plan.** Now ask for the plan: which files get touched, what gets built in what order, which decisions are already locked. Have it write open questions directly into the plan and answer them before implementation. Reiterate on the spec, and keep regenerating and human-modifying the plan till you are satisfied.
+
+```
+Read specs/001-inventory/spec.md. Don't write code.
+
+Write plan.md with: system design architecture, project structure,
+design patterns that should be used, performance and efficiency decisions,
+files touched, build order in shippable phases, locked decisions and
+where each came from, open questions with the options you weighed, out of
+scope.
+```
+
+4. **Tasks.** Break the plan into ordered, testable units in `tasks.md`. This is where parallelism becomes possible: mark which tasks are independent, then spawn a subagent per independent task.
+
+```
+Read plan.md. Write tasks.md: ordered units, each independently testable,
+each with its acceptance check. Mark every task [parallel] or
+[blocked by: #n]. Be honest about shared files, two agents editing the
+same file is a merge conflict, not parallelism.
+```
+
+## Understanding Sub-agents and Parallelism — and how much they cost
+
+Not every task you assign to an LLM is going to be a linear task. In most cases it could be a very open-ended question where you don't really know where your answer is going to take you. This is where you can't really use a one-shot prompt, because the execution of the prompt isn't linear.
+
+This is where a multi-agent architecture with an orchestrator-worker pattern comes in. Anthropic has [written a lot about this pattern](https://www.anthropic.com/engineering/multi-agent-research-system), where a lead agent spawns subagents. Each subagent operates independently and in parallel, and reports back to the lead agent once it's done.
+
+This is where your prompting technique matters, because parallelism only works if each subagent knows exactly what it owns. Anthropic found that vague delegation made three subagents research overlapping things, so each one needs an objective, an output format, guidance on which tools and sources to use, and clear task boundaries.
+
+Done properly, the payoff on speed is real. Spinning up 3 to 5 subagents in parallel rather than serially, with each subagent calling multiple tools in parallel, cut research time by up to 90% on complex queries.
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*_itKAmYFR8xZRTiMGoUj3A.png"
+  alt="Diagram of Anthropic's multi-agent research system"
+  caption="Anthropic's multi agent research system"
+  ratio="landscape"
+/>
+
+But — on a cautious note — this approach is going to burn a lot more tokens, so do it only when absolutely necessary (we've got to also think about the planet!).
+
+## The SKILL.md file
+
+It's of prime importance to understand whether you need a skill or whether the instructions should instead live in an AGENTS.md.
+
+### Context file, or skill?
+
+If you're building something that you're sure is going to be used during every coding session, in every commit, before every commit or before every push, then that ideally should reside in your context file, the AGENTS.md or the CLAUDE.md.
+
+If you think you have a role-based action for an agent that you'd need only occasionally, but that is still repeatable, then that is something you should make a skill out of.
+
+The reason for the split is cost. Your context file loads on every single session whether it's relevant or not, so it pays token rent constantly. A skill doesn't. Only the description loads until it triggers, so a skill costs nothing while idle. <Highlight>That's the entire economics of the decision.</Highlight>
+
+### Skills I personally use
+
+- **PR reviewing.** Fires on a diff, checks against my own review checklist rather than generic advice.
+- **Toggle gating.** When I want a feature gated behind a flag, or need to create a feature toggle to control a rollout, this handles the whole pattern instead of me re-explaining our toggle conventions every time.
+- **Create PR draft.** Runs the commit and push commands, then raises a draft PR on GitHub in the exact format I've already specified in the file.
+
+### What goes into your SKILL.md?
+
+This file holds the skills in a YAML frontmatter format. It contains fields like the ones below — you don't need to write this file, it gets generated if you use the inbuilt LLM tool calls to create skills.
+
+It could look somewhat like this:
+
+```
+name: pr-draft
+description: Commit, push, and open a draft PR in our house format.
+              Use after implementation is complete and tests pass.
+allowed-tools: Bash, Read, Grep
+disable-model-invocation: true
+```
+
+### References
+
+- [Breaking down Harness Engineering — How to vibecode like a senior engineer](https://medium.com/data-science-collective/breaking-down-harness-engineering-how-to-vibecode-like-a-senior-engineer-fc99234f9fc6)
+- [On the Impact of AGENTS.md Files on the Efficiency of AI Coding Agents](https://arxiv.org/abs/2601.20404) — arXiv
+
+## Breaking down Harness Engineering — How to vibecode like a senior engineer
+
+Everything around the model that makes the model good, and how to build your own agent harness, is a topic in itself — worth reading alongside this if you want to go deeper on what sits between you and the raw model.
+
+None of this is a finished system. It's what survived months of things not working, and half of it will be wrong again in six months. Adapt and learn from what's mentioned here — and maybe revisit and leave feedback around what changed, going forward.
