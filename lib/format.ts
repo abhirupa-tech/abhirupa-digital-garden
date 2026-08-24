@@ -7,6 +7,17 @@ export function formatDate(date: string): string {
 }
 
 /**
+ * Estimated reading time in whole minutes for a piece's raw Markdown body.
+ * Counts whitespace-separated tokens at ~220 wpm (a common prose reading
+ * pace), floored to at least 1. Rough by design — it's a "~N min read" hint,
+ * not a stopwatch — so it ignores code-fence/markup stripping.
+ */
+export function readingTime(markdown: string): number {
+  const words = markdown.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 220));
+}
+
+/**
  * Strip Markdown syntax down to readable prose — used to preview a piece's
  * actual opening in surfaces that show a body excerpt (e.g. the section-page
  * hero). Not a full parser: it drops code blocks, images, list/heading/quote

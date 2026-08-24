@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { site } from '@/lib/site';
 import { SocialIcons } from './SocialIcons';
+import { HeroSparkDivider } from './motion/HeroSparkDivider';
 import { Wave } from './Wave';
 
 export function Hero() {
@@ -46,7 +47,11 @@ export function Hero() {
           surfaces where agents reason, pause, and hand control back to people.
         </motion.h2>
 
-        <motion.div {...rise(0.7)} className="mt-8 flex flex-wrap items-center gap-x-10 gap-y-6 sm:mt-12">
+        <motion.div {...rise(0.65)} className="mt-8 max-w-2xl sm:mt-10">
+          <HeroSparkDivider />
+        </motion.div>
+
+        <motion.div {...rise(0.8)} className="mt-8 flex flex-wrap items-center gap-x-10 gap-y-6 sm:mt-10">
           <SocialIcons mobileIconsOnly />
           <div className="flex items-center gap-3 text-parchment-faint">
             <span className="accent-rule" />

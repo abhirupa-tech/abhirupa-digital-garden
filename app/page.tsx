@@ -1,7 +1,8 @@
 import { zoneById } from '@/lib/data';
-import { getEntries, getSectionEntries } from '@/lib/content';
+import { getEntries, getSectionEntries, getLatestEntry, type ContentEntry } from '@/lib/content';
 import { featureFlags } from '@/lib/featureflag';
 import { Hero } from '@/components/Hero';
+import { FeaturedBlog } from '@/components/FeaturedBlog';
 import { SideNav } from '@/components/SideNav';
 import { PracticeList } from '@/components/sections/PracticeList';
 import { FieldNotesCards } from '@/components/sections/FieldNotesCards';
@@ -21,6 +22,14 @@ export default function Home() {
   // The library shelf is curated external references, kept in file order.
   const library = getEntries('knowledge-library');
 
+  // The featured "hero blog" — the newest piece across every section. It's
+  // filtered out of its own section list below so it never appears twice.
+  const featured = getLatestEntry();
+  const withoutFeatured = (list: ContentEntry[]) =>
+    featured
+      ? list.filter((e) => !(e.section === featured.section && e.slug === featured.slug))
+      : list;
+
   return (
     <>
       <SideNav />
@@ -29,6 +38,8 @@ export default function Home() {
       <div className="lg:pl-20">
         <Hero />
 
+        {featured && <FeaturedBlog entry={featured} />}
+
         <main>
         {/* Row A — two sections share one row: a vertical list beside horizontal cards */}
         <section
@@ -36,10 +47,10 @@ export default function Home() {
           className="zone scroll-mt-24 grid gap-x-14 gap-y-8 pb-8 pt-4 md:grid-cols-12 md:gap-y-14 md:pb-16 md:pt-8"
         >
           <div className="md:col-span-5">
-            <PracticeList zone={zoneById['the-practice']} entries={practice} />
+            <PracticeList zone={zoneById['the-practice']} entries={withoutFeatured(practice)} />
           </div>
           <div id="field-notes" className="scroll-mt-24 md:col-span-7">
-            <FieldNotesCards zone={zoneById['field-notes']} entries={fieldNotes} />
+            <FieldNotesCards zone={zoneById['field-notes']} entries={withoutFeatured(fieldNotes)} />
           </div>
         </section>
 
@@ -57,7 +68,7 @@ export default function Home() {
           <div className={featureFlags.showKnowledgeSection ? 'md:col-span-6' : 'md:col-span-12'}>
             <KnowledgeLibrary
               zone={zoneById['design-thinking']}
-              entries={designThinking}
+              entries={withoutFeatured(designThinking)}
               layout={featureFlags.showKnowledgeSection ? 'stacked' : 'split'}
             />
           </div>

@@ -113,6 +113,19 @@ export function getSectionEntries(section: string): ContentEntry[] {
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
+/**
+ * The single newest published, page-backed piece across every section — the
+ * homepage's featured "hero blog." Draws from all content folders so the most
+ * recent thing written anywhere gets top billing, and updates automatically as
+ * new pieces land. Returns null when there's no eligible content.
+ */
+export function getLatestEntry(): ContentEntry | null {
+  return allSections()
+    .flatMap((s) => getEntries(s))
+    .filter((e) => !e.draft && !e.link)
+    .sort((a, b) => (a.date < b.date ? 1 : -1))[0] ?? null;
+}
+
 /** Every content folder under /content (the section ids). */
 function allSections(): string[] {
   if (!fs.existsSync(CONTENT_DIR)) return [];

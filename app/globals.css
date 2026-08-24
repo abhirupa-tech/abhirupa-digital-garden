@@ -22,6 +22,7 @@
   --color-highlight: var(--c-highlight); /* primary accent — rust/orange */
   --color-highlight-strong: var(--c-highlight-strong); /* deeper rust */
   --color-accent: var(--c-accent); /* secondary accent — blue */
+  --color-spark: var(--c-spark); /* the "spark" pop — cool blue, hero ball + featured accent */
   --color-hairline: var(--c-hairline); /* dividers, borders */
 
   --color-ink-400: rgb(var(--raw-ink-400));
@@ -132,6 +133,43 @@
   @apply h-px w-14 bg-sand/60;
 }
 
+/* Horizontal tag marquee (featured blog). The track holds the tag list twice;
+   sliding it -50% loops seamlessly. Pauses on hover; static under
+   reduced-motion so nothing drifts for readers who opt out. */
+@keyframes marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Soft halo ping around the hero spark ball. */
+@keyframes spark-halo {
+  0% {
+    transform: scale(1);
+    opacity: 0.45;
+  }
+  100% {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+
+.marquee-track {
+  animation: marquee-x var(--marq-dur, 26s) linear infinite;
+  will-change: transform;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
 @utility zone {
   /* Subtle grain-free vignette so bright hero text never floats. Widens
      past --container-editorial only on 3xl+ screens, so large monitors
@@ -157,6 +195,9 @@
     --c-highlight: #d1480f;
     --c-highlight-strong: #a83a12;
     --c-accent: #1d3a63;
+    /* Spark: a vivid, slightly deeper blue on the light canvas so the ball
+       and featured accent stay legible on parchment. */
+    --c-spark: #3f74d6;
     --c-hairline: rgba(20, 18, 16, 0.1);
 
     /* Single light palette — a deep off-white canvas (not stark white), a
@@ -220,6 +261,8 @@
     --c-highlight: #f2692f;
     --c-highlight-strong: #f4834f;
     --c-accent: #6ea3dc;
+    /* Spark: a soft periwinkle blue that pops against the warm dark canvas. */
+    --c-spark: #5b8fe0;
     --c-hairline: rgba(224, 224, 224, 0.12);
 
     /* Legacy raw palette, retuned for dark. Higher ink numbers stay the
