@@ -2,7 +2,6 @@ import type { ContentEntry } from '@/lib/content';
 import { formatDate, readingTime } from '@/lib/format';
 import { site } from '@/lib/site';
 import { CoverImage } from './CoverImage';
-import { TypeBadge } from './TypeBadge';
 import { Reveal } from './motion/Reveal';
 import { HoverLink, AnimatedTitle } from './motion/HoverLink';
 
@@ -116,7 +115,6 @@ export function FeaturedBlog({ entry }: { entry: ContentEntry }) {
                 </span>
                 Latest
               </span>
-              <TypeBadge type={entry.type} />
               {entry.date && (
                 <span className="label text-parchment-faint">
                   {formatDate(entry.date)} · {minutes} min read
