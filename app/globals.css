@@ -129,6 +129,29 @@
   @apply font-body uppercase tracking-label text-[0.7rem] text-parchment-faint;
 }
 
+/* ── Blog type scale ────────────────────────────────────────────────────────
+   One named role per size so every listing surface stays in sync. Change a
+   size here and it updates everywhere that role is used — no per-card sizes.
+   `label` (above) is the meta/kicker role; page + section titles keep their
+   own display sizes (a distinct, larger role). */
+
+/* The single spotlighted piece (homepage + section-page hero feature). */
+@utility t-feature-title {
+  @apply font-display font-medium leading-snug text-[1.7rem] md:text-[2.1rem];
+}
+@utility t-feature-sub {
+  @apply font-rounded leading-relaxed text-base md:text-lg;
+}
+
+/* Every "small" blog post in a list or card — one heading size site-wide. */
+@utility t-card-title {
+  @apply font-rounded font-medium leading-snug text-[1.125rem];
+}
+/* Every card/list description — one subheading size site-wide. */
+@utility t-card-sub {
+  @apply font-rounded leading-relaxed text-[0.875rem];
+}
+
 @utility accent-rule {
   @apply h-px w-14 bg-sand/60;
 }

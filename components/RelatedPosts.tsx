@@ -46,7 +46,7 @@ export function RelatedPosts({ entries }: { entries: ContentEntry[] }) {
                   )}
                 </div>
                 <h3 className="mt-2">
-                  <AnimatedTitle className="font-rounded text-base leading-snug sm:text-lg">
+                  <AnimatedTitle className="t-card-title">
                     {entry.title}
                   </AnimatedTitle>
                 </h3>

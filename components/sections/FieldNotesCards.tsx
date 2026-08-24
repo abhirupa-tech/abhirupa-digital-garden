@@ -53,11 +53,11 @@ export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: Conten
                     <time className="label text-parchment-faint">{formatDate(entry.date)}</time>
                   )}
                 </div>
-                <h3 className="mt-1.5 line-clamp-3 font-rounded text-base leading-snug text-parchment transition-colors duration-300 group-hover:text-highlight sm:text-lg md:line-clamp-2">
+                <h3 className="mt-1.5 line-clamp-3 t-card-title text-parchment transition-colors duration-300 group-hover:text-highlight md:line-clamp-2">
                   {entry.title}
                 </h3>
                 {entry.description && (
-                  <p className="mt-1.5 line-clamp-2 font-rounded text-sm leading-relaxed text-parchment/80 sm:line-clamp-3 md:line-clamp-2 md:text-[0.9375rem]">
+                  <p className="mt-1.5 line-clamp-2 t-card-sub text-parchment/80 sm:line-clamp-3 md:line-clamp-2">
                     {entry.description}
                   </p>
                 )}

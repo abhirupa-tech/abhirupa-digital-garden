@@ -48,11 +48,11 @@ function HeroCard({ item }: { item: ContentEntry }) {
             )}
           </div>
           <h3 className="mt-3">
-            <AnimatedTitle className="font-rounded text-[calc(1.25rem_-_2pt)] leading-snug sm:text-[1.25rem]">
+            <AnimatedTitle className="t-card-title">
               {item.title}
             </AnimatedTitle>
           </h3>
-          <p className="mt-3 line-clamp-4 font-rounded text-sm leading-relaxed text-parchment/85">
+          <p className="mt-3 line-clamp-4 t-card-sub text-parchment/85">
             {item.description}
           </p>
         </div>
@@ -81,7 +81,7 @@ function EntryRow({ item, index, delay }: { item: ContentEntry; index: number; d
           {String(index + 1).padStart(2, '0')}
         </motion.span>
         <span className="min-w-0 flex-1">
-          <AnimatedTitle className="font-rounded text-[calc(1.25rem_-_2pt)] leading-snug sm:text-[1.25rem]">
+          <AnimatedTitle className="t-card-title">
             {item.title}
           </AnimatedTitle>
           <span className="mt-1.5 flex items-center gap-2">

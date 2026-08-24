@@ -142,7 +142,7 @@ export function DesignThinkingCollage({
                   />
                 </div>
 
-                <h3 className="mt-3 font-rounded text-sm font-normal leading-snug text-parchment transition-colors duration-300 group-hover:text-highlight sm:text-base">
+                <h3 className="mt-3 t-card-title text-parchment transition-colors duration-300 group-hover:text-highlight">
                   {entry.title}
                 </h3>
               </a>

@@ -43,13 +43,13 @@ export function PracticeIndex({ entries }: { entries: ContentEntry[] }) {
               <motion.span
                 variants={indexVariants}
                 transition={{ duration: 0.4, ease: EASE }}
-                className="shrink-0 font-rounded text-xl font-medium leading-snug tabular-nums md:text-2xl"
+                className="shrink-0 t-card-title tabular-nums"
               >
                 {String(i + 2).padStart(2, '0')}
               </motion.span>
 
               <div className="min-w-0 flex-1">
-                <AnimatedTitle className="font-rounded text-xl font-semibold leading-snug tracking-tight subpixel-antialiased md:text-2xl">
+                <AnimatedTitle className="t-card-title tracking-tight subpixel-antialiased">
                   {entry.title}
                 </AnimatedTitle>
 
@@ -61,7 +61,7 @@ export function PracticeIndex({ entries }: { entries: ContentEntry[] }) {
                 </div>
 
                 {entry.description && (
-                  <p className="mt-2 max-w-2xl font-rounded text-sm leading-relaxed text-parchment/70 md:text-base">
+                  <p className="mt-2 max-w-2xl t-card-sub text-parchment/70">
                     {entry.description}
                   </p>
                 )}

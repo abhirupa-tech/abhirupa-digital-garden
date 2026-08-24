@@ -69,11 +69,11 @@ export function CollectionCard({ entry }: { entry: ContentEntry }) {
         <div className="p-4">
           <Meta entry={entry} />
           <h3 className="mt-2">
-            <AnimatedTitle className="font-rounded text-xl leading-snug">
+            <AnimatedTitle className="t-card-title">
               {entry.title}
             </AnimatedTitle>
           </h3>
-          <p className="mt-2 line-clamp-3 font-rounded text-sm leading-relaxed text-parchment/80">
+          <p className="mt-2 line-clamp-3 t-card-sub text-parchment/80">
             {entry.description}
           </p>
         </div>
@@ -98,11 +98,11 @@ export function CollectionCard({ entry }: { entry: ContentEntry }) {
           <Meta entry={entry} />
         </div>
         <h3 className="mt-2">
-          <AnimatedTitle className="font-rounded text-xl leading-snug">
+          <AnimatedTitle className="t-card-title">
             {entry.title}
           </AnimatedTitle>
         </h3>
-        <p className="mt-2 line-clamp-4 font-rounded text-sm leading-relaxed text-parchment-muted">
+        <p className="mt-2 line-clamp-4 t-card-sub text-parchment-muted">
           {entry.description}
         </p>
       </HoverLink>
@@ -117,11 +117,11 @@ export function CollectionCard({ entry }: { entry: ContentEntry }) {
     >
       <Meta entry={entry} />
       <h3 className="mt-3">
-        <AnimatedTitle className="font-rounded text-xl leading-tight">
+        <AnimatedTitle className="t-card-title">
           {entry.title}
         </AnimatedTitle>
       </h3>
-      <p className="mt-2 line-clamp-3 font-rounded text-sm leading-relaxed text-parchment-muted">
+      <p className="mt-2 line-clamp-3 t-card-sub text-parchment-muted">
         {entry.description}
       </p>
       <span className="label mt-4 inline-block text-sand/80">Read →</span>
