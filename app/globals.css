@@ -23,6 +23,7 @@
   --color-highlight-strong: var(--c-highlight-strong); /* deeper rust */
   --color-accent: var(--c-accent); /* secondary accent — blue */
   --color-spark: var(--c-spark); /* the "spark" pop — cool blue, hero ball + featured accent */
+  --color-sunset: var(--c-sunset); /* warm sunset orange — About page pictograms */
   --color-hairline: var(--c-hairline); /* dividers, borders */
 
   --color-ink-400: rgb(var(--raw-ink-400));
@@ -221,6 +222,8 @@
     /* Spark: a vivid, slightly deeper blue on the light canvas so the ball
        and featured accent stay legible on parchment. */
     --c-spark: #3f74d6;
+    /* Sunset: a deep warm orange, legible on the light parchment canvas. */
+    --c-sunset: #e05d1f;
     --c-hairline: rgba(20, 18, 16, 0.1);
 
     /* Single light palette — a deep off-white canvas (not stark white), a
@@ -286,6 +289,8 @@
     --c-accent: #6ea3dc;
     /* Spark: a soft periwinkle blue that pops against the warm dark canvas. */
     --c-spark: #5b8fe0;
+    /* Sunset: a warm, glowing orange for pictograms on the dark canvas. */
+    --c-sunset: #fb7a3c;
     --c-hairline: rgba(224, 224, 224, 0.12);
 
     /* Legacy raw palette, retuned for dark. Higher ink numbers stay the

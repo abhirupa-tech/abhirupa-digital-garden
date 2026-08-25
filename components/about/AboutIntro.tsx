@@ -1,11 +1,12 @@
 import { Reveal } from '../motion/Reveal';
 import { SocialIcons } from '../SocialIcons';
+import { Glyph, type GlyphName } from './Glyph';
 
-const FACETS = [
-  { k: '01', label: 'Agentic AI interfaces' },
-  { k: '02', label: 'Frontend engineering' },
-  { k: '03', label: 'Design thinking' },
-  { k: '04', label: 'Slow living' },
+const FACETS: { k: string; label: string; glyph: GlyphName }[] = [
+  { k: '01', label: 'Agentic AI interfaces', glyph: 'spark' },
+  { k: '02', label: 'Frontend engineering', glyph: 'brackets' },
+  { k: '03', label: 'Design thinking', glyph: 'compass' },
+  { k: '04', label: 'Slow living', glyph: 'sprout' },
 ];
 
 /**
@@ -46,19 +47,26 @@ export function AboutIntro() {
         </p>
       </Reveal>
 
-      {/* What I do — a compact index on a minimalist liquid-glass card */}
-      <Reveal delay={0.28} from="left" className="mt-10 max-w-md">
-        <div className="rounded-3xl bg-white/35 p-6 shadow-[0_12px_40px_-14px_rgba(20,18,16,0.22),inset_0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-xl backdrop-saturate-150 dark:bg-white/5 dark:shadow-[0_12px_40px_-14px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] sm:p-7">
-          <span className="label text-parchment-faint">What I do</span>
-          <ul className="mt-4 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
-            {FACETS.map((f) => (
-              <li key={f.k} className="flex items-baseline gap-3">
-                <span className="font-display text-sm text-sand/80 tabular-nums">{f.k}</span>
-                <span className="font-rounded text-[calc(1.25rem_-_1pt)] text-parchment sm:text-[1.25rem]">{f.label}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+      {/* What I do — four pictogram tiles, sunset glyphs warming on hover */}
+      <Reveal delay={0.28} from="left" className="mt-10 max-w-lg">
+        <span className="label text-parchment-faint">What I do</span>
+        <ul className="mt-4 grid grid-cols-2 gap-3 sm:gap-4">
+          {FACETS.map((f) => (
+            <li
+              key={f.k}
+              className="group rounded-2xl border border-parchment/10 bg-secondary-bg/50 p-4 backdrop-blur-[1px] transition-all duration-300 hover:-translate-y-0.5 hover:border-sunset/45 sm:p-5"
+            >
+              <Glyph
+                name={f.glyph}
+                className="h-7 w-7 text-sunset transition-transform duration-300 group-hover:-rotate-6"
+              />
+              <span className="mt-3 block font-display text-xs text-sunset/70 tabular-nums">{f.k}</span>
+              <span className="mt-0.5 block font-rounded text-[1.02rem] font-medium leading-tight text-parchment">
+                {f.label}
+              </span>
+            </li>
+          ))}
+        </ul>
       </Reveal>
 
       <Reveal delay={0.36} from="left" className="mt-10">

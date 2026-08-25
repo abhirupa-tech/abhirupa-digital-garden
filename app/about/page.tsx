@@ -108,13 +108,13 @@ export default function AboutPage() {
             <section id="path" className="scroll-mt-24 pt-6 md:pt-10">
               <Reveal className="max-w-xl">
                 <div className="flex items-baseline gap-4">
-                  <span className="font-display text-lg text-sand/90">05</span>
+                  <span className="font-display text-lg text-sunset/80">05</span>
                   <span className="label text-parchment-muted">The path here</span>
                 </div>
                 <h2 className="mt-4 font-display text-3xl font-medium text-parchment md:text-4xl">
                   My career snapshot and contributions that mattered
                 </h2>
-                <p className="mt-3 font-rounded text-[calc(1.125rem_-_3pt)] font-light leading-tight tracking-tight text-parchment-muted sm:text-[1.125rem]">
+                <p className="mt-3 font-rounded text-[calc(1.25rem_-_1pt)] leading-relaxed text-parchment-muted sm:text-[1.25rem]">
                   From voice and Office at Microsoft to Copilot, and now agentic
                   interfaces at Slack — the roles that shaped how I build.
                 </p>

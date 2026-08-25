@@ -1,193 +1,253 @@
 'use client';
 
-import { motion, useScroll, useSpring, useReducedMotion, type Variants } from 'framer-motion';
-import { useRef, type ReactNode } from 'react';
-import { career, type CareerRole, type RoleIcon } from '@/lib/career';
-
-const RUST = '#d1480f';
-const EASE = [0.16, 1, 0.3, 1] as const;
-
-const S = {
-  fill: 'none',
-  stroke: 'currentColor',
-  strokeWidth: 1.5,
-  strokeLinecap: 'round' as const,
-  strokeLinejoin: 'round' as const,
-};
-
-// Line-art glyphs, one per kind of role — a spark for agentic work, a split
-// pane for Copilot, a mic for voice dictation, sigma for the math intern, and
-// a phone for the iOS intern.
-const roleIcons: Record<RoleIcon, ReactNode> = {
-  agent: (
-    <svg viewBox="0 0 24 24" className="h-5 w-5">
-      <path {...S} d="M12 3.5 13.7 10.3 20.5 12 13.7 13.7 12 20.5 10.3 13.7 3.5 12 10.3 10.3Z" />
-    </svg>
-  ),
-  pane: (
-    <svg viewBox="0 0 24 24" className="h-5 w-5">
-      <rect {...S} x="3.5" y="5" width="17" height="14" rx="2.5" />
-      <path {...S} d="M14.5 5v14" />
-    </svg>
-  ),
-  mic: (
-    <svg viewBox="0 0 24 24" className="h-5 w-5">
-      <rect {...S} x="9" y="3" width="6" height="10.5" rx="3" />
-      <path {...S} d="M6 11a6 6 0 0 0 12 0M12 17.5V21M9.5 21h5" />
-    </svg>
-  ),
-  sigma: (
-    <svg viewBox="0 0 24 24" className="h-5 w-5">
-      <path {...S} d="M16.5 5.5H7.5l5 6.5-5 6.5h9" />
-    </svg>
-  ),
-  mobile: (
-    <svg viewBox="0 0 24 24" className="h-5 w-5">
-      <rect {...S} x="7" y="3" width="10" height="18" rx="2.5" />
-      <path {...S} d="M10.5 18h3" />
-    </svg>
-  ),
-};
-
-const cardVariants: Variants = {
-  rest: { y: 0, borderColor: 'rgb(20 18 16 / 0.12)' },
-  hover: { y: -4, borderColor: 'rgb(209 72 15 / 0.45)' },
-};
-const iconVariants: Variants = {
-  rest: { backgroundColor: 'rgb(29 58 99 / 0.06)', color: '#1d3a63', rotate: 0 },
-  hover: { backgroundColor: 'rgb(209 72 15 / 0.12)', color: RUST, rotate: -6 },
-};
-
-function RoleCard({ role, index, reduce }: { role: CareerRole; index: number; reduce: boolean }) {
-  return (
-    <motion.div
-      initial={reduce ? { opacity: 0 } : { opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-8% 0px -8% 0px' }}
-      transition={{ duration: reduce ? 0 : 0.7, delay: reduce ? 0 : 0.06 * index, ease: EASE }}
-    >
-      {/* Interactive card: lifts and warms to rust on hover */}
-      <motion.div
-        initial="rest"
-        animate="rest"
-        whileHover={reduce ? undefined : 'hover'}
-        variants={cardVariants}
-        transition={{ duration: reduce ? 0 : 0.35, ease: EASE }}
-        className="h-full rounded-2xl border bg-[#f9f8f5]/70 p-3.5 shadow-xs backdrop-blur-[1px] dark:bg-secondary-bg/70 sm:p-4"
-      >
-        <div className="flex items-start gap-2.5 sm:gap-3">
-          <motion.span
-            aria-hidden="true"
-            variants={iconVariants}
-            transition={{ duration: reduce ? 0 : 0.35, ease: EASE }}
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-parchment/10 sm:h-10 sm:w-10"
-          >
-            {roleIcons[role.icon]}
-          </motion.span>
-          <div className="min-w-0">
-            <h4 className="font-display text-lg font-medium leading-snug text-parchment">
-              {role.title}
-            </h4>
-            <p className="mt-0.5 label text-parchment-faint">{role.employment}</p>
-          </div>
-        </div>
-
-        <p className="mt-2 label text-sand/80 sm:mt-3">{role.period}</p>
-        <p className="mt-2 font-rounded text-sm font-light leading-relaxed text-parchment-muted">
-          {role.summary}
-        </p>
-
-        <ul className="mt-2.5 flex flex-wrap gap-1.5 sm:mt-3">
-          {role.stack.map((tech) => (
-            <li
-              key={tech}
-              className="rounded-full border border-sand/25 bg-sand/5 px-2.5 py-0.5 font-rounded text-[0.7rem] text-sand"
-            >
-              {tech}
-            </li>
-          ))}
-        </ul>
-      </motion.div>
-    </motion.div>
-  );
-}
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { motion, useReducedMotion, type Variants } from 'framer-motion';
+import { Glyph, type GlyphName } from './Glyph';
 
 /**
- * A vertical career timeline whose rust rail *draws itself* as the section
- * scrolls through the viewport. Each company is a node on the rail; the roles
- * held there fan out as interactive icon cards beneath it — a clear company →
- * roles hierarchy without a second, nested rail. The rail draw is skipped
- * (shown fully drawn) under prefers-reduced-motion.
+ * A single, vertical, scroll-driven career timeline. Every event's details are
+ * always visible; as you scroll, the event crossing the viewport's middle
+ * becomes "active" — its node and card warm to sunset. A marker rides the rail:
+ * it rests as a squircle framing the active node, and shrinks to a small solid
+ * dot while it springs between events. Scroll-driven (no hover), so it behaves
+ * the same on touch; collapses to a plain, fully-lit list under reduced-motion.
  */
-export function CareerTimeline() {
-  const ref = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion() ?? false;
 
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start 75%', 'end 70%'],
-  });
-  const scaleY = useSpring(scrollYProgress, {
-    stiffness: 80,
-    damping: 22,
-    restDelta: 0.001,
-  });
+type Event = {
+  year: string;
+  company: string;
+  context: string;
+  location: string;
+  title: string;
+  glyph: GlyphName;
+  detail: string;
+  stack: string[];
+};
+
+const EVENTS: Event[] = [
+  {
+    year: '2025 — Now',
+    company: 'Slack',
+    context: 'Slackforce Intelligence',
+    location: 'Bengaluru',
+    title: 'Senior Frontend Engineer, SMTS',
+    glyph: 'spark',
+    detail:
+      'Building the Agent Profile View and the Slack Admin pages for Enterprise & Biz users, and wiring Salesforce MCP servers — and the Agents that followed — into Slack.',
+    stack: ['React', 'TypeScript', 'MCP'],
+  },
+  {
+    year: '2023 — 2025',
+    company: 'Microsoft',
+    context: 'M365 Copilot',
+    location: 'Noida',
+    title: 'Software Engineer 2',
+    glyph: 'pane',
+    detail:
+      'Performance and UX for the Microsoft Copilot side pane across every M365 Office app and platform — shared ownership of one seamless Copilot experience.',
+    stack: ['React', 'TypeScript', 'Relay', 'Fluent UI'],
+  },
+  {
+    year: '2021 — 2025',
+    company: 'Microsoft',
+    context: 'Office · Word & Outlook',
+    location: 'Noida',
+    title: 'Software Engineer',
+    glyph: 'mic',
+    detail:
+      'Voice dictation in Word and Outlook for Android, and a better microphone click funnel — across an Android, shared C++, and Kotlin stack.',
+    stack: ['Android', 'C++', 'Kotlin'],
+  },
+  {
+    year: '2020 — 2021',
+    company: 'Microsoft',
+    context: 'Word Web · iOS',
+    location: 'Noida',
+    title: 'Engineering Intern',
+    glyph: 'calendar',
+    detail:
+      'Voice-to-math expression conversion in Word on the web (speak out equations), and a LUIS-powered intelligent system for an iOS app.',
+    stack: ['Speech', 'iOS'],
+  },
+];
+
+// Marker colour — sunset orange throughout (rgb so framer interpolates the
+// glow smoothly).
+const MARK = 'rgb(242,105,47)';
+const nodeVariants: Variants = {
+  off: { scale: 1 },
+  on: { scale: 1.12 },
+};
+
+export function CareerTimeline() {
+  const reduce = useReducedMotion() ?? false;
+  const [active, setActive] = useState(0);
+  const [markY, setMarkY] = useState(0);
+  const [traveling, setTraveling] = useState(false);
+
+  const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
+  const mounted = useRef(false);
+
+  // Scroll-spy: the event crossing the viewport's vertical middle is active.
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idx = Number((entry.target as HTMLElement).dataset.idx);
+            if (!Number.isNaN(idx)) setActive(idx);
+          }
+        });
+      },
+      { rootMargin: '-45% 0px -45% 0px', threshold: 0 },
+    );
+    itemRefs.current.forEach((el) => el && io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  // Measure the active node's centre → marker target. Trigger the shrink-to-dot
+  // travel morph on active changes (but not on the very first measure/resize).
+  // Node center relative to the <ol> = the item's offsetTop + half the node
+  // height (the node sits at the item's top, h-10 → +20). offsetTop is layout-
+  // accurate, so the marker lines up with the icon exactly.
+  const measure = (morph: boolean) => {
+    const li = itemRefs.current[active];
+    if (!li) return;
+    setMarkY(li.offsetTop + 20);
+    if (morph && !reduce) setTraveling(true);
+  };
+
+  useLayoutEffect(() => {
+    measure(mounted.current);
+    mounted.current = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active]);
+
+  useEffect(() => {
+    const onResize = () => measure(false);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active]);
+
+  const nodeTx = reduce
+    ? { duration: 0 }
+    : { type: 'spring' as const, stiffness: 420, damping: 16, mass: 0.6 };
 
   return (
-    <div ref={ref} className="relative mt-14 md:mt-20">
-      {/* Static rail */}
-      <div className="absolute bottom-2 left-[7px] top-2 w-px bg-parchment/12" />
-      {/* Progress rail — draws top→bottom with scroll */}
-      <motion.div
+    <ol className="relative mt-10 md:mt-12">
+      {/* Vertical rail — behind everything. */}
+      <span
         aria-hidden="true"
-        style={reduce ? undefined : { scaleY }}
-        className="absolute bottom-2 left-[7px] top-2 w-px origin-top bg-rust"
+        className="pointer-events-none absolute bottom-6 left-[20px] top-6 z-0 w-px bg-parchment/15"
       />
 
-      <ol>
-        {career.map((group, gi) => (
+      {/* The rail marker: rides BEHIND the icon squircles (z-0). It rests as a
+          squircle matching the node's size (a warm backing/glow), and shrinks to
+          a small solid dot while it springs — slowly — between events. It stays
+          solid orange throughout (plain rgba, so no colour artefacts on the
+          journey). */}
+      {!reduce && (
+        <motion.span
+          aria-hidden="true"
+          className="pointer-events-none absolute left-[20px] z-0"
+          style={{ translateX: '-50%', translateY: '-50%', backgroundColor: MARK }}
+          initial={false}
+          animate={{
+            top: markY,
+            width: traveling ? 12 : 40,
+            height: traveling ? 12 : 40,
+            borderRadius: traveling ? 999 : 15,
+            boxShadow: traveling
+              ? '0 0 10px 3px rgba(242,105,47,0.5)'
+              : '0 0 18px 3px rgba(242,105,47,0.45)',
+          }}
+          transition={{ type: 'spring', stiffness: 110, damping: 20, mass: 1.2 }}
+          onAnimationComplete={() => setTraveling(false)}
+        />
+      )}
+
+      {EVENTS.map((e, i) => {
+        const on = active === i;
+        return (
           <li
-            key={`${group.company}-${group.span}`}
-            className="relative pb-10 pl-10 last:pb-0 sm:pb-16 sm:pl-12 md:pl-16"
+            key={e.title}
+            data-idx={i}
+            ref={(el) => {
+              itemRefs.current[i] = el;
+            }}
+            className="relative pb-10 pl-16 last:pb-0 sm:pb-12"
           >
-            {/* Company node */}
+            {/* Node — orange glyph, lifts a touch when active */}
             <motion.span
               aria-hidden="true"
-              initial={reduce ? { scale: 1 } : { scale: 0 }}
-              whileInView={{ scale: 1 }}
-              viewport={{ once: true, margin: '-20% 0px -20% 0px' }}
-              transition={{ duration: reduce ? 0 : 0.4, ease: EASE }}
-              className="absolute left-[7px] top-1.5 h-3.5 w-3.5 -translate-x-1/2 rounded-full bg-rust ring-4 ring-[#f4f3ef]"
-            />
-
-            <motion.div
-              initial={reduce ? { opacity: 0 } : { opacity: 0, y: 22 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-12% 0px -12% 0px' }}
-              transition={{ duration: reduce ? 0 : 0.9, delay: reduce ? 0 : 0.04 * gi, ease: EASE }}
+              variants={nodeVariants}
+              animate={on ? 'on' : 'off'}
+              transition={nodeTx}
+              className={`absolute left-0 top-0 z-10 flex h-10 w-10 items-center justify-center rounded-2xl border bg-secondary-bg text-sunset shadow-xs transition-colors duration-300 ${
+                on ? 'border-sunset/50' : 'border-parchment/12'
+              }`}
             >
-              <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                <span className="font-display text-3xl font-medium text-sand md:text-4xl">
-                  {group.year}
-                </span>
-                <span className="label text-parchment-faint">{group.span}</span>
-              </div>
-              <h3 className="mt-2 font-display text-2xl font-medium leading-tight text-parchment md:text-3xl">
-                {group.company}
-              </h3>
-            </motion.div>
+              <Glyph name={e.glyph} className="h-[1.15rem] w-[1.15rem]" />
+            </motion.span>
 
-            {/* Roles held here — interactive icon cards */}
+            {/* Header — year, then COMPANY | context | 📍 location */}
+            <span
+              className={`block pt-0.5 font-rounded text-sm font-normal leading-tight transition-colors duration-300 md:text-[0.95rem] ${
+                on ? 'text-sunset' : 'text-parchment-faint'
+              }`}
+            >
+              {e.year}
+            </span>
+            <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 font-rounded text-sm">
+              <span
+                className={`font-rounded text-[0.7rem] font-medium uppercase tracking-label ${
+                  on ? 'text-parchment-muted' : 'text-parchment-faint'
+                }`}
+              >
+                {e.company}
+              </span>
+              <span aria-hidden="true" className="text-parchment-faint/50">|</span>
+              <span className="text-parchment-muted">{e.context}</span>
+              <span aria-hidden="true" className="text-parchment-faint/50">|</span>
+              <span className="inline-flex items-center gap-1 text-parchment-muted">
+                <Glyph name="pin" className="h-3.5 w-3.5 text-sunset" />
+                {e.location}
+              </span>
+            </div>
+            <h3
+              className={`mt-1 font-rounded text-base font-medium leading-snug transition-colors duration-300 md:text-lg ${
+                on ? 'text-parchment' : 'text-parchment/80'
+              }`}
+            >
+              {e.title}
+            </h3>
+
+            {/* Detail card — always shown; whiter, the active one brighter */}
             <div
-              className={`mt-5 grid gap-3 sm:mt-6 sm:gap-4 ${group.roles.length > 1 ? 'sm:grid-cols-2' : ''}`}
+              className={`mt-3 rounded-2xl border p-4 transition-all duration-500 sm:p-5 ${
+                on
+                  ? 'border-sunset/30 bg-[#fdfcfa] opacity-100 dark:bg-tertiary-bg'
+                  : 'border-parchment/10 bg-[#fdfcfa]/70 opacity-80 dark:bg-secondary-bg/50'
+              }`}
             >
-              {group.roles.map((role, ri) => (
-                <RoleCard key={role.period} role={role} index={ri} reduce={reduce} />
-              ))}
+              <p className="font-rounded text-sm font-light leading-relaxed text-parchment-muted">
+                {e.detail}
+              </p>
+              <ul className="mt-3 flex flex-wrap gap-1.5">
+                {e.stack.map((tech) => (
+                  <li
+                    key={tech}
+                    className="rounded-full border border-sunset/25 bg-sunset/10 px-2.5 py-0.5 font-rounded text-[0.7rem] text-sunset"
+                  >
+                    {tech}
+                  </li>
+                ))}
+              </ul>
             </div>
           </li>
-        ))}
-      </ol>
-    </div>
+        );
+      })}
+    </ol>
   );
 }
