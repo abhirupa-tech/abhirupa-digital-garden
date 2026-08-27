@@ -105,3 +105,74 @@ Also worth repeating: **ranking #1 for single generic terms like "AI" or "softwa
 ## A note on the target keywords
 
 "Frontend" and "AI" together is where this site already has a genuine, credible angle — agentic AI interfaces, MCP servers, LLM UX — and that's the wedge to push hardest on, because it's specific enough to be winnable and broad enough to matter. "Software engineering" is served incidentally through the frontend/AI-tooling content but isn't a distinct pillar yet. "System design" currently has no content at all. Treat this less as "optimize for 4 keywords" and more as "this site currently has 2 of its 4 claimed pillars represented — build out the other 2 before expecting to be found for them."
+
+---
+
+## Addendum — 2026-08-26: indexability audit
+
+Prompted by Search Console reporting 18 URLs "Discovered – currently not
+indexed" with only 3 indexed. The audit checked the live site and the rendered
+static export, not just the source.
+
+### Verified healthy — no change needed
+
+The bulk of the standard indexability checklist was already satisfied:
+
+- **One canonical public identity.** `www` → apex and `http` → `https` both
+  301 correctly; `abhirupa-tech.github.io` 404s. No competing URL variants.
+- **Sitemap contains only canonical, indexable URLs.** All 23 live `<loc>`
+  entries return `200`, all `https://abhirupamitra.com/…` with trailing
+  slashes matching the canonical tags.
+- **Canonical tags are unique and self-referential** on every page type —
+  home, about, lab, section hubs, collections, articles.
+- **No accidental `noindex`.** Only `/404` and `/_not-found` carry it.
+- **Internal linking is a real crawl path, in HTML, not JS.** The home page
+  ships `<a href>` links to all three section hubs, the lab, about, all three
+  collections, and every one of the 13 articles. Each section hub links to
+  every article it contains. The footer repeats the full hierarchy on every
+  page. Articles link onward to two related pieces.
+- **Unique `<title>`, meta description, and exactly one `<h1>`** per page.
+
+Given all that, the "Discovered – currently not indexed" status is very
+unlikely to be a technical defect. It is the expected state for a young domain
+with few external links — which makes the Phase 3 backlink work, not more
+`Request indexing` clicks, the thing that actually moves it.
+
+### Defects found and fixed
+
+- **`/og-image.png` was a live 404** while being referenced 14 times across 8
+  files as the OpenGraph/Twitter image for the home page, about, lab,
+  collections, and the section hubs. Every share of those pages rendered
+  without a card image. Added `scripts/generate-og-image.mjs` (a manual,
+  non-build-step generator) and the resulting `public/og-image.png`.
+- **Breadcrumb structured data named a homepage fragment.** Every article's
+  `BreadcrumbList` pointed its middle crumb at `/#design-thinking` instead of
+  the real `/design-thinking/` hub — closing out item 7 of the original audit,
+  which had been waiting on the section pages to exist.
+- **The left rail linked sections to homepage anchors on article pages.**
+  `SideNav` emitted `/#the-practice` everywhere, so on an article page the
+  primary navigation bounced through the home page rather than reaching the
+  hub. It now links to the real hub off home and keeps the anchors (and the
+  scroll-spy) on home.
+- **Raw MDX component markup leaked into crawlable text.** `plainExcerpt`
+  stripped Markdown but not JSX, so the Design Thinking hub rendered a literal
+  `(<Subnote…` inside its hero excerpt. It now strips MDX tags.
+- **Sitemap `lastmod` was the build time on every non-article URL,** telling
+  crawlers the whole site changed on every deploy, CSS-only ones included.
+  Hubs and collections now derive `lastmod` from the newest piece they list.
+- **The sitemap would have listed 404s** for curated external references the
+  moment the Knowledge Library flag is turned on, since no article page is
+  generated for a `link:` entry. Now filtered out.
+- **Collection pages were card walls.** `/collections/essay|guide|playbook/`
+  had one shared boilerplate line and near-identical meta descriptions. Each
+  now has an editorial lede explaining what the format is, plus its own
+  search description.
+
+### Still open
+
+- [ ] Search Console + Bing verification tokens still need to go into
+      `verification` in `app/layout.tsx` — they have to come from the
+      respective consoles.
+- [ ] Analytics still unwired, so none of this is measurable yet.
+- [ ] Phase 3 backlinks remain the highest-leverage remaining work: the site's
+      architecture is no longer the constraint on indexing; its authority is.

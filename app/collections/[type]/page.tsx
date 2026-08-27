@@ -17,6 +17,44 @@ function pluralize(label: string): string {
   return /s$/i.test(label) ? label : `${label}s`;
 }
 
+/**
+ * Editorial copy per format. A collection page that is only a wall of cards is
+ * a thin page — to a reader who arrived from search it never says what the
+ * format *is*, and it gives a crawler almost nothing to distinguish it from
+ * its sibling collections. `lede` is the on-page introduction; `meta` is the
+ * search description, deliberately written separately so the snippet isn't a
+ * clipped version of the first paragraph.
+ *
+ * Keyed by type slug. Formats without an entry fall back to a generated line,
+ * so adding a new `type:` to a piece never breaks the page.
+ */
+const FORMAT_COPY: Record<string, { lede: string; meta: string }> = {
+  essay: {
+    lede: 'Arguments, not instructions. An essay is where a question gets turned over long enough to be worth saying out loud — how AI systems actually reason, what the interfaces around them keep getting wrong, and what changes once a model becomes a material you design with rather than a feature you bolt on.',
+    meta: "Essays by Abhirupa Mitra on agentic AI interfaces, mode collapse, agent orchestration, and the design thinking behind human-AI systems — long-form arguments rather than how-tos.",
+  },
+  guide: {
+    lede: 'Instructions that assume you are actually going to build the thing. A guide runs end to end — the setup, the decisions made along the way, and the parts most write-ups skip because they are tedious rather than difficult.',
+    meta: 'Step-by-step guides by Abhirupa Mitra on frontend for AI — MCP servers, AI-assisted coding setups, harness engineering, and shipping LLM interfaces at scale.',
+  },
+  playbook: {
+    lede: 'Repeatable method. A playbook is what is left after doing something enough times to know which steps matter, which ones are ritual, and where it usually goes wrong.',
+    meta: 'Playbooks by Abhirupa Mitra — repeatable, battle-tested setups for building with AI, from MCP server tooling to production frontend workflows.',
+  },
+};
+
+function formatCopy(slug: string, label: string, count: number) {
+  const known = FORMAT_COPY[slug];
+  return {
+    lede:
+      known?.lede ??
+      `Every ${label.toLowerCase()} in the garden, gathered in one place — written across the practice, field notes, and design thinking.`,
+    meta:
+      known?.meta ??
+      `${count} ${count === 1 ? label.toLowerCase() : `${label.toLowerCase()}s`} by ${site.name} on agentic AI interfaces, frontend for AI, and design thinking.`,
+  };
+}
+
 export function generateStaticParams() {
   return getAllTypes(SECTIONS).map((t) => ({ type: t.slug }));
 }
@@ -30,7 +68,11 @@ export async function generateMetadata({
   const match = getAllTypes(SECTIONS).find((t) => t.slug === type);
   if (!match) return {};
   const title = pluralize(match.label);
-  const description = `Every ${match.label.toLowerCase()} in ${site.name}'s digital garden — agentic AI interfaces, frontend for AI, and design thinking, gathered in one place.`;
+  const description = formatCopy(
+    match.slug,
+    match.label,
+    getEntriesByType(match.label, SECTIONS).length,
+  ).meta;
   const url = `${site.url}/collections/${type}/`;
   return {
     title,
@@ -124,14 +166,14 @@ export default async function CollectionPage({ params }: { params: Promise<PageP
   if (!match || entries.length === 0) notFound();
 
   const title = pluralize(match.label);
-  const description = `Every ${match.label.toLowerCase()} in ${site.name}'s digital garden — agentic AI interfaces, frontend for AI, and design thinking, gathered in one place.`;
+  const { lede, meta } = formatCopy(match.slug, match.label, entries.length);
 
   return (
     <>
       <CollectionStructuredData
         title={title}
         slug={match.slug}
-        description={description}
+        description={meta}
         entries={entries}
       />
       <main className="zone relative pt-28 pb-10 md:pt-36 md:pb-20">
@@ -140,7 +182,10 @@ export default async function CollectionPage({ params }: { params: Promise<PageP
           <h1 className="mt-5 font-display text-section font-medium leading-[1.05] text-parchment">
             {title}
           </h1>
-          <p className="mt-4 font-rounded text-lg font-light leading-relaxed text-parchment-muted">
+          <p className="mt-5 font-body text-lg leading-relaxed text-parchment-muted md:text-xl">
+            {lede}
+          </p>
+          <p className="mt-4 font-rounded text-base font-light leading-relaxed text-parchment-faint">
             {entries.length} {entries.length === 1 ? 'piece' : 'pieces'} across the practice,
             field notes, and design thinking — each still wearing the look of where it lives.
           </p>

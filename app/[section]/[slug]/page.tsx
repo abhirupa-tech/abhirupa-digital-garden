@@ -134,7 +134,9 @@ function ArticleStructuredData({
         '@id': `${url}#breadcrumb`,
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
-          { '@type': 'ListItem', position: 2, name: zone.kicker, item: `${site.url}/#${zone.id}` },
+          // The section's own hub page, not a homepage fragment — the crumb has
+          // to name a real indexable URL for the hierarchy to mean anything.
+          { '@type': 'ListItem', position: 2, name: zone.kicker, item: `${site.url}/${zone.id}/` },
           { '@type': 'ListItem', position: 3, name: entry.title, item: url },
         ],
       },

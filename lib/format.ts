@@ -21,13 +21,23 @@ export function readingTime(markdown: string): number {
  * Strip Markdown syntax down to readable prose — used to preview a piece's
  * actual opening in surfaces that show a body excerpt (e.g. the section-page
  * hero). Not a full parser: it drops code blocks, images, list/heading/quote
- * markers, and emphasis, unwraps links to their text, then collapses
- * whitespace and trims to `max` characters on a word boundary.
+ * markers, emphasis, and MDX component markup, unwraps links to their text,
+ * then collapses whitespace and trims to `max` characters on a word boundary.
+ *
+ * The MDX handling matters for more than tidiness: this text is rendered into
+ * the static HTML of the section hubs, so an unstripped `<Subnote>` ends up in
+ * the crawlable copy search engines read off those pages.
  */
 export function plainExcerpt(markdown: string, max = 500): string {
   const text = markdown
     .replace(/```[\s\S]*?```/g, ' ') // fenced code blocks
     .replace(/`([^`]+)`/g, '$1') // inline code
+    // Self-closing MDX components (<Figure src="…" />) carry no prose — drop
+    // them whole, along with any props spanning multiple lines.
+    .replace(/<[A-Z][\w.]*(?:\s[^>]*?)?\/>/gs, ' ')
+    // Wrapping MDX components (<Quote>…</Quote>) do — keep the children and
+    // shed only the tags.
+    .replace(/<\/?[A-Z][\w.]*(?:\s[^>]*?)?>/gs, ' ')
     .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ') // images
     .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1') // links -> label
     .replace(/^\s{0,3}#{1,6}\s+/gm, '') // ATX headings

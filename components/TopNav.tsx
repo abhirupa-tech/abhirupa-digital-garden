@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState, type ReactNode } from 'react';
 import { zones } from '@/lib/data';
@@ -90,7 +91,7 @@ export function TopNav() {
         className={`flex items-center gap-6 px-6 py-4 md:px-10 lg:pr-12 ${isArticle ? 'lg:pl-24' : ''}`}
       >
         {showHome && (
-          <a
+          <Link
             href="/"
             aria-label="Home"
             className="group flex items-center gap-2 font-body text-base tracking-wide text-secondary-text transition-colors duration-300 hover:text-highlight focus-visible:outline-hidden"
@@ -99,7 +100,7 @@ export function TopNav() {
               ←
             </span>
             <span>Home</span>
-          </a>
+          </Link>
         )}
 
         {/* Links rest on the left on mobile so the fixed top-right hamburger

@@ -1,7 +1,8 @@
 'use client';
 
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { useEffect, useState, type ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { featureFlags } from '@/lib/featureflag';
 
 /**
@@ -71,15 +72,25 @@ const icons = {
   ),
 };
 
-const iconItems: { id: string; label: string; icon: keyof typeof icons }[] = [
-  { id: 'the-practice', label: 'The Practice', icon: 'cursor' },
-  { id: 'field-notes', label: 'Field Notes', icon: 'pen' },
-  { id: 'design-thinking', label: 'Design Thinking', icon: 'compass' },
-  { id: 'lab', label: 'Lab', icon: 'flask' },
+/**
+ * `hub` is the item's own indexable page, where it has one. The rail is
+ * rendered on the home page and on every article page: on home the ids drive
+ * the scroll-spy and the links stay in-page, but on an article page a
+ * `/#the-practice` link is a detour through the home page — it costs the
+ * reader a hop and points the crawler at a fragment instead of the section's
+ * real URL. Off home, the rail links straight to `hub`.
+ */
+const iconItems: { id: string; label: string; icon: keyof typeof icons; hub?: string }[] = [
+  { id: 'the-practice', label: 'The Practice', icon: 'cursor', hub: '/the-practice/' },
+  { id: 'field-notes', label: 'Field Notes', icon: 'pen', hub: '/field-notes/' },
+  { id: 'design-thinking', label: 'Design Thinking', icon: 'compass', hub: '/design-thinking/' },
+  { id: 'lab', label: 'Lab', icon: 'flask', hub: '/lab/' },
   ...(featureFlags.showKnowledgeSection
     ? [{ id: 'knowledge-library', label: 'Knowledge Library', icon: 'book' as const }]
     : []),
-  { id: 'stay-updated', label: 'Stay updated', icon: 'mail' },
+  // The footer carries id="stay-updated" on every page, so off home this is a
+  // same-page anchor rather than a round trip to the home page's footer.
+  { id: 'stay-updated', label: 'Stay updated', icon: 'mail', hub: '#stay-updated' },
 ];
 
 const spyIds = ['top', ...iconItems.map((i) => i.id)];
@@ -145,8 +156,19 @@ function NavIcon({
 
 export function SideNav() {
   const reduce = useReducedMotion();
+  const pathname = usePathname();
   const [active, setActive] = useState('top');
   const [open, setOpen] = useState(false);
+
+  // The site exports with trailingSlash, so usePathname yields e.g. "/about/".
+  const isHome = !pathname || pathname === '/' || pathname === '';
+  // In-page anchors only make sense where the sections are actually on the
+  // page; everywhere else the rail should reach the real URLs. Memoized so the
+  // list identity is stable across the scroll-spy's re-renders.
+  const links = useMemo(
+    () => iconItems.map((it) => ({ ...it, href: !isHome && it.hub ? it.hub : `/#${it.id}` })),
+    [isHome],
+  );
 
   // Scroll-spy: mark the section crossing the viewport's vertical middle.
   useEffect(() => {
@@ -173,9 +195,9 @@ export function SideNav() {
         className="fixed inset-y-0 left-0 z-40 hidden w-20 flex-col items-center border-r border-black/10 bg-linear-to-b from-[#f5f1e9]/95 to-[#ddd6c4]/95 dark:border-white/10 dark:from-secondary-bg/95 dark:to-tertiary-bg/95 lg:flex"
       >
         <a
-          href="/#top"
-          aria-label="Top"
-          title="Top"
+          href={isHome ? '/#top' : '/'}
+          aria-label={isHome ? 'Top' : 'Home'}
+          title={isHome ? 'Top' : 'Home'}
           aria-current={active === 'top' ? 'true' : undefined}
           className={`mt-7 font-display text-2xl leading-none transition-colors duration-300 hover:text-[#274a80] dark:hover:text-accent ${
             active === 'top' ? 'text-[#274a80] dark:text-accent' : 'text-[#0b0c10] dark:text-secondary-text'
@@ -185,8 +207,8 @@ export function SideNav() {
         </a>
 
         <div className="flex flex-1 flex-col items-center justify-center gap-5">
-          {iconItems.map((it) => (
-            <NavIcon key={it.id} href={`/#${it.id}`} label={it.label} active={active === it.id}>
+          {links.map((it) => (
+            <NavIcon key={it.id} href={it.href} label={it.label} active={active === it.id}>
               {icons[it.icon]}
             </NavIcon>
           ))}
@@ -216,18 +238,18 @@ export function SideNav() {
               className="fixed right-4 top-19 z-40 flex flex-col items-center gap-2 rounded-3xl bg-linear-to-b from-[#f5f1e9] to-[#ddd6c4] p-2.5 shadow-lg dark:from-secondary-bg dark:to-tertiary-bg"
             >
               <a
-                href="/#top"
-                aria-label="Top"
-                title="Top"
+                href={isHome ? '/#top' : '/'}
+                aria-label={isHome ? 'Top' : 'Home'}
+                title={isHome ? 'Top' : 'Home'}
                 onClick={() => setOpen(false)}
                 className={iconClass(active === 'top')}
               >
                 <span className="font-display text-xl leading-none">A</span>
               </a>
-              {iconItems.map((it) => (
+              {links.map((it) => (
                 <NavIcon
                   key={it.id}
-                  href={`/#${it.id}`}
+                  href={it.href}
                   label={it.label}
                   active={active === it.id}
                   side="left"
