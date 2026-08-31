@@ -40,6 +40,11 @@ jobs:
           # Optional: set these as repo variables/secrets to enable Cloudinary
           # image delivery. Unset simply serves image srcs as-authored.
           CLOUDINARY_CLOUD_NAME: ${{ vars.CLOUDINARY_CLOUD_NAME }}
+          # Search-engine ownership verification. Unset until the tokens are
+          # added under Settings › Secrets and variables › Actions › Variables;
+          # the meta tags are omitted rather than rendered empty until then.
+          NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ vars.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }}
+          NEXT_PUBLIC_BING_SITE_VERIFICATION: ${{ vars.NEXT_PUBLIC_BING_SITE_VERIFICATION }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

@@ -94,8 +94,19 @@ export const metadata: Metadata = {
     description: site.description,
     images: ['/og-image.png'],
   },
+  // Search-engine ownership verification. The tokens come from Google Search
+  // Console and Bing Webmaster Tools; set them as repository variables so
+  // adding them is a settings change rather than a commit (and so the values
+  // aren't in git). Each key is omitted entirely when its variable is unset —
+  // an empty `<meta content="">` reads as a failed verification rather than an
+  // absent one, so a blank is worse than nothing.
   verification: {
-    // Add search-console tokens here when available.
+    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+      ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+      : {}),
+    ...(process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+      ? { other: { 'msvalidate.01': process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION } }
+      : {}),
   },
 };
 
