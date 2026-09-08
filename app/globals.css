@@ -226,6 +226,23 @@
     --c-sunset: #e05d1f;
     --c-hairline: rgba(20, 18, 16, 0.1);
 
+    /* ── Ember phrase (hero H1 hover) ──────────────────────────────────
+       The fire ramp the hovered letters heat through, plus the pointer
+       halo behind them. On this near-white parchment a white halo would
+       be invisible, so the "breath glow" reads as a warm gold haze and
+       the ramp tops out at a saturated gold rather than white-hot. */
+    --ember-1: #e0561a; /* first warmth — deep ember */
+    --ember-2: #ef8a12; /* mid heat — amber */
+    --ember-3: #ffb020; /* core — gold (light-canvas ceiling) */
+    /* Kept deliberately faint on parchment: the halo sits behind the glyphs,
+       so anything stronger than this hazes the contrast of the very letters
+       it is meant to light. */
+    --ember-halo: 255 196 130;
+    --ember-halo-alpha: 0.26;
+    --ember-halo-blend: normal;
+    --ember-spark: 246 150 40; /* motes need real saturation to read on parchment */
+    --ember-wand: 255 122 16; /* the wand tip — a hot point, not a pale one */
+
     /* Single light palette — a deep off-white canvas (not stark white), a
      * near-black warm grey for body text, dark navy as the primary highlight,
      * and a bold rust-orange as the secondary highlight. Every component
@@ -292,6 +309,18 @@
     /* Sunset: a warm, glowing orange for pictograms on the dark canvas. */
     --c-sunset: #fb7a3c;
     --c-hairline: rgba(224, 224, 224, 0.12);
+
+    /* Ember phrase — dark canvas. The ramp can run all the way to a pale
+       white-hot core here, and the halo is the whitish breath glow,
+       composited additively so it truly emits light. */
+    --ember-1: #f2692f;
+    --ember-2: #ffa53c;
+    --ember-3: #fff0c8;
+    --ember-halo: 255 248 235;
+    --ember-halo-alpha: 0.36;
+    --ember-halo-blend: plus-lighter;
+    --ember-spark: 255 236 200;
+    --ember-wand: 255 252 244;
 
     /* Legacy raw palette, retuned for dark. Higher ink numbers stay the
        lighter surfaces, just inverted into near-blacks. */
@@ -449,5 +478,162 @@
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+  }
+}
+
+/* ── Ember phrase ────────────────────────────────────────────────────────────
+   The hero H1's highlighted phrase, split per character by
+   components/motion/EmberPhrase.tsx. A single rAF loop writes two registered
+   custom properties per glyph — `--h` (heat, 0→1) and `--s` (its live scale) —
+   and everything below is derived from them in CSS, so no React render or
+   style recalculation of a color string happens per frame.
+
+   `--p` is the glyph's position along the phrase (0→1); it reproduces the
+   rust gradient the phrase used to get from `bg-clip-text`, one slice per
+   letter, which also survives a line wrap better than the clipped background
+   did. */
+
+@property --h {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+@property --s {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 1;
+}
+@property --p {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+.ember-phrase {
+  position: relative;
+  /* Own stacking context so the halo's z-index: -1 lands behind the glyphs
+     and not behind the page's canvas gradient. */
+  isolation: isolate;
+}
+
+.ember-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.ember-char {
+  display: inline-block;
+  /* Grow upward from near the baseline: the letter swells without the
+     baseline itself shifting, which is what keeps the line calm. */
+  transform-origin: 50% 78%;
+  transform: scale(var(--s));
+
+  /* Rest color: this glyph's slice of the rust ramp. Heat then mixes that
+     toward the fire ramp — ember → amber → core — so a cold letter is
+     exactly the rust it always was. */
+  --ember-rest: color-mix(
+    in oklab,
+    var(--color-rust-deep),
+    var(--color-rust-soft) calc(var(--p) * 100%)
+  );
+  --ember-mid: color-mix(
+    in oklab,
+    var(--ember-1),
+    var(--ember-2) calc(min(1, var(--h) * 1.8) * 100%)
+  );
+  --ember-hot: color-mix(
+    in oklab,
+    var(--ember-mid),
+    var(--ember-3) calc(max(0, var(--h) * 2 - 1) * 100%)
+  );
+  color: color-mix(in oklab, var(--ember-rest), var(--ember-hot) calc(var(--h) * 100%));
+
+  /* Two stops: a tight core bloom and a wide, weak spill that bleeds into
+     the halo sitting behind the text. */
+  text-shadow:
+    0 0 calc(var(--h) * 14px) color-mix(in srgb, var(--ember-2) calc(var(--h) * 55%), transparent),
+    0 0 calc(var(--h) * 36px) color-mix(in srgb, var(--ember-1) calc(var(--h) * 32%), transparent);
+}
+
+/* Paint hints only while the effect is actually running. */
+.ember-phrase[data-live='true'] .ember-char {
+  will-change: transform, color;
+}
+
+.ember-halo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  width: 260px;
+  height: 260px;
+  border-radius: 9999px;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: var(--ember-halo-blend);
+  background: radial-gradient(
+    circle closest-side,
+    rgb(var(--ember-halo) / var(--ember-halo-alpha)),
+    rgb(var(--ember-halo) / calc(var(--ember-halo-alpha) * 0.45)) 42%,
+    transparent 72%
+  );
+}
+
+/* The motes: a few specks of light that lift off the hot letters and wink out,
+   like dust caught in a shaft of sun. Positioned in the same coordinate space
+   as the halo; the rAF loop writes transform + opacity per mote. */
+.ember-spark {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: var(--ember-halo-blend);
+  background: radial-gradient(
+    circle closest-side,
+    rgb(var(--ember-spark) / 0.95),
+    rgb(var(--ember-spark) / 0.4) 45%,
+    transparent 70%
+  );
+}
+
+.ember-phrase[data-live='true'] .ember-spark {
+  will-change: transform, opacity;
+}
+
+/* The wand tip. It replaces the system cursor inside the phrase, so unlike the
+   halo it tracks the pointer *exactly* — a light being held, not one being
+   chased — and paints above the glyphs rather than behind them. */
+.ember-wand {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 15px;
+  height: 15px;
+  border-radius: 9999px;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: var(--ember-halo-blend);
+  background: radial-gradient(
+    circle closest-side,
+    rgb(var(--ember-wand) / 0.95),
+    rgb(var(--ember-wand) / 0.6) 26%,
+    rgb(var(--ember-wand) / 0.16) 52%,
+    transparent 72%
+  );
+}
+
+.ember-phrase[data-live='true'] .ember-wand {
+  will-change: transform, opacity;
+}
+
+/* Only swap the system cursor for the wand where a real pointer exists — a
+   touch device would just lose its cursor for nothing. */
+@media (hover: hover) and (pointer: fine) {
+  .ember-phrase {
+    cursor: none;
   }
 }
