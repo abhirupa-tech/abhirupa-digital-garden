@@ -1,0 +1,204 @@
+---
+title: "How Do Agents Talk to Each Other?"
+section: "field-notes"
+type: "Guide"
+description: "Explaining the A2A protocol that powers complex orchestration systems — Agent Cards, task lifecycles, streaming subscriptions, and why an unverified card is an open door."
+tags: ["agentic-ai", "a2a-protocol", "multi-agent", "orchestration", "mcp"]
+date: "2026-09-21"
+cover: "https://miro.medium.com/v2/resize:fit:1400/1*RVVug5fDh1L-37FDvnr3bQ.png"
+medium: "https://medium.com/@mitra.abhirupa/how-do-agents-talk-to-each-other-5a37dc19247a"
+aspect: "wide"
+draft: false
+---
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*RVVug5fDh1L-37FDvnr3bQ.png"
+  alt="Illustration of two agents exchanging messages across a shared protocol"
+  ratio="landscape"
+/>
+
+Here's a slightly scary thought to start with. If agents ever develop something
+like a conscience — and I suspect that's a *sooner* problem rather than a
+*later* one — none of the loudest voices in the room would be in a position to
+do much about it.
+
+<Highlight>A2A is a step in that direction.</Highlight> So let's talk about what
+it actually does, and how it works under the hood.
+
+## What is the A2A protocol?
+
+Picture the situation we're in. Multiple agents, each with different
+capabilities, different skill sets, built on different frameworks, written in
+different languages.
+
+Now imagine an orchestrator that has to talk to all of them — and every single
+time, adapt itself to whichever agent is on the other end. That's the chaos A2A
+exists to end.
+
+<Quote>
+  A2A is a standard that lets complying agents discover, communicate, and
+  collaborate with each other — without either side knowing how the other is
+  built.
+</Quote>
+
+The important word is <Subnote note="Opaque here is a feature, not a limitation. The protocol deliberately hides implementation so two competitors can interoperate without either one leaking architecture.">opaque</Subnote>.
+A2A exposes only the bare minimum required to connect: capabilities and
+results, nothing else.
+
+That's exactly what lets two companies put their agents on a call together
+without either one giving away how it works.
+
+## Why bother with a shared protocol?
+
+Because the alternative is tight coupling, and tight coupling is a maintenance
+nightmare.
+
+Connect to each agent individually and you inherit every one of their decisions.
+An agent changes the shape of its response? Change your schema. An agent
+upgrades to a better version? Change your schema again. And again. And again —
+once per agent, forever, in a system that's supposed to be growing.
+
+A2A collapses that. One fixed way to connect to any compliant agent means your
+code stays maintainable, and — the part people underrate —
+<Highlight>it makes agents discoverable.</Highlight>
+
+## How does an agent introduce itself?
+
+With a JSON file.
+
+That's genuinely it. No handshake protocol, no SDK, no integration call. The
+<Subnote note="Served at a well-known path: https://{domain}/.well-known/agent-card.json — the same convention that powers robots.txt and security.txt.">Agent Card</Subnote> is
+a document sitting on the agent's own domain at a known path, and anyone can go
+fetch it. Most agent hosting platforms will serve it for you if you'd rather not.
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*JqRkxbx7t21GlfeT4Y8gWA.png"
+  alt="Diagram showing an Agent Card as the entry point to connecting with an A2A agent"
+  caption="An Agent Card is the gateway to connecting with an A2A agent."
+  ratio="landscape"
+/>
+
+### The card says three things: who I am, what I can do, and how you're allowed to talk to me
+
+Inside it you'll find:
+
+- **Identity** — name, description, provider, version
+- **Skills**, listed one by one, each with its own description and examples
+- **The endpoint**, and which transports it speaks
+- **Auth schemes** it accepts — OAuth2, OIDC, <Subnote note="Mutual TLS: both client and server present certificates, so the agent verifies you as rigorously as you verify it.">mTLS</Subnote>, API key
+- **Capabilities** — whether it can stream, and whether it can push
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*adaVGCMh5BI-z66v5gPldw.png"
+  alt="A breakdown of the fields contained within an A2A Agent Card"
+  caption="What an Agent Card actually contains, field by field."
+  ratio="landscape"
+/>
+
+Cards can also be signed, which means you can check that an agent is who it says
+it is — and not a catfish. (Who knows what's on the other end. It could be a
+doorway into a bad actor's machine.)
+
+### A card is a claim, not proof
+
+While reading through the spec, the question I kept circling was: what's actually
+in place to make sure the endpoint I'm connecting to is safe?
+
+Because a card can simply lie. It can advertise a skill it does not have, and
+your orchestrator will cheerfully route real work to it. Or — subtler and more
+common — you fetched the card once, cached it, and it quietly changed last week.
+
+So when you read one, look for:
+
+- A signature, **and evidence that you actually verified it** — not just that you saw one
+- HTTPS, a domain you recognise, and a path that doesn't move
+- Skills that are narrow and specific, not one vague "I can help with anything"
+- Auth scoped per client, not a single shared key
+
+<Highlight>An unverified card is an open door.</Highlight>
+
+### A2A isn't Google's project anymore
+
+Google donated A2A to the Linux Foundation, and in August 2026 it landed in the
+Agentic AI Foundation — sitting next to MCP, under the same roof.<Citation n={1} source="Agent2Agent (A2A) Protocol — open standard, now governed by the Agentic AI Foundation." href="https://a2a-protocol.org" />
+
+That co-location matters more than it sounds. MCP is how an agent reaches its
+tools; A2A is how an agent reaches its peers. Same governance, two halves of the
+same problem.
+
+## The life of a task
+
+Everything in A2A is a **Task**, not a request and a response.
+
+You send a message, you get back a task id, and that task moves through states:
+`SUBMITTED`, `WORKING`, then one of `COMPLETED`, `FAILED`, `CANCELED`, or
+`REJECTED`. <Subnote note="Once a task reaches a terminal state you cannot send it more messages. Continuing the work means starting a new task.">Terminal states are final.</Subnote>
+
+The genuinely interesting one is `INPUT_REQUIRED`. The agent stops mid-task and
+asks you a question. There's also `AUTH_REQUIRED`, for when it needs credentials
+to keep going.<Citation n={2} source="Life of a Task — the full A2A task state machine and transition rules." href="https://a2a-protocol.org" />
+
+<Highlight>That's the thing plain REST never gave us — an agent that can pause and say "I need more from you," instead of just failing.</Highlight>
+
+## Creating a client is genuinely simple
+
+Install the SDK:
+
+```
+pip install a2a-sdk
+```
+
+Then the whole flow is three steps — fetch the card, create a client against it,
+send a message and subscribe to the stream:
+
+```
+client = await create_client('https://agent.example.com/')
+```
+
+That's it. No SDK per agent you talk to, no per-vendor adapter anywhere. The card
+already told your client which transport to use and how to authenticate, and the
+client worked out the rest.
+
+## Never poll
+
+If you're querying five agents at once, continuously pinging all five to check
+whether any of them has an update is one of the worst things you can be doing in
+agentic engineering.
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*ThlSPRNsu0swzUWe8pGM3A.png"
+  alt="Diagram of the A2A subscription model, showing streamed status and artifact updates"
+  caption="One open stream per agent, pushing updates — instead of five polling loops burning requests."
+  ratio="landscape"
+/>
+
+So A2A runs on a subscription model. You open a stream once, and the agent tells
+you when something happens.
+
+- `SendStreamingMessage` or `SubscribeToTask` gives you a live connection per agent
+- The agent pushes `statusUpdate` events as the task moves through its states, and `artifactUpdate` events as output gets produced
+- Five agents means five open streams sitting idle, costing you nothing — instead of five polling loops burning requests
+
+## The short version
+
+- **A2A is a standard for agents to talk to other agents.** Different frameworks, different languages, different vendors, one way to connect.
+- **It exists to kill tight coupling.** Without it, every agent upgrade means you rewrite your integration. Again. And again.
+- **The Agent Card is the entry point** — a JSON file at a well-known path, carrying name, skills, endpoint, transports, auth schemes, and streaming capability.
+- **The card is a claim, not proof.** Verify the signature, check the domain, distrust vague skills, scope your auth per client.
+- **A2A is no longer Google's.** Donated to the Linux Foundation, and since August 2026 it sits in the Agentic AI Foundation next to MCP.
+- **Connecting is three steps.** Install the SDK, fetch the card, create a client. No per-vendor adapter anywhere.
+- **Never poll.** Open one stream per agent and let it push `statusUpdate` and `artifactUpdate` events to you.
+
+And back to where we started. The moment agents can find each other, verify each
+other, and collaborate without a human wiring the connection, the interesting
+question stops being *can they talk*.
+
+<Quote>
+  It becomes what we did to make sure we can still hear them.
+</Quote>
+
+### Further reading
+
+- [A2A Protocol — official documentation](https://a2a-protocol.org)
+- [Life of a Task — the A2A task state machine](https://a2a-protocol.org)
+- [a2aproject/a2a-samples — working examples on GitHub](https://github.com/a2aproject/a2a-samples)
