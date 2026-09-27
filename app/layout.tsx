@@ -58,6 +58,9 @@ export const metadata: Metadata = {
   category: 'technology',
   alternates: {
     canonical: '/',
+    types: {
+      'application/rss+xml': [{ url: '/feed.xml', title: site.name }],
+    },
   },
   robots: {
     index: true,

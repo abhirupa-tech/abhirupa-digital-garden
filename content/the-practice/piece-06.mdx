@@ -1,0 +1,205 @@
+---
+title: "I Overloaded Slack's Job Queue — and What It Taught Me About Scale"
+slug: "i-overloaded-slacks-job-queue"
+section: "the-practice"
+type: "Essay"
+description: "What a million-user mistake taught me about backfills, thundering herds, fan-out, and why randomized delays exist."
+tags: ["system-design", "scale", "backfills", "job-queues", "caching", "incident"]
+date: "2026-09-25"
+cover: "https://miro.medium.com/v2/resize:fit:1400/1*fdTlst0S7Zs_KcPzVX85gw.png"
+medium: "https://medium.com/design-bootcamp/i-overloaded-slacks-job-queue-and-what-it-taught-me-about-scale-25131869b705"
+aspect: "wide"
+draft: false
+---
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*fdTlst0S7Zs_KcPzVX85gw.png"
+  alt="Illustration of a job queue overflowing with work"
+  ratio="landscape"
+/>
+
+Every engineer has that one story they tell at team dinners. This is mine, and
+it starts with me hitting "run" and closing my laptop for a weekend.
+
+*It's probably the biggest learning curve of my five years in engineering, and
+I loved it — not the incident it raised, but the learning curve around it.*
+
+I was assigned what seemed like a very simple task: fetch all the existing
+agentic apps and migrate them to a newer payload format, so that the new
+payload could power a fresh user interface.
+
+## What does that mean, if you dumb it down?
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*Xn1ToEe6IgnoKKGRHIK3oA.png"
+  alt="Diagram explaining how a backfill updates existing database rows in batches"
+  caption="Technical know-how of what backfills are."
+  ratio="landscape"
+/>
+
+### Backfills
+
+*I know, I know, I'm a frontend engineer.* But I know a thing or two about
+full stack. A <Subnote note="Going back through data that already exists and rewriting it in batches — as opposed to a migration that only changes the schema, or new writes that already use the new shape.">backfill</Subnote>
+is when you go back through the existing data in your database and update it in
+batches, row by row.
+
+You typically do this *when you need old data to fit a newer schema*, to
+populate a newly added field, or to fix records that were written incorrectly.
+
+So, as the story goes, I had to write a simple backfill that migrated all these
+agents to the new payload format — with a few additional parameters, of course.
+
+<Quote>
+  Sounds easy, right? It wasn't. And it came with a thousand design decisions.
+</Quote>
+
+## Let's do the math
+
+Let's assume a Slack workspace has **1,000 apps** installed, and about
+**10,000 active users** connected at any given moment. (I know — we're a busy
+team.)
+
+Here's what one row update actually costs:
+
+- A row gets written.
+- That write emits a change event and a cache refresh.
+- Every connected client receives it — here, the 10,000 users currently online
+  in a huge workspace.
+- Each client marks its cached copy stale and refetches, for every app that was
+  modified.
+
+<Highlight>So one write is never one operation.</Highlight>
+
+A single database write fans out across branches, leading to multiple updates
+and API calls from the client. Let's call this the **multiplier**. If an entity
+has three API calls tied to its state — one to send an update notification, one
+to fetch the latest state, and maybe one to recheck permissions — then every
+backfilled row carries a multiplier of 3.
+
+Now take that hypothetical workspace:
+
+```
+1,000 apps × 10,000 users × 3 calls = 30,000,000 API calls
+```
+
+*Run the backfill across all 1,000 apps and that's **thirty million reads**.
+From one workspace.*
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*6Qs0L5HHgkE1vYywCt5VQw.png"
+  alt="Diagram of one database update fanning out into thousands of simultaneous client requests"
+  caption="A single database update can trigger thousands of simultaneous API requests and create a thundering herd."
+  ratio="landscape"
+/>
+
+<Quote>
+  The numbers get silly, and then they get expensive. And that's exactly where I
+  messed up.
+</Quote>
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*yr-_d2wlKDYStsQjlPUmqA.png"
+  alt="Illustration of the job queue spike caused by the unthrottled backfill"
+  ratio="landscape"
+/>
+
+## Engineers have a name for this
+
+A *push-based cache invalidation causing a fan-out-amplified thundering herd.*
+Two terms are doing the work there:
+
+- **Push-based cache invalidation** — the server tells every client "the thing
+  you cached just changed, go get it again," instead of waiting for the client
+  to notice on its own.
+- **Thundering herd** — thousands of clients all asking for the same value at
+  the exact same moment, because they all got the same invalidation signal at
+  the exact same moment.
+
+I ran the backfill *with no throttling and no delays*, watched the first few
+batches go through cleanly, and decided it was safe to log off.
+
+What I didn't realize was that every one of those updates was quietly firing
+cache refreshes and notifications behind the scenes. When I woke up, I was
+already tagged in multiple places, and someone had to step in to scale up the
+pipelines.
+
+<Highlight>But this piece isn't about the mess-up. It's about how to approach engineering problems like this one.</Highlight>
+
+## Design patterns that would have prevented it
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*jsFTA_rfj42GnSHSDNZ-9A.png"
+  alt="System design diagram showing throttling, jittered delays, a circuit breaker, and a necessity gate around a backfill"
+  caption="System design to keep in mind while making massive updates to databases with many entries."
+  ratio="landscape"
+/>
+
+### 1. Rate limiting and throttling, with jittered delays
+
+We could have capped how many fan-out jobs a single script run is allowed to
+enqueue per second or per minute. That way, a backfill can't dump its entire
+workload into the queue at once.
+
+Imagine we have 1,000 apps to backfill, installed across 20 teams. The database
+is split into `n` chunks, each covering 5 teams. When the backfill runs, *we
+kick off parallel jobs, one per chunk*. Each job works through the teams in its
+chunk and, for each team, updates the schema for every installed app.
+
+**Here's the problem:** if all 1,000 app updates fire the moment the backfill
+starts, every downstream effect lands at the same time — every cache
+invalidation, every client refetch, every notification. That's the spike.
+
+So instead, we chunk the updates into groups of, say, 50, and queue them up
+with a <Subnote note="A randomized delay within bounds you choose — say, anywhere between 15 minutes and 2 hours.">jittered delay</Subnote>.
+
+- Instead of 1,000 updates hitting in the first few seconds, they trickle in
+  across a window, in small bursts.
+- That spreads the traffic thin enough for the system to absorb it.
+
+**Why random, and not just a fixed delay?** A fixed 15-minute delay just moves
+the spike 15 minutes into the future.
+<Highlight>Randomness is what breaks up the herd.</Highlight>
+
+### 2. A circuit breaker on the job queue
+
+Job queues should watch their own health — queue depth, processing lag, error
+rates. When those cross a threshold, the <Subnote note="Borrowed from electrical engineering: when load crosses a safe limit, the breaker trips and cuts the flow, rather than letting the whole circuit burn.">circuit breaker</Subnote>
+trips: it pauses or sheds incoming backfill work automatically, instead of
+relying on a human to notice the spike and scale up infrastructure after the
+damage is done.
+
+### 3. Event classification before fan-out — a "necessity gate"
+
+Do clients even need their caches refreshed immediately to pick up these
+database changes?
+
+Before firing API calls and their real-time broadcast — edge cache invalidation
+plus a WebSocket push to every client — a good design checks whether the update
+actually needs to reach users *right now*. A schema migration that powers a UI
+nobody has opened yet usually doesn't.
+
+## Wrapping up
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/1*-J4LHyFll4yYb6A-wi7llg.png"
+  alt="Summary illustration of the lessons from the backfill incident"
+  ratio="landscape"
+/>
+
+Backfills look boring on paper. It's just a script that updates some rows. But
+in a system at scale, <Highlight>no row update is ever just a row update.</Highlight>
+
+Every write can quietly trigger caches, clients, notifications, and queues
+downstream — and none of that shows up while you watch the first few batches go
+through cleanly.
+
+These days, before I run anything that touches thousands of rows, I ask myself
+four questions:
+
+1. What does each update trigger downstream?
+2. What happens if all of it fires at once?
+3. Can the system stop itself if things go wrong?
+4. Do users even need to know about this change right now?
+
+If I can't answer all four, the script doesn't run.
