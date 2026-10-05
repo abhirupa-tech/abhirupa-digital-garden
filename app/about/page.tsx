@@ -94,36 +94,30 @@ export default function AboutPage() {
             <AboutIntro />
           </div>
 
-          {/* Portrait — sticky sidebar that stays in view while the timeline scrolls.
-              self-stretch is essential: it makes this column fill its two-row grid
-              area (rather than shrinking to the portrait), giving `sticky` room to travel. */}
-          <div className="order-2 lg:col-span-5 lg:col-start-8 lg:row-span-2 lg:row-start-1 lg:self-stretch">
-            <div className="lg:sticky lg:top-28">
-              <Portrait />
-            </div>
-          </div>
-
-          {/* Career timeline — continues the scrolling column beneath the intro */}
-          <div className="order-3 lg:col-span-7 lg:col-start-1 lg:row-start-2 lg:pl-8">
-            <section id="path" className="scroll-mt-24 pt-6 md:pt-10">
-              <Reveal className="max-w-xl">
-                <div className="flex items-baseline gap-4">
-                  <span className="font-display text-lg text-sunset/80">05</span>
-                  <span className="label text-parchment-muted">The path here</span>
-                </div>
-                <h2 className="mt-4 font-display text-3xl font-medium text-parchment md:text-4xl">
-                  My career snapshot and contributions that mattered
-                </h2>
-                <p className="mt-3 font-rounded text-[calc(1.25rem_-_1pt)] leading-relaxed text-parchment-muted sm:text-[1.25rem]">
-                  From voice and Office at Microsoft to Copilot, and now agentic
-                  interfaces at Slack — the roles that shaped how I build.
-                </p>
-              </Reveal>
-
-              <CareerTimeline />
-            </section>
+          {/* Portrait — sits beside the intro on large screens */}
+          <div className="order-2 lg:col-span-5 lg:col-start-8 lg:row-start-1">
+            <Portrait />
           </div>
         </div>
+
+        {/* Career timeline — full-width row of horizontal cards beneath intro + portrait */}
+        <section id="path" className="scroll-mt-24 pt-16 md:pt-24 lg:pl-8">
+          <Reveal className="max-w-2xl">
+            <div className="flex items-baseline gap-4">
+              <span className="font-display text-lg text-sunset/80">05</span>
+              <span className="label text-parchment-muted">The path here</span>
+            </div>
+            <h2 className="mt-4 font-display text-3xl font-medium text-parchment md:text-4xl">
+              My career snapshot and contributions that mattered
+            </h2>
+            <p className="mt-3 font-rounded text-[calc(1.25rem_-_1pt)] font-medium leading-relaxed text-parchment-muted sm:text-[1.25rem]">
+              From voice and Office at Microsoft to Copilot, and now agentic
+              interfaces at Slack — the roles that shaped how I build.
+            </p>
+          </Reveal>
+
+          <CareerTimeline />
+        </section>
       </main>
 
       <Footer />

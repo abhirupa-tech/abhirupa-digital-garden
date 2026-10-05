@@ -1,16 +1,20 @@
 'use client';
 
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
 import { motion, useReducedMotion, type Variants } from 'framer-motion';
 import { Glyph, type GlyphName } from './Glyph';
 
 /**
- * A single, vertical, scroll-driven career timeline. Every event's details are
- * always visible; as you scroll, the event crossing the viewport's middle
- * becomes "active" — its node and card warm to sunset. A marker rides the rail:
- * it rests as a squircle framing the active node, and shrinks to a small solid
- * dot while it springs between events. Scroll-driven (no hover), so it behaves
- * the same on touch; collapses to a plain, fully-lit list under reduced-motion.
+ * A horizontal, chronological career timeline — a row of clean, shadowed
+ * cards read left-to-right (oldest → now), joined by hand-drawn dashed arcs.
+ * Each card carries a numbered badge on its left edge, a year sticker on its
+ * top-right corner, a "company | context" line, the role, a short detail, the
+ * stack, and a line-art glyph. On scroll the cards rise in sequence and the
+ * arcs draw themselves between them; on hover a card lifts a touch and its
+ * soft shadow deepens. Cards are plain, outline-free surfaces; each carries a
+ * theme-token tint only in its number badge and year sticker. Stacks to two
+ * columns, then one (left-aligned), on narrower screens; arcs only show in
+ * the 4-up row, xl+. Renders statically under reduced-motion.
  */
 
 type Event = {
@@ -22,9 +26,47 @@ type Event = {
   glyph: GlyphName;
   detail: string;
   stack: string[];
+  /** Theme token the card is tinted from. */
+  tint: string;
 };
 
 const EVENTS: Event[] = [
+  {
+    year: '2020 — 21',
+    company: 'Microsoft',
+    context: 'Word Web · iOS',
+    location: 'Noida',
+    title: 'Engineering Intern',
+    glyph: 'calendar',
+    detail:
+      'Voice-to-math expression conversion in Word on the web (speak out equations), and a LUIS-powered intelligent system for an iOS app.',
+    stack: ['Speech', 'iOS'],
+    tint: 'var(--c-highlight-strong)',
+  },
+  {
+    year: '2021 — 25',
+    company: 'Microsoft',
+    context: 'Word & Outlook',
+    location: 'Noida',
+    title: 'Software Engineer',
+    glyph: 'mic',
+    detail:
+      'Voice dictation in Word and Outlook for Android, and a better microphone click funnel — across an Android, shared C++, and Kotlin stack.',
+    stack: ['Android', 'C++', 'Kotlin'],
+    tint: 'rgb(var(--raw-blush-whisper))',
+  },
+  {
+    year: '2023 — 25',
+    company: 'Microsoft',
+    context: 'M365 Copilot',
+    location: 'Noida',
+    title: 'Software Engineer 2',
+    glyph: 'pane',
+    detail:
+      'Performance and UX for the Microsoft Copilot side pane across every M365 Office app and platform — shared ownership of one seamless Copilot experience.',
+    stack: ['React', 'TypeScript', 'Relay', 'Fluent UI'],
+    tint: 'rgb(var(--raw-teal-whisper))',
+  },
   {
     year: '2025 — Now',
     company: 'Slack',
@@ -35,219 +77,180 @@ const EVENTS: Event[] = [
     detail:
       'Building the Agent Profile View and the Slack Admin pages for Enterprise & Biz users, and wiring Salesforce MCP servers — and the Agents that followed — into Slack.',
     stack: ['React', 'TypeScript', 'MCP'],
-  },
-  {
-    year: '2023 — 2025',
-    company: 'Microsoft',
-    context: 'M365 Copilot',
-    location: 'Noida',
-    title: 'Software Engineer 2',
-    glyph: 'pane',
-    detail:
-      'Performance and UX for the Microsoft Copilot side pane across every M365 Office app and platform — shared ownership of one seamless Copilot experience.',
-    stack: ['React', 'TypeScript', 'Relay', 'Fluent UI'],
-  },
-  {
-    year: '2021 — 2025',
-    company: 'Microsoft',
-    context: 'Office · Word & Outlook',
-    location: 'Noida',
-    title: 'Software Engineer',
-    glyph: 'mic',
-    detail:
-      'Voice dictation in Word and Outlook for Android, and a better microphone click funnel — across an Android, shared C++, and Kotlin stack.',
-    stack: ['Android', 'C++', 'Kotlin'],
-  },
-  {
-    year: '2020 — 2021',
-    company: 'Microsoft',
-    context: 'Word Web · iOS',
-    location: 'Noida',
-    title: 'Engineering Intern',
-    glyph: 'calendar',
-    detail:
-      'Voice-to-math expression conversion in Word on the web (speak out equations), and a LUIS-powered intelligent system for an iOS app.',
-    stack: ['Speech', 'iOS'],
+    tint: 'var(--c-sunset)',
   },
 ];
 
-// Marker colour — sunset orange throughout (rgb so framer interpolates the
-// glow smoothly).
-const MARK = 'rgb(242,105,47)';
-const nodeVariants: Variants = {
-  off: { scale: 1 },
-  on: { scale: 1.12 },
+const EASE = [0.16, 1, 0.3, 1] as const;
+const STAGGER = 0.16;
+
+const listVariants: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: STAGGER } },
 };
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 36 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: EASE } },
+};
+
+const badgeVariants: Variants = {
+  hidden: { scale: 0 },
+  visible: { scale: 1, transition: { type: 'spring', stiffness: 380, damping: 14, delay: 0.35 } },
+};
+
+/** Exposes the card's tint as --tint for its accents (badge, rule). */
+function tintStyle(tint: string): CSSProperties {
+  return { ['--tint' as string]: tint };
+}
+
+const ARC = 'M24 42 C 60 2, 140 2, 176 40';
+
+/** A dashed arc from the centre of card `i` to the centre of card `i + 1`. */
+function Arc({ i, reduce }: { i: number; reduce: boolean }) {
+  const delay = reduce ? 0 : 0.6 + i * STAGGER + 0.25;
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute -top-14 hidden h-12 xl:block"
+      style={{ left: `${(i + 0.5) * 25}%`, width: '25%' }}
+    >
+      <svg viewBox="0 0 200 48" className="h-full w-full overflow-visible text-parchment-muted">
+        {/* framer's pathLength drives strokeDasharray, so the dashed arc is
+            revealed through a solid, self-drawing mask stroke instead. */}
+        <mask id={`arc-mask-${i}`} maskUnits="userSpaceOnUse" x="0" y="-10" width="200" height="70">
+          <motion.path
+            d={ARC}
+            fill="none"
+            stroke="#fff"
+            strokeWidth={6}
+            strokeLinecap="round"
+            initial={reduce ? false : { pathLength: 0 }}
+            whileInView={{ pathLength: 1 }}
+            viewport={{ once: true, margin: '-10% 0px' }}
+            transition={{ duration: reduce ? 0 : 0.9, delay, ease: 'easeInOut' }}
+          />
+        </mask>
+        <path
+          d={ARC}
+          mask={`url(#arc-mask-${i})`}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2.2}
+          strokeLinecap="round"
+          strokeDasharray="6 7"
+        />
+        <motion.path
+          d="M166 36 L177 41 L179 29"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2.2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          initial={reduce ? false : { opacity: 0, scale: 0.4 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: '-10% 0px' }}
+          transition={{ duration: reduce ? 0 : 0.3, delay: delay + 0.8 }}
+          style={{ transformOrigin: '177px 41px' }}
+        />
+      </svg>
+    </div>
+  );
+}
 
 export function CareerTimeline() {
   const reduce = useReducedMotion() ?? false;
-  const [active, setActive] = useState(0);
-  const [markY, setMarkY] = useState(0);
-  const [traveling, setTraveling] = useState(false);
-
-  const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
-  const mounted = useRef(false);
-
-  // Scroll-spy: the event crossing the viewport's vertical middle is active.
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const idx = Number((entry.target as HTMLElement).dataset.idx);
-            if (!Number.isNaN(idx)) setActive(idx);
-          }
-        });
-      },
-      { rootMargin: '-45% 0px -45% 0px', threshold: 0 },
-    );
-    itemRefs.current.forEach((el) => el && io.observe(el));
-    return () => io.disconnect();
-  }, []);
-
-  // Measure the active node's centre → marker target. Trigger the shrink-to-dot
-  // travel morph on active changes (but not on the very first measure/resize).
-  // Node center relative to the <ol> = the item's offsetTop + half the node
-  // height (the node sits at the item's top, h-10 → +20). offsetTop is layout-
-  // accurate, so the marker lines up with the icon exactly.
-  const measure = (morph: boolean) => {
-    const li = itemRefs.current[active];
-    if (!li) return;
-    setMarkY(li.offsetTop + 20);
-    if (morph && !reduce) setTraveling(true);
-  };
-
-  useLayoutEffect(() => {
-    measure(mounted.current);
-    mounted.current = true;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active]);
-
-  useEffect(() => {
-    const onResize = () => measure(false);
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active]);
-
-  const nodeTx = reduce
-    ? { duration: 0 }
-    : { type: 'spring' as const, stiffness: 420, damping: 16, mass: 0.6 };
 
   return (
-    <ol className="relative mt-10 md:mt-12">
-      {/* Vertical rail — behind everything. */}
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute bottom-6 left-[20px] top-6 z-0 w-px bg-parchment/15"
-      />
+    <div className="relative mt-12 xl:mt-24">
+      {EVENTS.slice(0, -1).map((_, i) => (
+        <Arc key={i} i={i} reduce={reduce} />
+      ))}
 
-      {/* The rail marker: rides BEHIND the icon squircles (z-0). It rests as a
-          squircle matching the node's size (a warm backing/glow), and shrinks to
-          a small solid dot while it springs — slowly — between events. It stays
-          solid orange throughout (plain rgba, so no colour artefacts on the
-          journey). */}
-      {!reduce && (
-        <motion.span
-          aria-hidden="true"
-          className="pointer-events-none absolute left-[20px] z-0"
-          style={{ translateX: '-50%', translateY: '-50%', backgroundColor: MARK }}
-          initial={false}
-          animate={{
-            top: markY,
-            width: traveling ? 12 : 40,
-            height: traveling ? 12 : 40,
-            borderRadius: traveling ? 999 : 15,
-            boxShadow: traveling
-              ? '0 0 10px 3px rgba(242,105,47,0.5)'
-              : '0 0 18px 3px rgba(242,105,47,0.45)',
-          }}
-          transition={{ type: 'spring', stiffness: 110, damping: 20, mass: 1.2 }}
-          onAnimationComplete={() => setTraveling(false)}
-        />
-      )}
-
-      {EVENTS.map((e, i) => {
-        const on = active === i;
-        return (
-          <li
+      <motion.ol
+        className="grid grid-cols-1 gap-x-8 gap-y-10 pl-5 sm:grid-cols-2 sm:gap-x-12 xl:grid-cols-4 xl:gap-x-7"
+        variants={listVariants}
+        initial={reduce ? false : 'hidden'}
+        whileInView="visible"
+        viewport={{ once: true, margin: '-10% 0px' }}
+      >
+        {EVENTS.map((e, i) => (
+          <motion.li
             key={e.title}
-            data-idx={i}
-            ref={(el) => {
-              itemRefs.current[i] = el;
-            }}
-            className="relative pb-10 pl-16 last:pb-0 sm:pb-12"
+            variants={cardVariants}
+            whileHover={reduce ? undefined : { y: -4, transition: { duration: 0.3 } }}
+            className="group relative flex flex-col rounded-xl bg-white px-5 pb-4 pt-6 shadow-[0_1px_2px_rgba(20,18,16,0.06),0_6px_20px_-6px_rgba(20,18,16,0.12)] transition-shadow duration-300 hover:shadow-[0_2px_4px_rgba(20,18,16,0.06),0_14px_32px_-10px_rgba(20,18,16,0.18)] dark:bg-secondary-bg dark:shadow-[0_1px_2px_rgba(0,0,0,0.4),0_8px_24px_-8px_rgba(0,0,0,0.55)] dark:hover:shadow-[0_2px_4px_rgba(0,0,0,0.4),0_16px_36px_-10px_rgba(0,0,0,0.7)]"
+            style={tintStyle(e.tint)}
           >
-            {/* Node — orange glyph, lifts a touch when active */}
+            {/* Numbered badge — straddles the card's left edge */}
             <motion.span
               aria-hidden="true"
-              variants={nodeVariants}
-              animate={on ? 'on' : 'off'}
-              transition={nodeTx}
-              className={`absolute left-0 top-0 z-10 flex h-10 w-10 items-center justify-center rounded-2xl border bg-secondary-bg text-sunset shadow-xs transition-colors duration-300 ${
-                on ? 'border-sunset/50' : 'border-parchment/12'
-              }`}
+              variants={badgeVariants}
+              className="absolute -left-5 top-11 flex h-10 w-10 items-center justify-center rounded-full font-display text-lg font-bold text-parchment shadow-[0_1px_2px_rgba(20,18,16,0.08),0_4px_10px_-4px_rgba(20,18,16,0.2)]"
+              style={{ backgroundColor: 'color-mix(in srgb, var(--tint) 32%, var(--c-primary-bg))' }}
             >
-              <Glyph name={e.glyph} className="h-[1.15rem] w-[1.15rem]" />
+              {i + 1}
             </motion.span>
 
-            {/* Header — year, then COMPANY | context | 📍 location */}
-            <span
-              className={`block pt-0.5 font-rounded text-sm font-normal leading-tight transition-colors duration-300 md:text-[0.95rem] ${
-                on ? 'text-sunset' : 'text-parchment-faint'
-              }`}
+            {/* Year — a small sticker pinned over the card's top-right corner */}
+            <motion.span
+              variants={badgeVariants}
+              className="absolute -top-3 right-4 rounded-md px-2.5 py-1 font-rounded text-[0.75rem] font-bold text-parchment shadow-[0_1px_2px_rgba(20,18,16,0.08),0_4px_10px_-4px_rgba(20,18,16,0.2)]"
+              style={{ backgroundColor: 'color-mix(in srgb, var(--tint) 32%, var(--c-primary-bg))' }}
             >
               {e.year}
-            </span>
-            <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 font-rounded text-sm">
-              <span
-                className={`font-rounded text-[0.7rem] font-medium uppercase tracking-label ${
-                  on ? 'text-parchment-muted' : 'text-parchment-faint'
-                }`}
-              >
-                {e.company}
-              </span>
-              <span aria-hidden="true" className="text-parchment-faint/50">|</span>
-              <span className="text-parchment-muted">{e.context}</span>
-              <span aria-hidden="true" className="text-parchment-faint/50">|</span>
-              <span className="inline-flex items-center gap-1 text-parchment-muted">
+            </motion.span>
+
+            {/* Company | context — one quiet line */}
+            <p
+              title={`${e.company} | ${e.context}`}
+              className="truncate pl-4 font-rounded text-[0.78rem] font-normal text-parchment-muted"
+            >
+              {e.company}
+              <span aria-hidden="true" className="mx-1.5 text-parchment-faint/60">|</span>
+              {e.context}
+            </p>
+
+            <h3 className="mt-3 pl-4 font-rounded text-[0.95rem] font-bold leading-snug text-parchment">
+              {e.title}
+            </h3>
+            <p className="mt-2 pl-4 font-rounded text-[0.875rem] font-normal leading-relaxed text-parchment-muted">
+              {e.detail}
+            </p>
+
+            <ul className="mt-3 flex flex-wrap gap-1.5 pl-4">
+              {e.stack.map((tech) => (
+                <li
+                  key={tech}
+                  className="rounded-full bg-sunset/15 px-2.5 py-0.5 font-rounded text-[0.72rem] font-semibold text-highlight-strong"
+                >
+                  {tech}
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-auto flex items-end pr-10 pt-3">
+              <span className="inline-flex items-center gap-1 font-rounded text-[0.78rem] font-semibold text-parchment-muted">
                 <Glyph name="pin" className="h-3.5 w-3.5 text-sunset" />
                 {e.location}
               </span>
             </div>
-            <h3
-              className={`mt-1 font-rounded text-base font-medium leading-snug transition-colors duration-300 md:text-lg ${
-                on ? 'text-parchment' : 'text-parchment/80'
-              }`}
-            >
-              {e.title}
-            </h3>
 
-            {/* Detail card — always shown; whiter, the active one brighter */}
-            <div
-              className={`mt-3 rounded-2xl border p-4 transition-all duration-500 sm:p-5 ${
-                on
-                  ? 'border-sunset/30 bg-[#fdfcfa] opacity-100 dark:bg-tertiary-bg'
-                  : 'border-parchment/10 bg-[#fdfcfa]/70 opacity-80 dark:bg-secondary-bg/50'
-              }`}
+            {/* Glyph — small, tucked into the bottom-right corner */}
+            <motion.span
+              aria-hidden="true"
+              className="absolute bottom-3 right-3 text-parchment/70"
+              animate={reduce ? undefined : { y: [0, -2, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: i * 0.5 }}
             >
-              <p className="font-rounded text-sm font-light leading-relaxed text-parchment-muted">
-                {e.detail}
-              </p>
-              <ul className="mt-3 flex flex-wrap gap-1.5">
-                {e.stack.map((tech) => (
-                  <li
-                    key={tech}
-                    className="rounded-full border border-sunset/25 bg-sunset/10 px-2.5 py-0.5 font-rounded text-[0.7rem] text-sunset"
-                  >
-                    {tech}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </li>
-        );
-      })}
-    </ol>
+              <Glyph
+                name={e.glyph}
+                className="h-8 w-8 transition-transform duration-500 group-hover:scale-110"
+              />
+            </motion.span>
+          </motion.li>
+        ))}
+      </motion.ol>
+    </div>
   );
 }
