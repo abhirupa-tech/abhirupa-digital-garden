@@ -1,0 +1,43 @@
+/* rec — pixel-art deck. Scoped to .rec-root so nothing leaks into the site. */
+
+.rec-root .rec-pixel {
+  font-family: var(--font-silkscreen), ui-monospace, monospace;
+  letter-spacing: 0.02em;
+}
+
+.rec-root .rec-deck svg,
+.rec-root .rec-pixelated {
+  shape-rendering: crispEdges;
+  image-rendering: pixelated;
+}
+
+/* Reels turn in 45° steps — chunky, like a sprite — at a rate set by speed. */
+.rec-root .rec-reel {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.rec-root[data-playing='true'] .rec-reel {
+  animation: rec-reel-spin var(--rec-reel-duration, 1.2s) steps(8) infinite;
+}
+@keyframes rec-reel-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* The record dot blinks while a preview plays. */
+.rec-root[data-playing='true'] .rec-led {
+  animation: rec-blink 1s steps(1) infinite;
+}
+@keyframes rec-blink {
+  50% {
+    opacity: 0.15;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rec-root .rec-reel,
+  .rec-root .rec-led {
+    animation: none !important;
+  }
+}

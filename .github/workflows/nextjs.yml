@@ -45,6 +45,9 @@ jobs:
           # the meta tags are omitted rather than rendered empty until then.
           NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ vars.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }}
           NEXT_PUBLIC_BING_SITE_VERIFICATION: ${{ vars.NEXT_PUBLIC_BING_SITE_VERIFICATION }}
+          # Lab › rec: where replay URLs point. Unset uses the default Vercel
+          # deployment (rec-mock-llm-response-recorder.vercel.app).
+          NEXT_PUBLIC_REC_REPLAY_ORIGIN: ${{ vars.NEXT_PUBLIC_REC_REPLAY_ORIGIN }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

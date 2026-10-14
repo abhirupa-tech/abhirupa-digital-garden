@@ -31,6 +31,14 @@ export const labProjects: LabProject[] = [
     href: '/lab/morphology-in-AI-components/',
     // No video yet — falls back to the gradient preview.
   },
+  {
+    slug: 'rec',
+    title: 'rec',
+    caption: 'Record an LLM stream once, replay it from a URL with its original timing.',
+    tags: ['Frontend for AI', 'Testing', 'Tool'],
+    status: 'live',
+    href: '/lab/rec/',
+  },
 ];
 
 export const labProjectBySlug = Object.fromEntries(
