@@ -1,9 +1,10 @@
 import type { LabProject } from '@/lib/lab';
 import { cloudinaryUrl } from '@/lib/cloudinary';
+import { LAB_PREVIEWS } from './previews';
 
 /**
  * One Lab project preview: a looping muted video when the project has one, else
- * a poster image, else a warm sand->rust gradient (matching the FieldNotesCards
+ * a live code-drawn preview of its UX, else a poster image, else a warm sand->rust gradient (matching the FieldNotesCards
  * fallback). Minimalist caption + tags below, hairline frame, rust-warm hover.
  * The whole tile links to the project page.
  *
@@ -35,6 +36,8 @@ export function LabPreviewTile({
             playsInline
             preload="metadata"
           />
+        ) : project.preview ? (
+          <LivePreview id={project.preview} />
         ) : project.poster ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -75,5 +78,14 @@ export function LabPreviewTile({
         </div>
       </div>
     </a>
+  );
+}
+
+function LivePreview({ id }: { id: NonNullable<LabProject['preview']> }) {
+  const Preview = LAB_PREVIEWS[id];
+  return (
+    <div className="h-full w-full transition-transform duration-700 ease-out group-hover:scale-[1.03]">
+      <Preview />
+    </div>
   );
 }

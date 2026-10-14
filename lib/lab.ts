@@ -2,9 +2,13 @@
  * Registry of Lab projects — live, interactive experiments in agentic-interface
  * design. Single source of truth for the homepage Lab section, the /lab hub, and
  * the sitemap. Preview assets are optional: a tile shows a looping `video` when
- * present, else a `poster` image, else a warm gradient fallback.
+ * present, else a live code-drawn `preview`, else a `poster` image, else a warm
+ * gradient fallback.
  */
 export type LabStatus = 'live' | 'wip';
+
+/** A live, code-drawn preview of the project's UX (components/lab/previews). */
+export type LabPreviewId = 'morphology' | 'rec';
 
 export type LabProject = {
   slug: string;
@@ -19,6 +23,8 @@ export type LabProject = {
   poster?: string;
   /** Optional /public path to a looping preview video (autoplay, muted). */
   video?: string;
+  /** Optional live preview, shown when there's no video. */
+  preview?: LabPreviewId;
 };
 
 export const labProjects: LabProject[] = [
@@ -29,7 +35,7 @@ export const labProjects: LabProject[] = [
     tags: ['Agentic UI', 'Interaction design', 'Prototype'],
     status: 'live',
     href: '/lab/morphology-in-AI-components/',
-    // No video yet — falls back to the gradient preview.
+    preview: 'morphology',
   },
   {
     slug: 'rec',
@@ -38,6 +44,7 @@ export const labProjects: LabProject[] = [
     tags: ['Frontend for AI', 'Testing', 'Tool'],
     status: 'live',
     href: '/lab/rec/',
+    preview: 'rec',
   },
 ];
 
