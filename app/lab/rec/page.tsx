@@ -1,33 +1,10 @@
 import type { Metadata } from 'next';
-import { JetBrains_Mono, Silkscreen, Space_Grotesk } from 'next/font/google';
 import { site } from '@/lib/site';
 import { labProjectBySlug } from '@/lib/lab';
 import { REC_REPO_URL } from '@/lib/rec/config';
 import { RecGateway } from '@/components/lab/rec/RecGateway';
+import { jetbrainsMono, silkscreen, spaceGrotesk } from '@/components/lab/rec/fonts';
 import '@/components/lab/rec/rec.css';
-
-// Pixel font for labels and numbers only; body text stays a readable sans.
-const silkscreen = Silkscreen({
-  subsets: ['latin'],
-  variable: '--font-silkscreen',
-  display: 'swap',
-  weight: ['400', '700'],
-});
-
-// rec's own type: a technical grotesk and a mono, nothing from the blog.
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-rec-sans',
-  display: 'swap',
-  weight: ['400', '500', '600'],
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-rec-mono',
-  display: 'swap',
-  weight: ['400', '500'],
-});
 
 const project = labProjectBySlug['rec'];
 

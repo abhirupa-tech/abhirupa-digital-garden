@@ -1,11 +1,9 @@
 'use client';
 
-import { Silkscreen } from 'next/font/google';
+import { silkscreen } from '../rec/fonts';
 import { PixelDeck } from '../rec/PixelDeck';
 import { useLoopStep } from './useLoopStep';
 import '../rec/rec.css';
-
-const silkscreen = Silkscreen({ subsets: ['latin'], weight: '400', display: 'swap' });
 
 const TOKENS = ['Streams', ' never', ' repeat', '.', ' Tapes', ' do', '.'];
 // ms before each step: a recorded-feeling rhythm, then a hold before rewinding.
