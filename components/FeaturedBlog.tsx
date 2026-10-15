@@ -1,5 +1,5 @@
 import type { ContentEntry } from '@/lib/content';
-import { formatDate, readingTime } from '@/lib/format';
+import { formatDate, plainExcerpt, readingTime } from '@/lib/format';
 import { site } from '@/lib/site';
 import { CoverImage } from './CoverImage';
 import { Reveal } from './motion/Reveal';
@@ -80,6 +80,7 @@ function TagMarquee({ tags }: { tags: string[] }) {
 
 export function FeaturedBlog({ entry }: { entry: ContentEntry }) {
   const minutes = readingTime(entry.body);
+  const preview = plainExcerpt(entry.body, 260);
   const href = `/${entry.section}/${entry.slug}/`;
 
   return (
@@ -131,6 +132,13 @@ export function FeaturedBlog({ entry }: { entry: ContentEntry }) {
             {entry.description && (
               <p className="mt-3 max-w-xl t-feature-sub text-parchment/80">
                 {entry.description}
+              </p>
+            )}
+
+            {/* A taste of the opening lines, under the framing. */}
+            {preview && (
+              <p className="mt-4 max-w-xl border-l border-hairline pl-4 font-rounded text-sm leading-relaxed text-parchment-muted line-clamp-4">
+                {preview}
               </p>
             )}
 

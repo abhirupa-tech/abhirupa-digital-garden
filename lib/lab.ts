@@ -25,6 +25,8 @@ export type LabProject = {
   video?: string;
   /** Optional live preview, shown when there's no video. */
   preview?: LabPreviewId;
+  /** Scale-bar label on the specimen window, e.g. "1 word". */
+  scale?: string;
 };
 
 export const labProjects: LabProject[] = [
@@ -36,6 +38,7 @@ export const labProjects: LabProject[] = [
     status: 'live',
     href: '/lab/morphology-in-AI-components/',
     preview: 'morphology',
+    scale: '1 word',
   },
   {
     slug: 'rec',
@@ -45,6 +48,7 @@ export const labProjects: LabProject[] = [
     status: 'live',
     href: '/lab/rec/',
     preview: 'rec',
+    scale: '100 ms',
   },
 ];
 

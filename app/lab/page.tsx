@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { site } from '@/lib/site';
 import { labProjects } from '@/lib/lab';
-import { LabPreviewTile } from '@/components/lab/LabPreviewTile';
+import { LabBench } from '@/components/lab/LabBench';
 import { Footer } from '@/components/Footer';
 import { Reveal } from '@/components/motion/Reveal';
 
@@ -65,13 +65,9 @@ export default function LabHub() {
           </p>
         </Reveal>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
-          {labProjects.map((project, i) => (
-            <Reveal key={project.slug} delay={0.06 * i}>
-              <LabPreviewTile project={project} feature />
-            </Reveal>
-          ))}
-        </div>
+        <Reveal className="mt-12" delay={0.06}>
+          <LabBench projects={labProjects} />
+        </Reveal>
       </main>
       <Footer />
     </div>

@@ -15,7 +15,7 @@ import { ViewAllLink } from './ViewAllLink';
  */
 export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: ContentEntry[] }) {
   // Entries arrive newest-first (getSectionEntries), so the latest post leads.
-  const items = entries.slice(0, 6);
+  const items = entries.slice(0, 4);
   return (
     <div>
       <SectionHeader zone={zone} from="right" />
@@ -27,8 +27,10 @@ export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: Conten
               href={`/${entry.section}/${entry.slug}/`}
               // Minimalist row: a thin hairline frame with the cover flush to the
               // edge — no inner padding on the image, so it reads as one clean tile.
+              // A fixed height (with the title and summary clamped to two lines
+              // each) keeps every card the same size whatever its text length.
               // Border warms to rust on hover.
-              className="group flex items-stretch overflow-hidden rounded-xl border border-black/[0.12] transition-all duration-300 hover:-translate-y-0.5 hover:border-highlight/60 hover:bg-white/70 hover:shadow-sm dark:border-white/[0.08] dark:hover:border-highlight/60 dark:hover:bg-white/[0.06]"
+              className="group flex h-[9.5rem] items-stretch overflow-hidden rounded-xl border border-black/[0.12] transition-all duration-300 hover:-translate-y-0.5 hover:border-highlight/60 hover:bg-white/70 hover:shadow-sm dark:border-white/[0.08] dark:hover:border-highlight/60 dark:hover:bg-white/[0.06]"
             >
               {/* Left — the cover image, flush to the card edge. A near-square
                   width paired with the row-height stretch keeps it roughly 1:1. */}
@@ -53,11 +55,11 @@ export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: Conten
                     <time className="label text-parchment-faint">{formatDate(entry.date)}</time>
                   )}
                 </div>
-                <h3 className="mt-1.5 line-clamp-3 t-card-title text-parchment transition-colors duration-300 group-hover:text-highlight md:line-clamp-2">
+                <h3 className="mt-1.5 line-clamp-2 t-card-title text-parchment transition-colors duration-300 group-hover:text-highlight">
                   {entry.title}
                 </h3>
                 {entry.description && (
-                  <p className="mt-1.5 line-clamp-2 t-card-sub text-parchment/80 sm:line-clamp-3 md:line-clamp-2">
+                  <p className="mt-1.5 line-clamp-2 t-card-sub text-parchment/80">
                     {entry.description}
                   </p>
                 )}

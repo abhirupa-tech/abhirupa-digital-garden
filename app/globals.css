@@ -637,3 +637,67 @@
     cursor: none;
   }
 }
+
+/* ── Lab bench ────────────────────────────────────────────────────────────
+   Graph paper, registration marks, and the viewfinder optics on each
+   specimen window (components/lab/LabBench.tsx, LabSpecimen.tsx). Lines read
+   through the hairline/parchment tokens, so the bench follows the theme; the
+   specimen windows are always dark-field. */
+.lab-bench {
+  background-color: color-mix(in srgb, var(--c-secondary-bg) 45%, transparent);
+  background-image:
+    linear-gradient(var(--c-hairline) 1px, transparent 1px),
+    linear-gradient(90deg, var(--c-hairline) 1px, transparent 1px),
+    linear-gradient(color-mix(in srgb, var(--c-hairline) 45%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--c-hairline) 45%, transparent) 1px, transparent 1px);
+  background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
+  background-position: -1px -1px;
+}
+
+.lab-reg {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+  opacity: 0.6;
+}
+.lab-reg::before,
+.lab-reg::after {
+  content: '';
+  position: absolute;
+  background: rgb(var(--raw-parchment-faint));
+}
+.lab-reg::before { left: 50%; top: 0; width: 1px; height: 100%; }
+.lab-reg::after { top: 50%; left: 0; height: 1px; width: 100%; }
+.lab-reg-tl { left: 14px; top: 20px; }
+.lab-reg-tr { right: 14px; top: 20px; }
+.lab-reg-bl { left: 14px; bottom: 14px; }
+.lab-reg-br { right: 14px; bottom: 14px; }
+
+/* Viewfinder brackets: they close in on the specimen on hover. */
+.lab-bracket {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-color: rgba(255, 255, 255, 0.6);
+  transition: inset 0.5s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.4s ease;
+}
+.lab-bracket-tl { left: 12px; top: 32px; border-left-width: 1.5px; border-top-width: 1.5px; }
+.lab-bracket-tr { right: 12px; top: 32px; border-right-width: 1.5px; border-top-width: 1.5px; }
+.lab-bracket-bl { left: 12px; bottom: 32px; border-left-width: 1.5px; border-bottom-width: 1.5px; }
+.lab-bracket-br { right: 12px; bottom: 32px; border-right-width: 1.5px; border-bottom-width: 1.5px; }
+.lab-specimen:hover .lab-bracket,
+.lab-specimen:focus-visible .lab-bracket {
+  border-color: var(--c-highlight);
+}
+.lab-specimen:hover .lab-bracket-tl,
+.lab-specimen:focus-visible .lab-bracket-tl { left: 22px; top: 40px; }
+.lab-specimen:hover .lab-bracket-tr,
+.lab-specimen:focus-visible .lab-bracket-tr { right: 22px; top: 40px; }
+.lab-specimen:hover .lab-bracket-bl,
+.lab-specimen:focus-visible .lab-bracket-bl { left: 22px; bottom: 40px; }
+.lab-specimen:hover .lab-bracket-br,
+.lab-specimen:focus-visible .lab-bracket-br { right: 22px; bottom: 40px; }
+@media (prefers-reduced-motion: reduce) {
+  .lab-bracket { transition: border-color 0.2s ease; }
+}
