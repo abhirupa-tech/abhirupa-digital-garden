@@ -1,6 +1,6 @@
 /**
  * The rec deck: a chunky pixel-art tape recorder, drawn on a 96x56 grid where
- * one SVG unit is one pixel. Fixed night palette, violet with a hot red record
+ * one SVG unit is one pixel. Fixed night palette, blue-violet with a hot red record
  * key (it's artwork, so it doesn't flip with the site theme); crispEdges keeps
  * every pixel square at any scale.
  *
@@ -9,18 +9,18 @@
  */
 
 const P = {
-  outline: '#05040a',
-  body: '#2a2142',
-  bodyLight: '#43356b',
-  bodyDark: '#191329',
-  cream: '#d9d1f2',
-  creamDark: '#a99dd1',
-  window: '#0a0814',
-  reel: '#c4b5fd',
+  outline: '#04040b',
+  body: '#22234d',
+  bodyLight: '#383c80',
+  bodyDark: '#151633',
+  cream: '#d5d9fa',
+  creamDark: '#9ca3db',
+  window: '#08091c',
+  reel: '#b4bbff',
   red: '#ff3b5c',
-  key: '#d9d1f2',
-  keyDark: '#8f82bd',
-  label: '#a78bfa',
+  key: '#d5d9fa',
+  keyDark: '#8288c4',
+  label: '#8a92ff',
 } as const;
 
 /** Pixel circle of radius 5, as [dx, from, to] row spans. */

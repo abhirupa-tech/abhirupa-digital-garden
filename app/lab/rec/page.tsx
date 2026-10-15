@@ -118,7 +118,7 @@ export default function RecPage() {
       <main className="mx-auto max-w-6xl px-4 pb-16 pt-8 md:px-8 md:pt-14">
         <h1 className="rec-display max-w-3xl text-4xl leading-[1.05] text-(--rec-fg) md:text-6xl">
           Press record once.{' '}
-          <span className="bg-linear-to-r from-(--rec-violet) to-[#e879f9] bg-clip-text text-transparent">
+          <span className="bg-linear-to-r from-[#6f8dff] via-(--rec-violet) to-[#b08cff] bg-clip-text text-transparent">
             Test forever.
           </span>
         </h1>

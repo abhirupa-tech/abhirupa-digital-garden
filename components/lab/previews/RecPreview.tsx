@@ -19,7 +19,7 @@ export function RecPreview() {
   return (
     <div
       ref={ref}
-      className="rec-root flex h-full w-full flex-col items-center justify-center gap-[6%] bg-[radial-gradient(ellipse_at_50%_20%,#2a1f4d_0%,#0b0915_55%,#050409_100%)] p-[7%]"
+      className="rec-root flex h-full w-full flex-col items-center justify-center gap-[6%] bg-[radial-gradient(ellipse_at_50%_20%,#20235a_0%,#0a0b1a_55%,#04040b_100%)] p-[7%]"
       data-playing={running && step > 0 && step < TOKENS.length}
       aria-hidden
     >
@@ -27,12 +27,12 @@ export function RecPreview() {
         <PixelDeck playing={running} speed={1} />
       </div>
       <div
-        className={`${silkscreen.className} flex w-[78%] max-w-96 items-center gap-2 rounded-md border border-[#d9d1f2]/15 bg-black/30 px-3 py-2 text-[clamp(0.55rem,1.4vw,0.8rem)] text-[#d9d1f2]`}
+        className={`${silkscreen.className} flex w-[78%] max-w-96 items-center gap-2 rounded-md border border-[#d5d9fa]/15 bg-black/30 px-3 py-2 text-[clamp(0.55rem,1.4vw,0.8rem)] text-[#d5d9fa]`}
       >
         <span className="rec-led inline-block h-1.5 w-1.5 shrink-0 bg-[#ff3b5c]" />
         <span className="truncate">
           {text}
-          <span className="ml-0.5 inline-block h-[0.9em] w-[0.5em] translate-y-[0.1em] bg-[#d9d1f2]/70 motion-safe:animate-pulse" />
+          <span className="ml-0.5 inline-block h-[0.9em] w-[0.5em] translate-y-[0.1em] bg-[#d5d9fa]/70 motion-safe:animate-pulse" />
         </span>
       </div>
     </div>
