@@ -1,25 +1,26 @@
 /**
  * The rec deck: a chunky pixel-art tape recorder, drawn on a 96x56 grid where
- * one SVG unit is one pixel. Fixed warm palette (it's artwork, so it doesn't
- * flip with the theme); crispEdges keeps every pixel square at any scale.
+ * one SVG unit is one pixel. Fixed night palette, violet with a hot red record
+ * key (it's artwork, so it doesn't flip with the site theme); crispEdges keeps
+ * every pixel square at any scale.
  *
  * The reels spin in 45° steps while a preview plays (see rec.css), at a rate
  * tied to playback speed. Reduced motion leaves them still.
  */
 
 const P = {
-  outline: '#2b1d16',
-  body: '#c4552b',
-  bodyLight: '#de7a45',
-  bodyDark: '#8f3a1d',
-  cream: '#f2dfb6',
-  creamDark: '#d9bf8c',
-  window: '#3a2a20',
-  reel: '#e9d2a0',
-  red: '#e2342b',
-  key: '#f2dfb6',
-  keyDark: '#bfa577',
-  label: '#e8a33d',
+  outline: '#05040a',
+  body: '#2a2142',
+  bodyLight: '#43356b',
+  bodyDark: '#191329',
+  cream: '#d9d1f2',
+  creamDark: '#a99dd1',
+  window: '#0a0814',
+  reel: '#c4b5fd',
+  red: '#ff3b5c',
+  key: '#d9d1f2',
+  keyDark: '#8f82bd',
+  label: '#a78bfa',
 } as const;
 
 /** Pixel circle of radius 5, as [dx, from, to] row spans. */
@@ -97,7 +98,7 @@ export function PixelDeck({ playing, speed }: { playing: boolean; speed: number 
           <g key={i}>
             <rect x={9 + i * 6} y={4} width={5} height={5} fill={P.outline} />
             <rect x={10 + i * 6} y={5} width={3} height={3} fill={i === 0 ? P.red : P.key} />
-            <rect x={10 + i * 6} y={7} width={3} height={1} fill={i === 0 ? '#a8231c' : P.keyDark} />
+            <rect x={10 + i * 6} y={7} width={3} height={1} fill={i === 0 ? '#b3203d' : P.keyDark} />
           </g>
         ))}
 

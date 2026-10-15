@@ -9,6 +9,9 @@ import { ThemeToggle } from './ThemeToggle';
 // Sections whose article pages (/section/slug) render the fixed left SideNav.
 const SECTION_IDS = new Set(zones.map((z) => z.id));
 
+// Lab projects that present as their own product, without the site nav.
+const STANDALONE_PREFIXES = ['/lab/rec'];
+
 /**
  * Minimal, page-aware top navigation.
  *
@@ -79,6 +82,9 @@ export function TopNav() {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  // Standalone product pages bring their own header.
+  if (STANDALONE_PREFIXES.some((prefix) => path.startsWith(prefix))) return null;
 
   return (
     <div

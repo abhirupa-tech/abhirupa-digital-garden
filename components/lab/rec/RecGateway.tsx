@@ -122,11 +122,11 @@ export function RecGateway() {
       <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-12">
         {/* Deck */}
         <div className="lg:sticky lg:top-28">
-          <div className="rounded-2xl border border-hairline bg-secondary-bg/40 p-5 md:p-7">
+          <div className="rec-glow rounded-2xl border border-(--rec-line) bg-(--rec-panel) p-5 md:p-7">
             <PixelDeck playing={playback.playing} speed={speed} />
-            <div className="rec-pixel mt-5 flex items-center justify-between text-xs text-parchment-muted">
+            <div className="rec-pixel mt-5 flex items-center justify-between text-xs text-(--rec-muted)">
               <span className="flex items-center gap-2">
-                <span className="rec-led inline-block h-2 w-2 bg-[#e2342b]" aria-hidden />
+                <span className="rec-led inline-block h-2 w-2 bg-[#ff3b5c]" aria-hidden />
                 {playback.playing ? 'Playing' : current ? 'Loaded' : 'No tape'}
               </span>
               <motion.span aria-label="Elapsed">{playback.elapsed}</motion.span>
@@ -171,7 +171,7 @@ export function RecGateway() {
         {/* Panel */}
         <div role="tabpanel" aria-live="polite" className="min-w-0">
           {notice && (
-            <p className="mb-4 rounded-xl border border-highlight/40 bg-highlight/10 px-4 py-3 font-rounded text-sm text-parchment">
+            <p className="mb-4 rounded-xl border border-(--rec-violet)/40 bg-(--rec-violet)/10 px-4 py-3 text-sm text-(--rec-fg)">
               {notice}
             </p>
           )}
@@ -179,10 +179,10 @@ export function RecGateway() {
           {view === 'record' && (
             <div className="space-y-6">
               <Step n={1} title="Arm the recorder">
-                <p className="font-rounded text-sm leading-relaxed text-parchment-muted">
+                <p className="text-sm leading-relaxed text-(--rec-muted)">
                   Open DevTools on the app you&rsquo;re testing and paste this into the console. Trigger
                   one streamed OpenAI Chat Completions response, then run{' '}
-                  <code className="rounded bg-tertiary-bg px-1.5 py-0.5 text-xs">copy(rec.last)</code>.
+                  <code className="rounded bg-(--rec-panel-2) px-1.5 py-0.5 text-xs">copy(rec.last)</code>.
                   It records response chunks only, never headers or keys.
                 </p>
                 <CodeBlock code={CAPTURE_SNIPPET} label="Copy snippet" maxHeight />
@@ -199,16 +199,16 @@ export function RecGateway() {
                   spellCheck={false}
                   rows={7}
                   placeholder='{ "provider": "openai", "t0": …, "chunks": [ … ] }'
-                  className="w-full resize-y rounded-xl border border-hairline bg-primary-bg/70 p-4 font-mono text-xs leading-relaxed text-parchment placeholder:text-parchment-faint focus:border-highlight/60 focus:outline-none"
+                  className="w-full resize-y rounded-xl border border-(--rec-line) bg-black/50 p-4 font-mono text-xs leading-relaxed text-(--rec-fg) placeholder:text-(--rec-faint) focus:border-(--rec-violet)/70 focus:outline-none"
                 />
-                <p className="font-rounded text-xs text-parchment-faint">
+                <p className="text-xs text-(--rec-faint)">
                   Anyone with a tape&rsquo;s URL can read its text. Don&rsquo;t record sensitive answers.
                 </p>
 
-                {draftError && <p className="font-rounded text-sm text-highlight">{draftError}</p>}
+                {draftError && <p className="text-sm text-(--rec-hot)">{draftError}</p>}
 
                 {draft && (
-                  <div className="space-y-4 rounded-xl border border-hairline bg-secondary-bg/50 p-4">
+                  <div className="space-y-4 rounded-xl border border-(--rec-line) bg-(--rec-panel) p-4">
                     <dl className="rec-pixel grid grid-cols-2 gap-x-4 gap-y-3 text-xs sm:grid-cols-4">
                       <Stat label="Chunks" value={String(draft.tape.c.length)} />
                       <Stat label="Duration" value={formatMs(tapeDurationMs(draft.tape))} />
@@ -217,7 +217,7 @@ export function RecGateway() {
                     </dl>
                     <SizeMeter bytes={draft.encoded.length} />
                     {tooBig ? (
-                      <p className="font-rounded text-sm text-highlight">
+                      <p className="text-sm text-(--rec-hot)">
                         This tape is {formatBytes(draft.encoded.length)}, over the{' '}
                         {formatBytes(MAX_ENCODED_BYTES)} a URL can safely carry. Record a shorter answer.
                       </p>
@@ -225,7 +225,7 @@ export function RecGateway() {
                       <button
                         type="button"
                         onClick={save}
-                        className="rec-pixel inline-flex items-center gap-2 rounded-lg bg-highlight px-4 py-2.5 text-xs text-white transition-colors hover:bg-highlight-strong"
+                        className="rec-pixel inline-flex items-center gap-2 rounded-lg bg-(--rec-violet-deep) px-4 py-2.5 text-xs text-white transition-colors hover:bg-(--rec-violet)"
                       >
                         <span aria-hidden>●</span> Save tape
                       </button>
@@ -297,16 +297,16 @@ const stream = await client.chat.completions.create({
   return (
     <div className="space-y-6">
       <div>
-        <p className="label text-parchment-faint">Replay URL</p>
-        <h2 className="mt-1 font-display text-2xl font-medium text-parchment">{entry.name}</h2>
-        <p className="rec-pixel mt-1 text-xs text-parchment-muted">
+        <p className="rec-pixel text-[0.65rem] text-(--rec-faint)">Replay URL</p>
+        <h2 className="mt-1 rec-display text-2xl font-medium text-(--rec-fg)">{entry.name}</h2>
+        <p className="rec-pixel mt-1 text-xs text-(--rec-muted)">
           {entry.model} · {entry.chunks} chunks · {formatMs(entry.durationMs)} · {formatBytes(entry.bytes)}
         </p>
       </div>
 
       <CodeBlock code={entry.url} label="Copy URL" wrap />
 
-      <div className="rounded-2xl border border-hairline bg-secondary-bg/40 p-4 md:p-5">
+      <div className="rounded-2xl border border-(--rec-line) bg-(--rec-panel) p-4 md:p-5">
         <div className="flex flex-wrap items-center gap-3">
           {playback.playing ? (
             <PixelButton onClick={playback.stop} glyph="■" label="Stop" />
@@ -324,8 +324,8 @@ const stream = await client.chat.completions.create({
                 disabled={playback.playing}
                 className={`rounded-md px-2 py-1.5 transition-colors disabled:opacity-50 ${
                   speed === s
-                    ? 'bg-tertiary-bg text-parchment'
-                    : 'text-parchment-muted hover:text-highlight'
+                    ? 'bg-(--rec-panel-2) text-(--rec-fg)'
+                    : 'text-(--rec-muted) hover:text-(--rec-hot)'
                 }`}
               >
                 {s}x
@@ -333,20 +333,20 @@ const stream = await client.chat.completions.create({
             ))}
           </div>
         </div>
-        <motion.pre className="mt-4 min-h-28 whitespace-pre-wrap break-words rounded-xl bg-primary-bg/70 p-4 font-body text-base leading-relaxed text-parchment">
+        <motion.pre className="mt-4 min-h-28 whitespace-pre-wrap break-words rounded-xl bg-black/50 p-4 text-base leading-relaxed text-(--rec-fg)">
           {playback.text}
         </motion.pre>
-        <p className="mt-2 font-rounded text-xs text-parchment-faint">
+        <p className="mt-2 text-xs text-(--rec-faint)">
           Plays in the page with the recorded timing. The URL streams the same thing over the network.
         </p>
       </div>
 
       <div className="space-y-3">
-        <p className="label text-parchment-faint">curl</p>
+        <p className="rec-pixel text-[0.65rem] text-(--rec-faint)">curl</p>
         <CodeBlock code={curl} label="Copy" wrap />
-        <p className="label pt-2 text-parchment-faint">OpenAI SDK drop-in</p>
+        <p className="rec-pixel text-[0.65rem] pt-2 text-(--rec-faint)">OpenAI SDK drop-in</p>
         <CodeBlock code={sdk} label="Copy" />
-        <p className="font-rounded text-xs leading-relaxed text-parchment-faint">
+        <p className="text-xs leading-relaxed text-(--rec-faint)">
           Add <code>?speed=2</code> (0.25 to 10) or <code>?mode=instant</code> to the URL. The request body is
           ignored: every call returns this tape. In a browser, the SDK also needs{' '}
           <code>dangerouslyAllowBrowser: true</code>.
@@ -373,15 +373,15 @@ function ShelfView({
 
   if (tapes.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-hairline px-6 py-10 text-center">
+      <div className="rounded-2xl border border-dashed border-(--rec-line) px-6 py-10 text-center">
         <PixelCassette className="mx-auto h-10 w-16" />
-        <p className="mt-4 font-rounded text-sm text-parchment-muted">
+        <p className="mt-4 text-sm text-(--rec-muted)">
           The shelf is empty. Tapes you save live in this browser only.
         </p>
         <button
           type="button"
           onClick={onRecord}
-          className="rec-pixel mt-4 text-xs text-highlight underline-offset-4 hover:text-highlight-strong hover:underline"
+          className="rec-pixel mt-4 text-xs text-(--rec-violet) underline-offset-4 hover:text-(--rec-hot) hover:underline"
         >
           Record one
         </button>
@@ -391,7 +391,7 @@ function ShelfView({
 
   return (
     <div>
-      <p className="font-rounded text-sm text-parchment-muted">
+      <p className="text-sm text-(--rec-muted)">
         {tapes.length} of {SHELF_MAX} tapes, saved in this browser. Removing one takes it off your shelf; its URL
         keeps working, because the tape lives inside it.
       </p>
@@ -405,7 +405,7 @@ function ShelfView({
               animate={{ x: 0, opacity: 1 }}
               exit={reduce ? { opacity: 0 } : { x: 48, opacity: 0 }}
               transition={{ type: 'spring', stiffness: 260, damping: 26 }}
-              className="flex flex-wrap items-center gap-x-4 gap-y-3 rounded-xl border border-hairline bg-secondary-bg/40 p-3 md:flex-nowrap"
+              className="flex flex-wrap items-center gap-x-4 gap-y-3 rounded-xl border border-(--rec-line) bg-(--rec-panel) p-3 md:flex-nowrap"
             >
               <PixelCassette className="h-8 w-12 shrink-0" />
               <div className="min-w-0 flex-1">
@@ -415,9 +415,9 @@ function ShelfView({
                   maxLength={60}
                   onBlur={(e) => onRename(entry.id, e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
-                  className="w-full rounded-md border border-transparent bg-transparent px-1 py-0.5 font-display text-lg text-parchment hover:border-hairline focus:border-highlight/60 focus:outline-none"
+                  className="w-full rounded-md border border-transparent bg-transparent px-1 py-0.5 rec-display text-lg text-(--rec-fg) hover:border-(--rec-line) focus:border-(--rec-violet)/70 focus:outline-none"
                 />
-                <p className="rec-pixel px-1 text-[0.65rem] text-parchment-faint">
+                <p className="rec-pixel px-1 text-[0.65rem] text-(--rec-faint)">
                   {entry.model} · {formatMs(entry.durationMs)} · {formatBytes(entry.bytes)}
                 </p>
               </div>
@@ -440,8 +440,8 @@ function Step({ n, title, children }: { n: number; title: string; children: Reac
   return (
     <section className="space-y-3">
       <h2 className="flex items-baseline gap-3">
-        <span className="rec-pixel text-xs text-highlight">{String(n).padStart(2, '0')}</span>
-        <span className="font-display text-2xl font-medium text-parchment">{title}</span>
+        <span className="rec-pixel text-xs text-(--rec-violet)">{String(n).padStart(2, '0')}</span>
+        <span className="rec-display text-2xl font-medium text-(--rec-fg)">{title}</span>
       </h2>
       {children}
     </section>
@@ -472,8 +472,8 @@ function DeckKey({
       onClick={onClick}
       className={`rec-pixel relative flex items-center justify-center gap-2 rounded-lg border px-2 py-3 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${
         active
-          ? 'border-highlight/60 bg-highlight/10 text-highlight'
-          : 'border-hairline text-parchment-muted hover:border-highlight/40 hover:text-highlight'
+          ? 'border-(--rec-violet)/60 bg-(--rec-violet)/10 text-(--rec-violet)'
+          : 'border-(--rec-line) text-(--rec-muted) hover:border-(--rec-violet)/50 hover:text-(--rec-hot)'
       }`}
     >
       <span aria-hidden>{glyph}</span>
@@ -500,8 +500,8 @@ function PixelButton({
       onClick={onClick}
       className={`rec-pixel inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-xs transition-colors ${
         primary
-          ? 'bg-highlight text-white hover:bg-highlight-strong'
-          : 'border border-hairline text-parchment hover:border-highlight/60 hover:text-highlight'
+          ? 'bg-(--rec-violet-deep) text-white hover:bg-(--rec-violet)'
+          : 'border border-(--rec-line) text-(--rec-fg) hover:border-(--rec-violet)/60 hover:text-(--rec-hot)'
       }`}
     >
       <span aria-hidden>{glyph}</span>
@@ -513,8 +513,8 @@ function PixelButton({
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="min-w-0">
-      <dt className="text-parchment-faint">{label}</dt>
-      <dd className="mt-1 truncate text-parchment" title={value}>
+      <dt className="text-(--rec-faint)">{label}</dt>
+      <dd className="mt-1 truncate text-(--rec-fg)" title={value}>
         {value}
       </dd>
     </div>
@@ -526,9 +526,9 @@ function SizeMeter({ bytes }: { bytes: number }) {
   const over = bytes > MAX_ENCODED_BYTES;
   return (
     <div>
-      <div className="rec-pixel flex justify-between text-[0.65rem] text-parchment-faint">
+      <div className="rec-pixel flex justify-between text-[0.65rem] text-(--rec-faint)">
         <span>URL size</span>
-        <span className={over ? 'text-highlight' : undefined}>
+        <span className={over ? 'text-(--rec-hot)' : undefined}>
           {formatBytes(bytes)} / {formatBytes(MAX_ENCODED_BYTES)}
         </span>
       </div>
@@ -538,7 +538,7 @@ function SizeMeter({ bytes }: { bytes: number }) {
           <span
             key={i}
             className={`h-2 ${
-              i < Math.ceil(ratio * 20) ? (over || i >= 16 ? 'bg-highlight' : 'bg-sand') : 'bg-tertiary-bg'
+              i < Math.ceil(ratio * 20) ? (over || i >= 16 ? 'bg-(--rec-hot)' : 'bg-(--rec-violet)') : 'bg-(--rec-panel-2)'
             }`}
           />
         ))}
@@ -561,7 +561,7 @@ function CodeBlock({
   return (
     <div className="relative">
       <pre
-        className={`rounded-xl bg-tertiary-bg/60 p-4 pr-24 font-mono text-xs leading-relaxed text-parchment ${
+        className={`rounded-xl bg-(--rec-panel-2) p-4 pr-24 font-mono text-xs leading-relaxed text-(--rec-fg) ${
           wrap ? 'whitespace-pre-wrap break-all' : 'overflow-x-auto'
         } ${maxHeight ? 'max-h-56 overflow-y-auto' : ''}`}
       >
@@ -594,8 +594,8 @@ function CopyAction({ text, children, boxed = false }: { text: string; children:
           // Clipboard blocked: the text is still selectable on the page.
         }
       }}
-      className={`rec-pixel rounded-md px-2 py-1.5 text-[0.65rem] transition-colors hover:text-highlight ${
-        boxed ? 'border border-hairline bg-primary-bg/80 text-parchment-muted' : 'text-parchment-muted'
+      className={`rec-pixel rounded-md px-2 py-1.5 text-[0.65rem] transition-colors hover:text-(--rec-hot) ${
+        boxed ? 'border border-(--rec-line) bg-black/60 text-(--rec-muted)' : 'text-(--rec-muted)'
       }`}
     >
       {copied ? 'Copied' : children}
@@ -608,7 +608,7 @@ function TextAction({ onClick, children }: { onClick: () => void; children: Reac
     <button
       type="button"
       onClick={onClick}
-      className="rec-pixel rounded-md px-2 py-1.5 text-[0.65rem] text-parchment-muted transition-colors hover:text-highlight"
+      className="rec-pixel rounded-md px-2 py-1.5 text-[0.65rem] text-(--rec-muted) transition-colors hover:text-(--rec-hot)"
     >
       {children}
     </button>

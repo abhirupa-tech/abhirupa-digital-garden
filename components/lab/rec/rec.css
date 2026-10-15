@@ -1,4 +1,82 @@
-/* rec — pixel-art deck. Scoped to .rec-root so nothing leaks into the site. */
+/* rec — its own product look: near-black, violet light, pixel deck.
+   Tokens live on .rec-app (the page) and .rec-root (the gateway and the Lab
+   tile preview), so nothing leaks into the site and the site theme toggle
+   doesn't reach in. */
+
+.rec-app,
+.rec-root {
+  --rec-bg: #06050a;
+  --rec-panel: #0d0b16;
+  --rec-panel-2: #16122a;
+  --rec-line: rgba(167, 139, 250, 0.16);
+  --rec-fg: #ece9f6;
+  --rec-muted: #a6a0bf;
+  --rec-faint: #6f6a8a;
+  --rec-violet: #a78bfa;
+  --rec-violet-deep: #7c3aed;
+  /* Hover text and the record key stay warm: a hot crimson, never blue. */
+  --rec-hot: #ff4d6d;
+}
+
+.rec-app {
+  color-scheme: dark;
+  min-height: 100vh;
+  color: var(--rec-fg);
+  font-family: var(--font-rec-sans), ui-sans-serif, system-ui, sans-serif;
+  background:
+    radial-gradient(60rem 30rem at 15% -10%, rgba(124, 58, 237, 0.22), transparent 70%),
+    radial-gradient(40rem 24rem at 95% 10%, rgba(167, 139, 250, 0.1), transparent 70%),
+    var(--rec-bg);
+  position: relative;
+  isolation: isolate;
+}
+
+/* A faint circuit grid, fading out down the page. */
+.rec-app::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(167, 139, 250, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(167, 139, 250, 0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(to bottom, black, transparent 70%);
+}
+
+.rec-app ::selection {
+  background: rgba(167, 139, 250, 0.35);
+  color: #fff;
+}
+
+.rec-app pre,
+.rec-app code,
+.rec-app textarea {
+  font-family: var(--font-rec-mono), ui-monospace, monospace;
+}
+
+.rec-app .rec-display {
+  font-family: var(--font-rec-sans), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+/* The deck sits in a lit bay: a violet bloom and CRT scanlines. */
+.rec-app .rec-glow {
+  position: relative;
+  box-shadow:
+    0 0 0 1px rgba(167, 139, 250, 0.08),
+    0 20px 80px -20px rgba(124, 58, 237, 0.45);
+}
+.rec-app .rec-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 3px);
+}
 
 .rec-root .rec-pixel {
   font-family: var(--font-silkscreen), ui-monospace, monospace;
