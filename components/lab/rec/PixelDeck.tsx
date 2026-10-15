@@ -20,7 +20,9 @@ const P = {
   red: '#ff3b5c',
   key: '#d5d9fa',
   keyDark: '#8288c4',
-  label: '#8a92ff',
+  label: '#ff8a3d',
+  orange: '#ff8a3d',
+  orangeDark: '#c25a1c',
 } as const;
 
 /** Pixel circle of radius 5, as [dx, from, to] row spans. */
@@ -97,8 +99,8 @@ export function PixelDeck({ playing, speed }: { playing: boolean; speed: number 
         {[0, 1, 2, 3].map((i) => (
           <g key={i}>
             <rect x={9 + i * 6} y={4} width={5} height={5} fill={P.outline} />
-            <rect x={10 + i * 6} y={5} width={3} height={3} fill={i === 0 ? P.red : P.key} />
-            <rect x={10 + i * 6} y={7} width={3} height={1} fill={i === 0 ? '#b3203d' : P.keyDark} />
+            <rect x={10 + i * 6} y={5} width={3} height={3} fill={i === 0 ? P.red : i === 2 ? P.orange : P.key} />
+            <rect x={10 + i * 6} y={7} width={3} height={1} fill={i === 0 ? '#b3203d' : i === 2 ? P.orangeDark : P.keyDark} />
           </g>
         ))}
 

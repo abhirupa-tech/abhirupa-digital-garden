@@ -30,7 +30,7 @@ export function RecPreview() {
         <span className="rec-led inline-block h-1.5 w-1.5 shrink-0 bg-[#ff3b5c]" />
         <span className="truncate">
           {text}
-          <span className="ml-0.5 inline-block h-[0.9em] w-[0.5em] translate-y-[0.1em] bg-[#d5d9fa]/70 motion-safe:animate-pulse" />
+          <span className="ml-0.5 inline-block h-[0.9em] w-[0.5em] translate-y-[0.1em] bg-[#ff8a3d] motion-safe:animate-pulse" />
         </span>
       </div>
     </div>

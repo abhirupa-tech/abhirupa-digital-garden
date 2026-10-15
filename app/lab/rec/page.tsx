@@ -80,13 +80,13 @@ export default function RecPage() {
         <a href={project.href} className="flex items-center gap-2.5" aria-label="rec home">
           <span className="font-[family-name:var(--font-silkscreen)] text-xl text-(--rec-fg)">rec</span>
           <span aria-hidden className="inline-block h-2 w-2 bg-[#ff3b5c]" />
-          <span className="ml-1 rounded border border-(--rec-line) px-1.5 py-0.5 font-[family-name:var(--font-silkscreen)] text-[0.6rem] text-(--rec-violet)">
+          <span className="ml-1 rounded border border-(--rec-orange)/40 px-1.5 py-0.5 font-[family-name:var(--font-silkscreen)] text-[0.6rem] text-(--rec-orange)">
             v0
           </span>
         </a>
         <a
           href={REC_REPO_URL}
-          className="font-[family-name:var(--font-silkscreen)] text-xs text-(--rec-muted) transition-colors hover:text-(--rec-hot)"
+          className="font-[family-name:var(--font-silkscreen)] text-xs text-(--rec-muted) transition-colors hover:text-(--rec-orange)"
         >
           Source
         </a>
@@ -96,8 +96,9 @@ export default function RecPage() {
         <h1 className="rec-display max-w-3xl text-4xl leading-[1.05] text-(--rec-fg) md:text-6xl">
           Press record once.{' '}
           <span className="bg-linear-to-r from-[#6f8dff] via-(--rec-violet) to-[#b08cff] bg-clip-text text-transparent">
-            Test forever.
+            Test forever
           </span>
+          <span className="text-(--rec-orange)">.</span>
         </h1>
 
         <div className="mt-10 md:mt-14">
@@ -108,7 +109,7 @@ export default function RecPage() {
       <footer className="border-t border-(--rec-line)">
         <p className="mx-auto max-w-6xl px-4 py-6 text-center font-[family-name:var(--font-rec-mono)] text-xs text-(--rec-faint) md:px-8">
           built with &lt;3 by{' '}
-          <a href={site.url} className="text-(--rec-muted) transition-colors hover:text-(--rec-hot)">
+          <a href={site.url} className="text-(--rec-muted) transition-colors hover:text-(--rec-orange)">
             Abhirupa Mitra
           </a>
         </p>

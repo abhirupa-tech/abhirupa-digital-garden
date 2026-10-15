@@ -130,7 +130,9 @@ export function RecGateway() {
                 <span className="rec-led inline-block h-2 w-2 bg-[#ff3b5c]" aria-hidden />
                 {playback.playing ? 'Playing' : current ? 'Loaded' : 'No tape'}
               </span>
-              <motion.span aria-label="Elapsed">{playback.elapsed}</motion.span>
+              <motion.span aria-label="Elapsed" className={playback.playing ? 'text-(--rec-orange)' : undefined}>
+                {playback.elapsed}
+              </motion.span>
             </div>
           </div>
 
@@ -232,7 +234,7 @@ export function RecGateway() {
                   <button
                     type="button"
                     onClick={() => onPaste(sampleCapture())}
-                    className="rec-pixel rounded-md border border-(--rec-line) px-2.5 py-1.5 text-[0.65rem] text-(--rec-muted) transition-colors hover:border-(--rec-violet)/60 hover:text-(--rec-hot)"
+                    className="rec-pixel rounded-md border border-(--rec-line) px-2.5 py-1.5 text-[0.65rem] text-(--rec-muted) transition-colors hover:border-(--rec-violet)/60 hover:text-(--rec-orange)"
                   >
                     No app handy? Load a sample
                   </button>
@@ -358,7 +360,7 @@ const stream = await client.chat.completions.create({
                 className={`rounded-md px-2 py-1.5 transition-colors disabled:opacity-50 ${
                   speed === s
                     ? 'bg-(--rec-panel-2) text-(--rec-fg)'
-                    : 'text-(--rec-muted) hover:text-(--rec-hot)'
+                    : 'text-(--rec-muted) hover:text-(--rec-orange)'
                 }`}
               >
                 {s}x
@@ -414,7 +416,7 @@ function ShelfView({
         <button
           type="button"
           onClick={onRecord}
-          className="rec-pixel mt-4 text-xs text-(--rec-violet) underline-offset-4 hover:text-(--rec-hot) hover:underline"
+          className="rec-pixel mt-4 text-xs text-(--rec-violet) underline-offset-4 hover:text-(--rec-orange) hover:underline"
         >
           Record one
         </button>
@@ -523,7 +525,7 @@ function DeckKey({
       className={`rec-pixel relative flex items-center justify-center gap-2 rounded-lg border px-2 py-3 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${
         active
           ? 'border-(--rec-violet)/60 bg-(--rec-violet)/10 text-(--rec-violet)'
-          : 'border-(--rec-line) text-(--rec-muted) hover:border-(--rec-violet)/50 hover:text-(--rec-hot)'
+          : 'border-(--rec-line) text-(--rec-muted) hover:border-(--rec-violet)/50 hover:text-(--rec-orange)'
       }`}
     >
       <span aria-hidden>{glyph}</span>
@@ -551,7 +553,7 @@ function PixelButton({
       className={`rec-pixel inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-xs transition-colors ${
         primary
           ? 'bg-(--rec-violet-deep) text-white hover:bg-(--rec-violet)'
-          : 'border border-(--rec-line) text-(--rec-fg) hover:border-(--rec-violet)/60 hover:text-(--rec-hot)'
+          : 'border border-(--rec-line) text-(--rec-fg) hover:border-(--rec-violet)/60 hover:text-(--rec-orange)'
       }`}
     >
       <span aria-hidden>{glyph}</span>
@@ -588,7 +590,7 @@ function SizeMeter({ bytes }: { bytes: number }) {
           <span
             key={i}
             className={`h-2 ${
-              i < Math.ceil(ratio * 20) ? (over || i >= 16 ? 'bg-(--rec-hot)' : 'bg-(--rec-violet)') : 'bg-(--rec-panel-2)'
+              i < Math.ceil(ratio * 20) ? (over ? 'bg-(--rec-hot)' : i >= 15 ? 'bg-(--rec-orange)' : 'bg-(--rec-violet)') : 'bg-(--rec-panel-2)'
             }`}
           />
         ))}
@@ -644,11 +646,11 @@ function CopyAction({ text, children, boxed = false }: { text: string; children:
           // Clipboard blocked: the text is still selectable on the page.
         }
       }}
-      className={`rec-pixel rounded-md px-2 py-1.5 text-[0.65rem] transition-colors hover:text-(--rec-hot) ${
+      className={`rec-pixel rounded-md px-2 py-1.5 text-[0.65rem] transition-colors hover:text-(--rec-orange) ${
         boxed ? 'border border-(--rec-line) bg-black/60 text-(--rec-muted)' : 'text-(--rec-muted)'
       }`}
     >
-      {copied ? 'Copied' : children}
+      {copied ? <span className="text-(--rec-orange)">Copied</span> : children}
     </button>
   );
 }
@@ -658,7 +660,7 @@ function TextAction({ onClick, children }: { onClick: () => void; children: Reac
     <button
       type="button"
       onClick={onClick}
-      className="rec-pixel rounded-md px-2 py-1.5 text-[0.65rem] text-(--rec-muted) transition-colors hover:text-(--rec-hot)"
+      className="rec-pixel rounded-md px-2 py-1.5 text-[0.65rem] text-(--rec-muted) transition-colors hover:text-(--rec-orange)"
     >
       {children}
     </button>
