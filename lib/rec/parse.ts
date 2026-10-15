@@ -36,6 +36,8 @@ export function parseCapture(text: string): Tape {
 }
 
 function readCapture(value: unknown): Capture {
+  // `copy(rec.tapes)` pastes every capture; take the latest.
+  if (Array.isArray(value)) value = value[value.length - 1];
   if (!value || typeof value !== 'object') {
     throw new ParseError('Expected an object with provider, t0 and chunks.');
   }

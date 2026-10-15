@@ -62,6 +62,17 @@
   letter-spacing: -0.02em;
 }
 
+/* Big, bright step numbers: the instructions should read at a glance. */
+.rec-app .rec-step-number {
+  font-family: var(--font-silkscreen), ui-monospace, monospace;
+  font-size: clamp(2.25rem, 5vw, 3.25rem);
+  line-height: 1;
+  color: #b98cff;
+  text-shadow:
+    0 0 18px rgba(185, 140, 255, 0.55),
+    0 0 2px rgba(185, 140, 255, 0.9);
+}
+
 /* The deck sits in a lit bay: a violet bloom and CRT scanlines. */
 .rec-app .rec-glow {
   position: relative;

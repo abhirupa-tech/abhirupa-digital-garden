@@ -15,6 +15,7 @@ import {
   type Shelf,
   type TapeEntry,
 } from '@/lib/rec/shelf';
+import { sampleCapture } from '@/lib/rec/sample';
 import { CAPTURE_SNIPPET } from '@/lib/rec/snippet';
 import { decodeTape, encodeTape, MAX_ENCODED_BYTES, tapeDurationMs, tapeId, type Tape } from '@/lib/rec/tape';
 import { PixelCassette, PixelDeck } from './PixelDeck';
@@ -177,18 +178,41 @@ export function RecGateway() {
           )}
 
           {view === 'record' && (
-            <div className="space-y-6">
-              <Step n={1} title="Arm the recorder">
-                <p className="text-sm leading-relaxed text-(--rec-muted)">
-                  Open DevTools on the app you&rsquo;re testing and paste this into the console. Trigger
-                  one streamed OpenAI Chat Completions response, then run{' '}
-                  <code className="rounded bg-(--rec-panel-2) px-1.5 py-0.5 text-xs">copy(rec.last)</code>.
-                  It records response chunks only, never headers or keys.
+            <div className="space-y-10">
+              <Step n={1} title="Open your app’s console">
+                <p>
+                  Open the app whose streaming you want to test, then open DevTools and its Console:{' '}
+                  <Kbd>⌥⌘J</Kbd> on Mac, <Kbd>Ctrl+Shift+J</Kbd> on Windows and Linux.
                 </p>
-                <CodeBlock code={CAPTURE_SNIPPET} label="Copy snippet" maxHeight />
+                <p>
+                  Chrome may refuse the first paste. If it asks, type <Code>allow pasting</Code> and press
+                  Enter.
+                </p>
               </Step>
 
-              <Step n={2} title="Paste the capture">
+              <Step n={2} title="Paste the recorder and press Enter">
+                <CodeBlock code={CAPTURE_SNIPPET} label="Copy snippet" maxHeight />
+                <p>
+                  The console should say <Code>● rec recording</Code>. It records response chunks only,
+                  never headers, prompts or keys.
+                </p>
+              </Step>
+
+              <Step n={3} title="Stream one answer">
+                <p>
+                  In your app, send a message and let the whole answer stream in. When it finishes, the
+                  console says <Code>● rec captured N chunks</Code>.
+                </p>
+              </Step>
+
+              <Step n={4} title="Copy the capture">
+                <p>
+                  Type <Code>rec.copy()</Code> in the console and press Enter. The capture is now on your
+                  clipboard.
+                </p>
+              </Step>
+
+              <Step n={5} title="Paste it here">
                 <label htmlFor="rec-paste" className="sr-only">
                   Capture JSON
                 </label>
@@ -201,9 +225,18 @@ export function RecGateway() {
                   placeholder='{ "provider": "openai", "t0": …, "chunks": [ … ] }'
                   className="w-full resize-y rounded-xl border border-(--rec-line) bg-black/50 p-4 font-mono text-xs leading-relaxed text-(--rec-fg) placeholder:text-(--rec-faint) focus:border-(--rec-violet)/70 focus:outline-none"
                 />
-                <p className="text-xs text-(--rec-faint)">
-                  Anyone with a tape&rsquo;s URL can read its text. Don&rsquo;t record sensitive answers.
-                </p>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <p className="text-xs text-(--rec-faint)">
+                    Anyone with a tape&rsquo;s URL can read its text. Don&rsquo;t record sensitive answers.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => onPaste(sampleCapture())}
+                    className="rec-pixel rounded-md border border-(--rec-line) px-2.5 py-1.5 text-[0.65rem] text-(--rec-muted) transition-colors hover:border-(--rec-violet)/60 hover:text-(--rec-hot)"
+                  >
+                    No app handy? Load a sample
+                  </button>
+                </div>
 
                 {draftError && <p className="text-sm text-(--rec-hot)">{draftError}</p>}
 
@@ -438,13 +471,30 @@ function ShelfView({
 
 function Step({ n, title, children }: { n: number; title: string; children: ReactNode }) {
   return (
-    <section className="space-y-3">
-      <h2 className="flex items-baseline gap-3">
-        <span className="rec-pixel text-xs text-(--rec-violet)">{String(n).padStart(2, '0')}</span>
-        <span className="rec-display text-2xl font-medium text-(--rec-fg)">{title}</span>
-      </h2>
-      {children}
+    <section className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 md:gap-x-6">
+      <span aria-hidden className="rec-step-number">
+        {String(n).padStart(2, '0')}
+      </span>
+      <div className="min-w-0 space-y-3 pt-1 text-sm leading-relaxed text-(--rec-muted) md:pt-2">
+        <h2 className="rec-display text-xl font-medium text-(--rec-fg) md:text-2xl">
+          <span className="sr-only">Step {n}: </span>
+          {title}
+        </h2>
+        {children}
+      </div>
     </section>
+  );
+}
+
+function Code({ children }: { children: ReactNode }) {
+  return <code className="rounded bg-(--rec-panel-2) px-1.5 py-0.5 text-xs text-(--rec-fg)">{children}</code>;
+}
+
+function Kbd({ children }: { children: ReactNode }) {
+  return (
+    <kbd className="rounded border border-(--rec-line) bg-(--rec-panel-2) px-1.5 py-0.5 font-[family-name:var(--font-rec-mono)] text-xs text-(--rec-fg)">
+      {children}
+    </kbd>
   );
 }
 
