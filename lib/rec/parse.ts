@@ -73,35 +73,90 @@ function readCapture(value: unknown): Capture {
   };
 }
 
+type StreamEvent = {
+  type?: unknown;
+  object?: unknown;
+  model?: unknown;
+  error?: string | { message?: unknown };
+  // OpenAI Chat Completions
+  choices?: { delta?: { content?: unknown } }[];
+  // OpenAI Responses, Vercel AI SDK (delta is a string); Anthropic (delta.text)
+  delta?: unknown;
+  // Anthropic message_start, OpenAI Responses response.created
+  message?: { model?: unknown };
+  response?: { model?: unknown };
+  // Gemini
+  candidates?: { content?: { parts?: { text?: unknown }[] } }[];
+  modelVersion?: unknown;
+};
+
+/**
+ * The text a streamed event adds, across the common LLM stream formats. Replay
+ * always re-emits OpenAI Chat Completions, so any of these can become a tape.
+ */
+function textOf(e: StreamEvent): string {
+  // OpenAI Chat Completions
+  const chat = e.choices?.[0]?.delta?.content;
+  if (typeof chat === 'string') return chat;
+  // OpenAI Responses API, Vercel AI SDK UI stream
+  if ((e.type === 'response.output_text.delta' || e.type === 'text-delta') && typeof e.delta === 'string') {
+    return e.delta;
+  }
+  // Anthropic Messages
+  if (e.type === 'content_block_delta' && e.delta && typeof e.delta === 'object') {
+    const text = (e.delta as { text?: unknown }).text;
+    if (typeof text === 'string') return text;
+  }
+  // Gemini
+  const parts = e.candidates?.[0]?.content?.parts;
+  if (Array.isArray(parts)) {
+    return parts.map((p) => (typeof p?.text === 'string' ? p.text : '')).join('');
+  }
+  return '';
+}
+
+function modelOf(e: StreamEvent): string | undefined {
+  for (const m of [e.model, e.message?.model, e.response?.model, e.modelVersion]) {
+    if (typeof m === 'string' && m) return m;
+  }
+  return undefined;
+}
+
 export function captureToTape(capture: Capture): Tape {
   const deltas: { t: number; text: string }[] = [];
   let model = capture.model;
   let buffer = '';
 
+  const seen = new Set<string>();
+  let nonJson = 0;
+  let sawData = false;
+
   const takeEvent = (event: string, t: number) => {
-    const data = event
-      .split(/\r?\n/)
+    const lines = event.split(/\r?\n/);
+    const name = lines.find((line) => line.startsWith('event:'))?.slice(6).trim();
+    const data = lines
       .filter((line) => line.startsWith('data:'))
       .map((line) => line.slice(5).replace(/^ /, ''))
       .join('\n');
-    if (!data || data === '[DONE]') return;
+    if (!data) return;
+    sawData = true;
+    if (data === '[DONE]') return;
 
-    let json: {
-      model?: unknown;
-      choices?: { delta?: { content?: unknown } }[];
-      error?: { message?: unknown };
-    };
+    let json: StreamEvent;
     try {
       json = JSON.parse(data);
     } catch {
-      throw new ParseError('A chunk holds data that isn’t JSON. Is this an OpenAI Chat Completions stream?');
+      nonJson++; // keepalives and comments: skip, judge the stream as a whole
+      return;
     }
     if (json.error) {
-      throw new ParseError(`The captured stream is an error response: ${String(json.error.message ?? 'unknown')}`);
+      const message = typeof json.error === 'string' ? json.error : json.error.message;
+      throw new ParseError(`The captured stream is an error response: ${String(message ?? 'unknown')}`);
     }
-    if (!model && typeof json.model === 'string') model = json.model;
-    const content = json.choices?.[0]?.delta?.content;
-    if (typeof content === 'string' && content.length > 0) deltas.push({ t, text: content });
+    seen.add(typeof json.type === 'string' ? json.type : (name ?? (json.object as string) ?? 'untyped'));
+    model ??= modelOf(json);
+    const text = textOf(json);
+    if (text) deltas.push({ t, text });
   };
 
   for (const { t, raw } of capture.chunks) {
@@ -114,7 +169,20 @@ export function captureToTape(capture: Capture): Tape {
   if (buffer.trim()) takeEvent(buffer, capture.chunks[capture.chunks.length - 1].t);
 
   if (deltas.length === 0) {
-    throw new ParseError('The stream has no text deltas. Tool-call-only responses aren’t supported yet.');
+    if (seen.size === 0) {
+      throw new ParseError(
+        nonJson
+          ? 'The stream’s data isn’t JSON, so this isn’t an LLM text stream rec can read.'
+          : sawData
+            ? 'The stream ended without any text.'
+            : 'The capture has no SSE data lines. Was the answer streamed (stream: true)?',
+      );
+    }
+    const kinds = [...seen].slice(0, 6).join(', ');
+    throw new ParseError(
+      `No text found in this stream. It carried these event types: ${kinds}. ` +
+        'rec reads OpenAI Chat Completions and Responses, Anthropic, Gemini and Vercel AI SDK text streams.',
+    );
   }
 
   // Round offsets from the first delta, then diff them, so per-gap rounding
