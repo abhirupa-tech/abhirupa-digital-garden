@@ -48,13 +48,13 @@ export function AboutIntro() {
       </Reveal>
 
       {/* What I do — four pictogram tiles, sunset glyphs warming on hover */}
-      <Reveal delay={0.28} from="left" className="mt-10 max-w-lg">
+      <Reveal delay={0.28} from="left" className="mt-10 max-w-2xl">
         <span className="label text-parchment-faint">What I do</span>
-        <ul className="mt-4 grid grid-cols-2 gap-3 sm:gap-4">
+        <ul className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {FACETS.map((f) => (
             <li
               key={f.k}
-              className="group rounded-2xl border border-parchment/10 bg-secondary-bg/50 p-4 backdrop-blur-[1px] transition-all duration-300 hover:-translate-y-0.5 hover:border-sunset/45 sm:p-5"
+              className="group rounded-2xl border border-parchment/10 bg-secondary-bg/50 p-4 backdrop-blur-[1px] transition-all duration-300 hover:-translate-y-0.5 hover:border-sunset/45"
             >
               <Glyph
                 name={f.glyph}

@@ -94,9 +94,14 @@ export default function AboutPage() {
             <AboutIntro />
           </div>
 
-          {/* Portrait — sits beside the intro on large screens */}
-          <div className="order-2 lg:col-span-5 lg:col-start-8 lg:row-start-1">
-            <Portrait />
+          {/* Portrait — beside the intro on large screens. The column stretches
+              to the intro's height and the portrait sticks inside it, so it
+              holds still in the viewport as the page scrolls, then releases just
+              above the career timeline. */}
+          <div className="order-2 lg:col-span-5 lg:col-start-8 lg:row-start-1 lg:self-stretch lg:pb-8">
+            <div className="lg:sticky lg:top-28">
+              <Portrait />
+            </div>
           </div>
         </div>
 
