@@ -39,18 +39,31 @@ export const CAPTURE_SNIPPET = `(() => {
     const url = typeof input === 'string' ? input : (input && input.url) || String(input);
     const type = res.headers.get('content-type') || '';
     if (!res.body || !(type.includes('event-stream') || /chat\\/completions/.test(url))) return res;
+    let where = url;
+    try { where = new URL(url, location.href).pathname; } catch (e) {}
     const [mine, theirs] = res.body.tee();
     const capture = { provider: 'openai', t0, chunks: [] };
+    const finish = (cutOff) => {
+      const n = capture.chunks.length;
+      if (!n) return cutOff && say('a stream to ' + where + ' was cancelled before any data arrived. Ignored.');
+      tapes.push(capture);
+      say((cutOff ? 'the app closed the stream early; kept the ' : 'captured ') + n + ' chunks from ' + where + '. Now run: rec.copy()');
+    };
     (async () => {
       const reader = mine.pipeThrough(new TextDecoderStream()).getReader();
-      for (;;) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        capture.chunks.push({ t: performance.now(), raw: value });
+      try {
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          capture.chunks.push({ t: performance.now(), raw: value });
+        }
+      } catch (e) {
+        // Apps often abort their own request once the answer is in (or when
+        // they replace it). Keep everything that arrived before the cut.
+        return finish(true);
       }
-      tapes.push(capture);
-      say('captured ' + capture.chunks.length + ' chunks. Now run: rec.copy()');
-    })().catch((e) => say('capture failed: ' + e));
+      finish(false);
+    })();
     return new Response(theirs, { status: res.status, statusText: res.statusText, headers: res.headers });
   };
   say('recording. Now send a message in your app and let the answer stream in.');

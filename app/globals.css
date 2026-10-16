@@ -641,8 +641,8 @@
 /* ── Lab bench ────────────────────────────────────────────────────────────
    Graph paper, registration marks, and the viewfinder optics on each
    specimen window (components/lab/LabBench.tsx, LabSpecimen.tsx). Lines read
-   through the hairline/parchment tokens, so the bench follows the theme; the
-   specimen windows are always dark-field. */
+   through the hairline/parchment tokens, so the bench and its specimen
+   windows follow the theme. */
 .lab-bench {
   background-color: color-mix(in srgb, var(--c-secondary-bg) 45%, transparent);
   background-image:
@@ -679,8 +679,11 @@
   position: absolute;
   width: 16px;
   height: 16px;
-  border-color: rgba(255, 255, 255, 0.6);
+  border-color: rgba(20, 18, 16, 0.4);
   transition: inset 0.5s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.4s ease;
+}
+.dark .lab-bracket {
+  border-color: rgba(255, 255, 255, 0.6);
 }
 .lab-bracket-tl { left: 12px; top: 32px; border-left-width: 1.5px; border-top-width: 1.5px; }
 .lab-bracket-tr { right: 12px; top: 32px; border-right-width: 1.5px; border-top-width: 1.5px; }

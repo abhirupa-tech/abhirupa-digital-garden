@@ -11,7 +11,7 @@ const DELAYS = [...WORDS.map((_, i) => (i === 0 ? 900 : 220 + ((i * 53) % 140)))
  * Lab tile preview for Morphology in AI components: one agent-state card in
  * motion. The waveform's committed edge advances with the transcript, and
  * words firm from faint (partial) to solid (committed) as they're spoken.
- * Fixed dark-field colours: it's always seen through a specimen window.
+ * Follows the site theme: parchment field in light mode, ember-dark in dark.
  */
 export function MorphologyPreview() {
   const { ref, step } = useLoopStep(DELAYS);
@@ -22,10 +22,10 @@ export function MorphologyPreview() {
   return (
     <div
       ref={ref}
-      className="flex h-full w-full items-center justify-center bg-[radial-gradient(ellipse_at_50%_35%,#3a2316_0%,#1a1513_55%,#0f0d0c_100%)] px-[8%] py-[12%]"
+      className="flex h-full w-full items-center justify-center bg-[radial-gradient(ellipse_at_50%_35%,#fbe1c8_0%,#f4e8d7_55%,#ede3d2_100%)] px-[8%] py-[12%] dark:bg-[radial-gradient(ellipse_at_50%_35%,#3a2316_0%,#1a1513_55%,#0f0d0c_100%)]"
       aria-hidden
     >
-      <div className="w-[78%] max-w-sm rounded-lg border border-white/10 bg-[#1f1c19]/90 px-3.5 py-3 shadow-[0_20px_60px_-20px_rgba(224,86,26,0.35)]">
+      <div className="w-[78%] max-w-sm rounded-lg border border-black/10 bg-white/85 px-3.5 py-3 dark:border-white/10 dark:bg-[#1f1c19]/90 shadow-[0_20px_60px_-20px_rgba(224,86,26,0.35)]">
         <div className="flex items-center gap-2">
           <span className="flex gap-1">
             {[0, 1, 2].map((i) => (
@@ -36,14 +36,14 @@ export function MorphologyPreview() {
               />
             ))}
           </span>
-          <span className="font-mono text-[0.6rem] uppercase tracking-[0.18em] text-white/50">{thinking ? 'Speaking' : 'Committed'}</span>
+          <span className="font-mono text-[0.6rem] uppercase tracking-[0.18em] text-black/45 dark:text-white/50">{thinking ? 'Speaking' : 'Committed'}</span>
         </div>
 
         <div className="mt-2.5 flex h-7 items-end gap-[3px]">
           {BARS.map((h, i) => (
             <span
               key={i}
-              className={`flex-1 rounded-full transition-colors duration-300 ${i < spokenBars ? 'bg-[#ef6a2a]' : 'bg-white/12'}`}
+              className={`flex-1 rounded-full transition-colors duration-300 ${i < spokenBars ? 'bg-[#ef6a2a]' : 'bg-black/10 dark:bg-white/12'}`}
               style={{ height: `${Math.round((h + 6) * 0.62)}px` }}
             />
           ))}
@@ -53,7 +53,7 @@ export function MorphologyPreview() {
           {WORDS.map((word, i) => (
             <span
               key={i}
-              className={`transition-colors duration-300 ${i < committed ? 'text-[#efe8dc]' : 'text-[#efe8dc]/30'}`}
+              className={`transition-colors duration-300 ${i < committed ? 'text-[#141210] dark:text-[#efe8dc]' : 'text-[#141210]/30 dark:text-[#efe8dc]/30'}`}
             >
               {word}{' '}
             </span>
