@@ -12,14 +12,23 @@ import { LAB_PREVIEWS } from './previews';
  * The window is always dark-field: previews draw with fixed colours rather
  * than theme tokens, so a light-themed page still looks through a lit stage.
  */
-export function LabSpecimen({ project, index }: { project: LabProject; index: number }) {
+export function LabSpecimen({
+  project,
+  index,
+  compact = false,
+}: {
+  project: LabProject;
+  index: number;
+  /** Shorter, wider viewing window (16:9 from lg up) for the homepage. */
+  compact?: boolean;
+}) {
   const number = String(index + 1).padStart(2, '0');
   const Preview = project.preview ? LAB_PREVIEWS[project.preview] : null;
 
   return (
     <a href={project.href} className="lab-specimen group block focus-visible:outline-none">
       {/* Viewing window */}
-      <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-[#121110] ring-1 ring-black/10 transition-[box-shadow] duration-500 group-hover:ring-highlight/50 group-focus-visible:ring-2 group-focus-visible:ring-highlight dark:ring-white/10">
+      <div className={`relative overflow-hidden ${compact ? 'aspect-[4/3] lg:aspect-video' : 'aspect-[4/3]'} rounded-lg bg-[#121110] ring-1 ring-black/10 transition-[box-shadow] duration-500 group-hover:ring-highlight/50 group-focus-visible:ring-2 group-focus-visible:ring-highlight dark:ring-white/10`}>
         <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.025]">
           {project.video ? (
             <video
@@ -78,7 +87,9 @@ export function LabSpecimen({ project, index }: { project: LabProject; index: nu
       </div>
 
       {/* Notebook label */}
-      <div className="mt-5 flex items-center gap-4 md:gap-5">
+      {/* Number pinned to the top, level with the title, so every specimen's
+          number lines up across the bench whatever its note length. */}
+      <div className="mt-5 flex items-start gap-4 md:gap-5">
         <span className="font-display text-3xl leading-none text-sand/80 md:text-4xl">{number}</span>
         <div className="min-w-0 border-l border-hairline pl-4 md:pl-5">
           <h3 className="font-rounded text-[0.8rem] font-semibold uppercase leading-snug tracking-[0.16em] text-parchment transition-colors duration-300 group-hover:text-highlight md:text-sm">

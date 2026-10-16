@@ -6,7 +6,7 @@ import { LabSpecimen } from './LabSpecimen';
  * with a ruler along the top edge, registration marks at the corners, and a
  * bench label. Specimens share one size, so the bench reads as a set.
  */
-export function LabBench({ projects }: { projects: LabProject[] }) {
+export function LabBench({ projects, compact = false }: { projects: LabProject[]; compact?: boolean }) {
   const live = projects.filter((p) => p.status === 'live').length;
 
   return (
@@ -27,7 +27,7 @@ export function LabBench({ projects }: { projects: LabProject[] }) {
 
         <div className="mt-8 grid gap-x-10 gap-y-12 md:grid-cols-2 md:gap-x-12">
           {projects.map((project, i) => (
-            <LabSpecimen key={project.slug} project={project} index={i} />
+            <LabSpecimen key={project.slug} project={project} index={i} compact={compact} />
           ))}
         </div>
       </div>

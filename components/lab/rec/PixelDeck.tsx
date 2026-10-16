@@ -1,29 +1,53 @@
 /**
  * The rec deck: a chunky pixel-art tape recorder, drawn on a 96x56 grid where
- * one SVG unit is one pixel. Fixed night palette, blue-violet with a hot red record
- * key (it's artwork, so it doesn't flip with the site theme); crispEdges keeps
- * every pixel square at any scale.
+ * one SVG unit is one pixel. Two fixed palettes (it's artwork, so it doesn't
+ * flip with the site theme): `night` for the rec product page, `ember` to sit
+ * in the portfolio's warm rust-and-parchment. crispEdges keeps every pixel
+ * square at any scale.
  *
  * The reels spin in 45° steps while a preview plays (see rec.css), at a rate
  * tied to playback speed. Reduced motion leaves them still.
  */
 
-const P = {
-  outline: '#04040b',
-  body: '#22234d',
-  bodyLight: '#383c80',
-  bodyDark: '#151633',
-  cream: '#d5d9fa',
-  creamDark: '#9ca3db',
-  window: '#08091c',
-  reel: '#b4bbff',
-  red: '#ff3b5c',
-  key: '#d5d9fa',
-  keyDark: '#8288c4',
-  label: '#ff8a3d',
-  orange: '#ff8a3d',
-  orangeDark: '#c25a1c',
+const PALETTES = {
+  // The rec product page: blue-violet night with a hot red record key.
+  night: {
+    outline: '#04040b',
+    body: '#22234d',
+    bodyLight: '#383c80',
+    bodyDark: '#151633',
+    cream: '#d5d9fa',
+    creamDark: '#9ca3db',
+    window: '#08091c',
+    reel: '#b4bbff',
+    red: '#ff3b5c',
+    key: '#d5d9fa',
+    keyDark: '#8288c4',
+    label: '#ff8a3d',
+    orange: '#ff8a3d',
+    orangeDark: '#c25a1c',
+  },
+  // Portfolio tiles: rust body, parchment cream, the site's navy as accent.
+  ember: {
+    outline: '#2b1d16',
+    body: '#c4552b',
+    bodyLight: '#de7a45',
+    bodyDark: '#8f3a1d',
+    cream: '#f2dfb6',
+    creamDark: '#d9bf8c',
+    window: '#3a2a20',
+    reel: '#e9d2a0',
+    red: '#e2342b',
+    key: '#f2dfb6',
+    keyDark: '#bfa577',
+    label: '#2c5488',
+    orange: '#2c5488',
+    orangeDark: '#1d3a63',
+  },
 } as const;
+
+export type DeckPalette = keyof typeof PALETTES;
+type Colors = (typeof PALETTES)[DeckPalette];
 
 /** Pixel circle of radius 5, as [dx, from, to] row spans. */
 const REEL_ROWS: [number, number, number][] = [
@@ -56,7 +80,7 @@ const SPOKES: [number, number][] = [
   [1, 1],
 ];
 
-function Reel({ cx, cy }: { cx: number; cy: number }) {
+function Reel({ cx, cy, P }: { cx: number; cy: number; P: Colors }) {
   return (
     <g className="rec-reel">
       {REEL_ROWS.map(([dy, from, to]) => (
@@ -69,7 +93,7 @@ function Reel({ cx, cy }: { cx: number; cy: number }) {
   );
 }
 
-function Grille() {
+function Grille({ P }: { P: Colors }) {
   const dots = [];
   for (let y = 18; y <= 44; y += 3) {
     for (let x = 10; x <= 28; x += 3) dots.push(<rect key={`${x},${y}`} x={x} y={y} width={2} height={2} fill={P.bodyDark} />);
@@ -77,7 +101,16 @@ function Grille() {
   return <g>{dots}</g>;
 }
 
-export function PixelDeck({ playing, speed }: { playing: boolean; speed: number }) {
+export function PixelDeck({
+  playing,
+  speed,
+  palette = 'night',
+}: {
+  playing: boolean;
+  speed: number;
+  palette?: DeckPalette;
+}) {
+  const P = PALETTES[palette];
   return (
     <div
       className="rec-deck"
@@ -100,7 +133,7 @@ export function PixelDeck({ playing, speed }: { playing: boolean; speed: number 
           <g key={i}>
             <rect x={9 + i * 6} y={4} width={5} height={5} fill={P.outline} />
             <rect x={10 + i * 6} y={5} width={3} height={3} fill={i === 0 ? P.red : i === 2 ? P.orange : P.key} />
-            <rect x={10 + i * 6} y={7} width={3} height={1} fill={i === 0 ? '#b3203d' : i === 2 ? P.orangeDark : P.keyDark} />
+            <rect x={10 + i * 6} y={7} width={3} height={1} fill={i === 0 ? (palette === 'night' ? '#b3203d' : '#a8231c') : i === 2 ? P.orangeDark : P.keyDark} />
           </g>
         ))}
 
@@ -112,7 +145,7 @@ export function PixelDeck({ playing, speed }: { playing: boolean; speed: number 
         <rect x={6} y={10} width={84} height={2} fill={P.bodyLight} />
         <rect x={6} y={49} width={84} height={2} fill={P.bodyDark} />
 
-        <Grille />
+        <Grille P={P} />
 
         {/* Cassette bay */}
         <rect x={35} y={14} width={53} height={27} fill={P.outline} />
@@ -120,8 +153,8 @@ export function PixelDeck({ playing, speed }: { playing: boolean; speed: number 
         <rect x={36} y={38} width={51} height={2} fill={P.creamDark} />
         <rect x={39} y={17} width={45} height={3} fill={P.label} />
         <rect x={44} y={22} width={35} height={13} fill={P.window} />
-        <Reel cx={51} cy={28} />
-        <Reel cx={72} cy={28} />
+        <Reel cx={51} cy={28} P={P} />
+        <Reel cx={72} cy={28} P={P} />
         {/* Tape running between the reels */}
         <rect x={57} y={33} width={10} height={1} fill={P.bodyDark} />
 
@@ -144,7 +177,8 @@ export function PixelDeck({ playing, speed }: { playing: boolean; speed: number 
 }
 
 /** A small pixel cassette for the Shelf rows. */
-export function PixelCassette({ className = '' }: { className?: string }) {
+export function PixelCassette({ className = '', palette = 'night' }: { className?: string; palette?: DeckPalette }) {
+  const P = PALETTES[palette];
   return (
     <svg viewBox="0 0 16 10" aria-hidden className={`rec-pixelated ${className}`}>
       <rect x={0} y={0} width={16} height={10} fill={P.outline} />

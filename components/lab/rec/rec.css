@@ -1,21 +1,25 @@
-/* rec — its own product look: near-black, blue-violet light, pixel deck.
+/* rec — its own product look, in the portfolio's palette run cybernetic:
+   warm charcoal, ember light (the hero's fire ramp), a cool spark-blue
+   counter-accent, a circuit grid, scanlines and a pixel deck.
    Tokens live on .rec-app (the page) and .rec-root (the gateway and the Lab
    tile preview), so nothing leaks into the site and the site theme toggle
    doesn't reach in. */
 
 .rec-app,
 .rec-root {
-  --rec-bg: #05050c;
-  --rec-panel: #0b0c19;
-  --rec-panel-2: #13152e;
-  --rec-line: rgba(138, 146, 255, 0.17);
-  --rec-fg: #e8eafb;
-  --rec-muted: #a0a5c8;
-  --rec-faint: #6a6f93;
-  --rec-violet: #8a92ff;
-  --rec-violet-deep: #5a55f0;
+  --rec-bg: #0d0b0a;
+  --rec-panel: #151210;
+  --rec-panel-2: #201b17;
+  --rec-line: rgba(242, 223, 182, 0.12);
+  --rec-fg: #f2ece2;
+  --rec-muted: #b8ad9e;
+  --rec-faint: #807669;
+  --rec-accent: #ef6a2a;
+  /* The site's spark blue: a cool signal against the ember. */
+  --rec-signal: #6f9bf0;
+  --rec-accent-deep: #c2410c;
   /* Pops of orange: hover text, small highlights. Warm, never blue. */
-  --rec-orange: #ff8a3d;
+  --rec-orange: #ffb020;
   /* Errors and the record key: a hot crimson. */
   --rec-hot: #ff4d6d;
 }
@@ -26,9 +30,9 @@
   color: var(--rec-fg);
   font-family: var(--font-rec-sans), ui-sans-serif, system-ui, sans-serif;
   background:
-    radial-gradient(60rem 30rem at 15% -10%, rgba(90, 85, 240, 0.26), transparent 70%),
-    radial-gradient(40rem 24rem at 95% 10%, rgba(96, 140, 255, 0.12), transparent 70%),
-    radial-gradient(28rem 18rem at 100% 85%, rgba(255, 138, 61, 0.08), transparent 70%),
+    radial-gradient(60rem 30rem at 15% -10%, rgba(224, 86, 26, 0.22), transparent 70%),
+    radial-gradient(40rem 24rem at 95% 10%, rgba(63, 116, 214, 0.14), transparent 70%),
+    radial-gradient(28rem 18rem at 100% 85%, rgba(255, 176, 32, 0.07), transparent 70%),
     var(--rec-bg);
   position: relative;
   isolation: isolate;
@@ -42,14 +46,14 @@
   z-index: -1;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(138, 146, 255, 0.065) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(138, 146, 255, 0.065) 1px, transparent 1px);
+    linear-gradient(rgba(242, 223, 182, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(242, 223, 182, 0.05) 1px, transparent 1px);
   background-size: 32px 32px;
   mask-image: linear-gradient(to bottom, black, transparent 70%);
 }
 
 .rec-app ::selection {
-  background: rgba(138, 146, 255, 0.38);
+  background: rgba(224, 86, 26, 0.38);
   color: #fff;
 }
 
@@ -70,18 +74,18 @@
   font-family: var(--font-silkscreen), ui-monospace, monospace;
   font-size: clamp(2.25rem, 5vw, 3.25rem);
   line-height: 1;
-  color: #b98cff;
+  color: #ff8a3d;
   text-shadow:
-    0 0 18px rgba(185, 140, 255, 0.55),
-    0 0 2px rgba(185, 140, 255, 0.9);
+    0 0 18px rgba(239, 106, 42, 0.55),
+    0 0 2px rgba(255, 176, 32, 0.9);
 }
 
 /* The deck sits in a lit bay: a violet bloom and CRT scanlines. */
 .rec-app .rec-glow {
   position: relative;
   box-shadow:
-    0 0 0 1px rgba(138, 146, 255, 0.1),
-    0 20px 80px -20px rgba(90, 85, 240, 0.5);
+    0 0 0 1px rgba(242, 223, 182, 0.08),
+    0 20px 80px -20px rgba(224, 86, 26, 0.45);
 }
 .rec-app .rec-glow::after {
   content: '';

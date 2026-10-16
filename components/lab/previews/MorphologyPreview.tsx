@@ -22,10 +22,10 @@ export function MorphologyPreview() {
   return (
     <div
       ref={ref}
-      className="flex h-full w-full items-center justify-center bg-[radial-gradient(ellipse_at_50%_35%,#3a2316_0%,#1a1513_55%,#0f0d0c_100%)] p-[9%]"
+      className="flex h-full w-full items-center justify-center bg-[radial-gradient(ellipse_at_50%_35%,#3a2316_0%,#1a1513_55%,#0f0d0c_100%)] px-[8%] py-[12%]"
       aria-hidden
     >
-      <div className="w-full max-w-md rounded-xl border border-white/10 bg-[#1f1c19]/90 p-[5%] shadow-[0_20px_60px_-20px_rgba(224,86,26,0.35)]">
+      <div className="w-[78%] max-w-sm rounded-lg border border-white/10 bg-[#1f1c19]/90 px-3.5 py-3 shadow-[0_20px_60px_-20px_rgba(224,86,26,0.35)]">
         <div className="flex items-center gap-2">
           <span className="flex gap-1">
             {[0, 1, 2].map((i) => (
@@ -39,17 +39,17 @@ export function MorphologyPreview() {
           <span className="font-mono text-[0.6rem] uppercase tracking-[0.18em] text-white/50">{thinking ? 'Speaking' : 'Committed'}</span>
         </div>
 
-        <div className="mt-3 flex h-10 items-end gap-[3px]">
+        <div className="mt-2.5 flex h-7 items-end gap-[3px]">
           {BARS.map((h, i) => (
             <span
               key={i}
               className={`flex-1 rounded-full transition-colors duration-300 ${i < spokenBars ? 'bg-[#ef6a2a]' : 'bg-white/12'}`}
-              style={{ height: `${Math.round((h + 6) * 0.9)}px` }}
+              style={{ height: `${Math.round((h + 6) * 0.62)}px` }}
             />
           ))}
         </div>
 
-        <p className="mt-3 font-rounded text-[clamp(0.7rem,1.5vw,0.9rem)] leading-relaxed">
+        <p className="mt-2.5 line-clamp-2 font-rounded text-[0.72rem] leading-relaxed">
           {WORDS.map((word, i) => (
             <span
               key={i}

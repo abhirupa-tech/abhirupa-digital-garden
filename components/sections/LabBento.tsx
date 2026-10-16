@@ -18,7 +18,7 @@ export function LabBento({ zone, projects }: { zone: Zone; projects: LabProject[
       <SectionHeader zone={zone} from="up" />
 
       <Reveal className="mt-9" delay={0.06}>
-        <LabBench projects={projects} />
+        <LabBench projects={projects} compact />
       </Reveal>
 
       <Reveal delay={0.16} className="mt-6">

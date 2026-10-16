@@ -124,7 +124,7 @@ export function RecGateway() {
         {/* Deck */}
         <div className="lg:sticky lg:top-28">
           <div className="rec-glow rounded-2xl border border-(--rec-line) bg-(--rec-panel) p-5 md:p-7">
-            <PixelDeck playing={playback.playing} speed={speed} />
+            <PixelDeck playing={playback.playing} speed={speed} palette="ember" />
             <div className="rec-pixel mt-5 flex items-center justify-between text-xs text-(--rec-muted)">
               <span className="flex items-center gap-2">
                 <span className="rec-led inline-block h-2 w-2 bg-[#ff3b5c]" aria-hidden />
@@ -163,7 +163,7 @@ export function RecGateway() {
                     transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                     onAnimationComplete={() => setJustSaved(null)}
                   >
-                    <PixelCassette className="h-5 w-8" />
+                    <PixelCassette className="h-5 w-8" palette="ember" />
                   </motion.span>
                 )}
               </AnimatePresence>
@@ -174,7 +174,7 @@ export function RecGateway() {
         {/* Panel */}
         <div role="tabpanel" aria-live="polite" className="min-w-0">
           {notice && (
-            <p className="mb-4 rounded-xl border border-(--rec-violet)/40 bg-(--rec-violet)/10 px-4 py-3 text-sm text-(--rec-fg)">
+            <p className="mb-4 rounded-xl border border-(--rec-accent)/40 bg-(--rec-accent)/10 px-4 py-3 text-sm text-(--rec-fg)">
               {notice}
             </p>
           )}
@@ -225,7 +225,7 @@ export function RecGateway() {
                   spellCheck={false}
                   rows={7}
                   placeholder='{ "provider": "openai", "t0": …, "chunks": [ … ] }'
-                  className="w-full resize-y rounded-xl border border-(--rec-line) bg-black/50 p-4 font-mono text-xs leading-relaxed text-(--rec-fg) placeholder:text-(--rec-faint) focus:border-(--rec-violet)/70 focus:outline-none"
+                  className="w-full resize-y rounded-xl border border-(--rec-line) bg-black/50 p-4 font-mono text-xs leading-relaxed text-(--rec-fg) placeholder:text-(--rec-faint) focus:border-(--rec-accent)/70 focus:outline-none"
                 />
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="text-xs text-(--rec-faint)">
@@ -234,7 +234,7 @@ export function RecGateway() {
                   <button
                     type="button"
                     onClick={() => onPaste(sampleCapture())}
-                    className="rec-pixel rounded-md border border-(--rec-line) px-2.5 py-1.5 text-[0.65rem] text-(--rec-muted) transition-colors hover:border-(--rec-violet)/60 hover:text-(--rec-orange)"
+                    className="rec-pixel rounded-md border border-(--rec-line) px-2.5 py-1.5 text-[0.65rem] text-(--rec-muted) transition-colors hover:border-(--rec-accent)/60 hover:text-(--rec-orange)"
                   >
                     No app handy? Load a sample
                   </button>
@@ -260,7 +260,7 @@ export function RecGateway() {
                       <button
                         type="button"
                         onClick={save}
-                        className="rec-pixel inline-flex items-center gap-2 rounded-lg bg-(--rec-violet-deep) px-4 py-2.5 text-xs text-white transition-colors hover:bg-(--rec-violet)"
+                        className="rec-pixel inline-flex items-center gap-2 rounded-lg bg-(--rec-accent-deep) px-4 py-2.5 text-xs text-white transition-colors hover:bg-(--rec-accent)"
                       >
                         <span aria-hidden>●</span> Save tape
                       </button>
@@ -409,14 +409,14 @@ function ShelfView({
   if (tapes.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-(--rec-line) px-6 py-10 text-center">
-        <PixelCassette className="mx-auto h-10 w-16" />
+        <PixelCassette className="mx-auto h-10 w-16" palette="ember" />
         <p className="mt-4 text-sm text-(--rec-muted)">
           The shelf is empty. Tapes you save live in this browser only.
         </p>
         <button
           type="button"
           onClick={onRecord}
-          className="rec-pixel mt-4 text-xs text-(--rec-violet) underline-offset-4 hover:text-(--rec-orange) hover:underline"
+          className="rec-pixel mt-4 text-xs text-(--rec-accent) underline-offset-4 hover:text-(--rec-orange) hover:underline"
         >
           Record one
         </button>
@@ -442,7 +442,7 @@ function ShelfView({
               transition={{ type: 'spring', stiffness: 260, damping: 26 }}
               className="flex flex-wrap items-center gap-x-4 gap-y-3 rounded-xl border border-(--rec-line) bg-(--rec-panel) p-3 md:flex-nowrap"
             >
-              <PixelCassette className="h-8 w-12 shrink-0" />
+              <PixelCassette className="h-8 w-12 shrink-0" palette="ember" />
               <div className="min-w-0 flex-1">
                 <input
                   defaultValue={entry.name}
@@ -450,7 +450,7 @@ function ShelfView({
                   maxLength={60}
                   onBlur={(e) => onRename(entry.id, e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
-                  className="w-full rounded-md border border-transparent bg-transparent px-1 py-0.5 rec-display text-lg text-(--rec-fg) hover:border-(--rec-line) focus:border-(--rec-violet)/70 focus:outline-none"
+                  className="w-full rounded-md border border-transparent bg-transparent px-1 py-0.5 rec-display text-lg text-(--rec-fg) hover:border-(--rec-line) focus:border-(--rec-accent)/70 focus:outline-none"
                 />
                 <p className="rec-pixel px-1 text-[0.65rem] text-(--rec-faint)">
                   {entry.model} · {formatMs(entry.durationMs)} · {formatBytes(entry.bytes)}
@@ -524,8 +524,8 @@ function DeckKey({
       onClick={onClick}
       className={`rec-pixel relative flex items-center justify-center gap-2 rounded-lg border px-2 py-3 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${
         active
-          ? 'border-(--rec-violet)/60 bg-(--rec-violet)/10 text-(--rec-violet)'
-          : 'border-(--rec-line) text-(--rec-muted) hover:border-(--rec-violet)/50 hover:text-(--rec-orange)'
+          ? 'border-(--rec-accent)/60 bg-(--rec-accent)/10 text-(--rec-accent)'
+          : 'border-(--rec-line) text-(--rec-muted) hover:border-(--rec-accent)/50 hover:text-(--rec-orange)'
       }`}
     >
       <span aria-hidden>{glyph}</span>
@@ -552,8 +552,8 @@ function PixelButton({
       onClick={onClick}
       className={`rec-pixel inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-xs transition-colors ${
         primary
-          ? 'bg-(--rec-violet-deep) text-white hover:bg-(--rec-violet)'
-          : 'border border-(--rec-line) text-(--rec-fg) hover:border-(--rec-violet)/60 hover:text-(--rec-orange)'
+          ? 'bg-(--rec-accent-deep) text-white hover:bg-(--rec-accent)'
+          : 'border border-(--rec-line) text-(--rec-fg) hover:border-(--rec-accent)/60 hover:text-(--rec-orange)'
       }`}
     >
       <span aria-hidden>{glyph}</span>
@@ -590,7 +590,7 @@ function SizeMeter({ bytes }: { bytes: number }) {
           <span
             key={i}
             className={`h-2 ${
-              i < Math.ceil(ratio * 20) ? (over ? 'bg-(--rec-hot)' : i >= 15 ? 'bg-(--rec-orange)' : 'bg-(--rec-violet)') : 'bg-(--rec-panel-2)'
+              i < Math.ceil(ratio * 20) ? (over ? 'bg-(--rec-hot)' : i >= 15 ? 'bg-(--rec-orange)' : 'bg-(--rec-signal)') : 'bg-(--rec-panel-2)'
             }`}
           />
         ))}
