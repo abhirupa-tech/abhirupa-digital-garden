@@ -9,18 +9,30 @@
  * other. It records response chunks only — never request headers, bodies or
  * API keys.
  *
+ * Pasting a newer version replaces an older one (via rec.stop()); the very
+ * first version can't remove itself, so the tab needs a reload.
+ *
  * `copy` is a DevTools console helper that only exists while console code is
  * being evaluated, so the snippet grabs it up front for `rec.copy()` to use
  * later. Where it's missing, rec.copy() prints the JSON to copy by hand.
  */
 export const CAPTURE_SNIPPET = `(() => {
   const say = (msg) => console.log('%c● rec%c ' + msg, 'color:#ff3b5c;font-weight:bold', '');
-  if (window.rec) return say('already recording. Trigger a streamed response, then run rec.copy()');
+  const VERSION = 3;
+  if (window.rec && window.rec.v === VERSION) return say('already recording. Trigger a streamed response, then run rec.copy()');
+  if (window.rec && typeof window.rec.stop === 'function') window.rec.stop();
+  else if (window.rec) return say('an older rec snippet is still running in this tab. Reload the page, then paste this one.');
   const devtoolsCopy = typeof copy === 'function' ? copy : null;
   const tapes = [];
   const realFetch = window.fetch;
   window.rec = {
+    v: VERSION,
     tapes,
+    stop() {
+      window.fetch = realFetch;
+      delete window.rec;
+      say('stopped. fetch is back to normal.');
+    },
     get last() { return tapes[tapes.length - 1]; },
     copy() {
       const last = tapes[tapes.length - 1];
