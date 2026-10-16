@@ -122,6 +122,68 @@ function modelOf(e: StreamEvent): string | undefined {
   return undefined;
 }
 
+/**
+ * ChatGPT's web app (chatgpt.com) streams `event: delta` operations against a
+ * message object rather than text deltas (`delta_encoding: v1`):
+ *
+ *   {"p": "", "o": "add", "v": {"message": {author, content, metadata}}}   start a message
+ *   {"p": "/message/content/parts/0", "o": "append", "v": "Hel"}          add text
+ *   {"v": "lo"}                                                             repeat the last op
+ *   {"p": "", "o": "patch", "v": [ ...ops ]}  or  {"v": [ ...ops ]}         a batch of ops
+ *
+ * Only the assistant's visible text message counts: the user's input and any
+ * reasoning ("thoughts") messages are skipped. An undocumented, private format,
+ * so it may need updating if it changes.
+ */
+type ChatgptOp = { p?: unknown; o?: unknown; v?: unknown };
+type ChatgptMessage = {
+  author?: { role?: unknown };
+  content?: { content_type?: unknown; parts?: unknown[] };
+  metadata?: { model_slug?: unknown };
+};
+
+function chatgptDecoder() {
+  const state = { path: '', op: '', active: false };
+  let model: string | undefined;
+
+  const apply = (op: ChatgptOp): string => {
+    // A bare list of ops is a batch, and leaves the "last op" untouched.
+    if (op.p === undefined && op.o === undefined && Array.isArray(op.v)) {
+      return (op.v as ChatgptOp[]).map(apply).join('');
+    }
+    if (typeof op.p === 'string') state.path = op.p;
+    if (typeof op.o === 'string') state.op = op.o;
+    const { path, op: kind } = state;
+
+    if (kind === 'patch' && Array.isArray(op.v)) return (op.v as ChatgptOp[]).map(apply).join('');
+
+    if (kind === 'add' && path === '' && op.v && typeof op.v === 'object' && 'message' in op.v) {
+      const message = (op.v as { message?: ChatgptMessage }).message ?? {};
+      const type = message.content?.content_type;
+      state.active = message.author?.role === 'assistant' && (type === 'text' || type === 'multimodal_text');
+      if (state.active && typeof message.metadata?.model_slug === 'string') model ??= message.metadata.model_slug;
+      const first = message.content?.parts?.[0];
+      return state.active && typeof first === 'string' ? first : '';
+    }
+
+    if (kind === 'append' && path === '/message/content/parts/0' && state.active && typeof op.v === 'string') {
+      return op.v;
+    }
+    return '';
+  };
+
+  return {
+    get model() {
+      return model;
+    },
+    text(e: StreamEvent, name: string | undefined): string {
+      if (typeof e.type === 'string') return ''; // input_message, message_marker, …
+      if (name !== 'delta' && !('v' in e)) return '';
+      return apply(e as ChatgptOp);
+    },
+  };
+}
+
 export function captureToTape(capture: Capture): Tape {
   const deltas: { t: number; text: string }[] = [];
   let model = capture.model;
@@ -129,6 +191,7 @@ export function captureToTape(capture: Capture): Tape {
 
   const seen = new Set<string>();
   let nonJson = 0;
+  const chatgpt = chatgptDecoder();
   let sawData = false;
 
   const takeEvent = (event: string, t: number) => {
@@ -149,13 +212,18 @@ export function captureToTape(capture: Capture): Tape {
       nonJson++; // keepalives and comments: skip, judge the stream as a whole
       return;
     }
+    if (!json || typeof json !== 'object') {
+      if (name) seen.add(name); // e.g. ChatGPT's `event: delta_encoding` / `data: "v1"`
+      return;
+    }
     if (json.error) {
       const message = typeof json.error === 'string' ? json.error : json.error.message;
       throw new ParseError(`The captured stream is an error response: ${String(message ?? 'unknown')}`);
     }
     seen.add(typeof json.type === 'string' ? json.type : (name ?? (json.object as string) ?? 'untyped'));
     model ??= modelOf(json);
-    const text = textOf(json);
+    const text = textOf(json) || chatgpt.text(json, name);
+    model ??= chatgpt.model;
     if (text) deltas.push({ t, text });
   };
 
@@ -181,7 +249,7 @@ export function captureToTape(capture: Capture): Tape {
     const kinds = [...seen].slice(0, 6).join(', ');
     throw new ParseError(
       `No text found in this stream. It carried these event types: ${kinds}. ` +
-        'rec reads OpenAI Chat Completions and Responses, Anthropic, Gemini and Vercel AI SDK text streams.',
+        'rec reads OpenAI Chat Completions and Responses, ChatGPT web, Anthropic, Gemini and Vercel AI SDK text streams.',
     );
   }
 
