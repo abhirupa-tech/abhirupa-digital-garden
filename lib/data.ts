@@ -70,14 +70,13 @@ export const visibleZones = zones.filter(
 
 export const sitemapLinks: { heading: string; links: { label: string; href: string }[] }[] = [
   {
-    heading: 'The Garden',
+    heading: 'Pages',
     links: [
       { label: 'Home', href: '/' },
       { label: 'About', href: '/about/' },
-      { label: 'The Practice', href: '/the-practice/' },
-      { label: 'Field Notes', href: '/field-notes/' },
-      { label: 'Design Thinking', href: '/design-thinking/' },
+      { label: 'Now', href: '/now/' },
       { label: 'Lab', href: '/lab/' },
+      { label: 'Toolkit', href: '/toolkit/' },
       ...(featureFlags.showKnowledgeSection
         ? [{ label: 'Knowledge Library', href: '/#knowledge-library' }]
         : []),
@@ -86,6 +85,10 @@ export const sitemapLinks: { heading: string; links: { label: string; href: stri
   {
     heading: 'Writing',
     links: [
+      { label: 'All writing', href: '/writing/' },
+      { label: 'The Practice', href: '/the-practice/' },
+      { label: 'Field Notes', href: '/field-notes/' },
+      { label: 'Design Thinking', href: '/design-thinking/' },
       { label: 'Essays', href: '/collections/essay/' },
       { label: 'Guides', href: '/collections/guide/' },
       { label: 'Playbooks', href: '/collections/playbook/' },
@@ -98,6 +101,7 @@ export const sitemapLinks: { heading: string; links: { label: string; href: stri
       { label: 'Medium', href: 'https://medium.com/@mitra.abhirupa' },
       { label: 'GitHub', href: 'https://github.com/abhirupa-tech' },
       { label: 'Email', href: 'mailto:mitra.abhirupa@gmail.com' },
+      { label: 'RSS feed', href: '/feed.xml' },
     ],
   },
 ];

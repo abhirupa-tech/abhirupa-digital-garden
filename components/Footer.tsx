@@ -11,7 +11,7 @@ export function Footer() {
   return (
     <footer
       id="stay-updated"
-      className="relative mt-20 scroll-mt-24 bg-linear-to-b from-[#6b5744] to-[#040404] md:mt-28"
+      className="relative mt-16 scroll-mt-24 bg-linear-to-b from-[#6b5744] to-[#040404] md:mt-20"
     >
       {/* Seamless wavy top edge: the footer's own crest rises into the canvas
           above. Filled with the footer's top gradient color (#6b5744) and
@@ -23,7 +23,7 @@ export function Footer() {
         <svg
           viewBox="0 0 1440 100"
           preserveAspectRatio="none"
-          className="h-14 w-full md:h-24"
+          className="h-8 w-full md:h-12"
         >
           <path
             d="M0 46 C 240 96, 480 4, 720 34 S 1200 76, 1440 40 L1440 100 L0 100 Z"
@@ -32,7 +32,7 @@ export function Footer() {
         </svg>
       </div>
 
-      <div className="zone pt-12 pb-8 md:pt-20 md:pb-12">
+      <div className="zone pt-10 pb-8 md:pt-14 md:pb-10">
         {/* Coastline side-mark / visual bookmark */}
         <div className="pointer-events-none absolute left-0 top-24 hidden h-40 w-1 bg-linear-to-b from-[#e8c9a0]/60 to-transparent md:block" />
 
@@ -40,7 +40,7 @@ export function Footer() {
           <Reveal className="mb-16 max-w-md">
             <span className="label text-white/55">Stay updated</span>
             <h2 className="mt-5 font-display text-section font-medium text-white">
-              Notes from the garden, now and then.
+              New essays, guides and playbooks, now and then.
             </h2>
             <p className="mt-4 font-body text-lg leading-relaxed text-white/75">
               Subscribe for Abhirupa’s articles, research, and quiet thoughts on
@@ -58,10 +58,20 @@ export function Footer() {
         <div className="grid gap-8 md:grid-cols-12 md:gap-10">
           <Reveal className="md:col-span-4">
             <p className="font-display text-xl leading-none text-white md:text-2xl">{site.name}</p>
-            <p className="mt-3 max-w-xs font-body text-sm leading-relaxed text-white/60 md:mt-4 md:text-base">
+            <p className="mt-3 max-w-xs font-body text-base leading-relaxed text-white/75 md:mt-4">
               {site.role} designing agentic AI interfaces — the surfaces where
               agents reason, and thrive.
             </p>
+            <a
+              href="/feed.xml"
+              className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/25 px-3.5 py-1.5 font-rounded text-sm text-white/85 transition-colors duration-300 hover:border-rust-soft hover:text-rust-soft"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true" className="h-3.5 w-3.5">
+                <path d="M5 5a14 14 0 0 1 14 14M5 11a8 8 0 0 1 8 8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <circle cx="6" cy="18" r="1.6" fill="currentColor" />
+              </svg>
+              Subscribe via RSS
+            </a>
           </Reveal>
 
           <Reveal delay={0.1} className="md:col-span-8">
@@ -71,14 +81,14 @@ export function Footer() {
             >
               {sitemapLinks.map((group) => (
                 <div key={group.heading}>
-                  <h3 className="label mb-2.5 text-[0.75rem] text-white/45 md:mb-4 md:text-[0.75rem]">
+                  <h3 className="label mb-2.5 text-white/60 md:mb-4">
                     {group.heading}
                   </h3>
                   <ul className="space-y-2 md:space-y-3">
                     {group.links.map((link) => {
                       const external = link.href.startsWith('http') || link.href.startsWith('mailto');
                       const className =
-                        'font-body text-sm text-white/70 transition-colors duration-300 hover:text-rust-soft md:text-base';
+                        'font-body text-base text-white/80 transition-colors duration-300 hover:text-rust-soft';
                       return (
                         <li key={link.label}>
                           {external ? (
@@ -106,11 +116,11 @@ export function Footer() {
         </div>
 
         <div className="mt-10 flex flex-col gap-2 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between md:mt-16 md:gap-3 md:pt-6">
-          <p className="label text-[0.75rem] text-white/45 md:text-[0.75rem]">
+          <p className="label text-white/60">
             © {year} {site.name}
           </p>
-          <p className="label text-[0.75rem] text-white/45 md:text-[0.75rem]">
-            Built with ❤️ in the garden
+          <p className="label text-white/60">
+            Built with ❤️ in Bengaluru
           </p>
         </div>
       </div>
