@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState, useSyncExternalStore } from 'react';
+import { WavyClipDefs } from './WavyClip';
 
 export type WritingItem = {
   href: string;
@@ -21,6 +22,25 @@ export type WritingItem = {
   cover: string;
   coverAlt: string;
 };
+
+/**
+ * Card fills, beige through to rust: light tones in light mode, deep browns in
+ * dark mode. Each card keeps its tone across filters (it's picked by the
+ * piece's place in the full list, not the filtered one).
+ */
+const TONES = [
+  'bg-[#f4ece0] dark:bg-[#2a241e]',
+  'bg-[#efdcc6] dark:bg-[#33281e]',
+  'bg-[#f3d6bd] dark:bg-[#3c2b1f]',
+  'bg-[#ecc7a9] dark:bg-[#452f21]',
+  'bg-[#f7e6d6] dark:bg-[#30261f]',
+];
+
+/** "Read the essay" / "Read the guide" from the piece's format. */
+function ctaLabel(type: string): string {
+  const t = type.trim().toLowerCase();
+  return t ? `Read the ${t}` : 'Read the piece';
+}
 
 type Facet = { slug: string; label: string; count: number };
 
@@ -113,6 +133,7 @@ export function WritingIndex({
   );
 
   const visibleTopics = allTopics ? topics : topics.slice(0, TOPIC_LIMIT);
+  const toneOf = useMemo(() => new Map(items.map((item, i) => [item.href, TONES[i % TONES.length]])), [items]);
 
   return (
     <div>
@@ -166,49 +187,50 @@ export function WritingIndex({
       </p>
 
       {/* Masonry: three balanced columns (two on tablets, one on phones).
-          Cards with a cover show it at a fixed 16:9; the text sets each
-          card's height, so cards pack by their content. */}
-      <ol className="mt-6 columns-1 gap-6 sm:columns-2 lg:columns-3">
+          Each card has its own warm fill, the cover framed in a scalloped
+          squircle, and text that sets the card's height. */}
+      <WavyClipDefs />
+      <ol className="mt-6 columns-1 gap-5 sm:columns-2 lg:columns-3">
         {shown.map((item) => (
-          <li key={item.href} className="mb-6 break-inside-avoid">
+          <li key={item.href} className="mb-5 break-inside-avoid">
             <a
               href={item.href}
-              className="group block overflow-hidden rounded-xl border border-black/[0.1] bg-[#fcfbf8]/80 transition-all duration-300 hover:-translate-y-0.5 hover:border-highlight/60 hover:bg-white hover:shadow-sm dark:border-white/[0.08] dark:bg-white/[0.035] dark:hover:border-highlight/60 dark:hover:bg-white/[0.06]"
+              className={`group block rounded-[2rem] p-4 transition-transform duration-300 hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-highlight ${toneOf.get(item.href)}`}
             >
               {item.cover && (
-                <div className="aspect-video overflow-hidden border-b border-black/[0.06] dark:border-white/[0.06]">
+                <div className="aspect-[4/3] overflow-hidden [clip-path:url(#wavy-frame)]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={item.cover}
                     alt={item.coverAlt}
                     loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
                   />
                 </div>
               )}
-              <div className="p-5">
-                <p className="label flex flex-wrap gap-x-3 gap-y-1">
+              <div className="px-2 pb-2 pt-5">
+                <p className="label flex flex-wrap gap-x-3 gap-y-1 text-parchment-muted">
                   <span>{item.type}</span>
-                  <span className="text-parchment-faint">{item.dateLabel}</span>
-                  <span className="normal-case tracking-normal text-parchment-faint">
-                    {item.minutes} min read
-                  </span>
+                  <span>{item.dateLabel}</span>
+                  <span className="normal-case tracking-normal">{item.minutes} min read</span>
                 </p>
-                <h2 className="mt-2.5 font-display text-xl leading-snug text-parchment transition-colors duration-200 group-hover:text-highlight">
-                  {item.title}
-                </h2>
+                <h2 className="mt-2 font-display text-xl leading-snug text-parchment">{item.title}</h2>
                 {item.description && (
-                  <p className="mt-2 font-rounded text-base leading-relaxed text-parchment-muted">
+                  <p className="mt-2 font-rounded text-base leading-relaxed text-secondary-text">
                     {item.description}
                   </p>
                 )}
                 {item.tagNames.length > 0 && (
-                  <p className="mt-4 flex flex-wrap gap-x-3 gap-y-1 font-rounded text-sm text-rust">
+                  <p className="mt-3 flex flex-wrap gap-x-3 gap-y-1 font-rounded text-sm text-rust-deep dark:text-rust-soft">
                     {item.tagNames.slice(0, 3).map((t) => (
                       <span key={t}>{t}</span>
                     ))}
                   </p>
                 )}
+                <span className="mt-5 inline-flex items-center gap-2 rounded-full border border-parchment/40 px-4 py-1.5 font-rounded text-sm text-parchment transition-colors duration-300 group-hover:border-parchment group-hover:bg-parchment group-hover:text-primary-bg">
+                  {ctaLabel(item.type)}
+                  <span aria-hidden="true">→</span>
+                </span>
               </div>
             </a>
           </li>
