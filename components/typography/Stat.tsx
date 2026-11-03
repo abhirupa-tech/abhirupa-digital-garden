@@ -32,7 +32,7 @@ export function StatRow({ children, caption }: { children: ReactNode; caption?: 
         {children}
       </div>
       {caption && (
-        <figcaption className="mt-4 text-center font-rounded text-[0.7rem] uppercase tracking-label text-parchment-faint">
+        <figcaption className="mt-4 text-center font-rounded text-[0.75rem] uppercase tracking-label text-parchment-faint">
           {caption}
         </figcaption>
       )}

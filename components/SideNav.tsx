@@ -146,7 +146,7 @@ function NavIcon({
       </span>
       <span
         role="tooltip"
-        className={`pointer-events-none absolute top-1/2 z-20 -translate-y-1/2 whitespace-nowrap rounded-md border border-rust/50 bg-[#faf9f6] px-2.5 py-1 font-rounded text-[0.72rem] text-parchment opacity-0 shadow-md transition-all duration-200 ease-out group-hover:opacity-100 group-focus-visible:opacity-100 dark:bg-tertiary-bg ${tooltipSide}`}
+        className={`pointer-events-none absolute top-1/2 z-20 -translate-y-1/2 whitespace-nowrap rounded-md border border-rust/50 bg-[#faf9f6] px-2.5 py-1 font-rounded text-[0.75rem] text-parchment opacity-0 shadow-md transition-all duration-200 ease-out group-hover:opacity-100 group-focus-visible:opacity-100 dark:bg-tertiary-bg ${tooltipSide}`}
       >
         {label}
       </span>

@@ -65,17 +65,17 @@ export function LabSpecimen({
             <span key={corner} className={`lab-bracket lab-bracket-${corner}`} />
           ))}
 
-          <span className="absolute left-4 top-3.5 font-mono text-[0.6rem] uppercase tracking-[0.18em] text-black/45 dark:text-white/55">
+          <span className="absolute left-4 top-3.5 font-mono text-[0.75rem] uppercase tracking-[0.18em] text-black/45 dark:text-white/55">
             Spec. {number}
           </span>
-          <span className="absolute right-4 top-3.5 flex items-center gap-1.5 font-mono text-[0.6rem] uppercase tracking-[0.18em] text-black/45 dark:text-white/55">
+          <span className="absolute right-4 top-3.5 flex items-center gap-1.5 font-mono text-[0.75rem] uppercase tracking-[0.18em] text-black/45 dark:text-white/55">
             <span
               className={`h-1.5 w-1.5 rounded-full ${project.status === 'live' ? 'bg-highlight motion-safe:animate-pulse' : 'bg-black/30 dark:bg-white/40'}`}
             />
             {project.status === 'live' ? 'Observing' : 'Incubating'}
           </span>
           {project.scale && (
-            <span className="absolute bottom-3.5 right-4 flex items-center gap-2 font-mono text-[0.6rem] tracking-[0.12em] text-black/45 dark:text-white/55">
+            <span className="absolute bottom-3.5 right-4 flex items-center gap-2 font-mono text-[0.75rem] tracking-[0.12em] text-black/45 dark:text-white/55">
               <span className="relative h-px w-10 bg-black/35 dark:bg-white/50">
                 <span className="absolute -top-1 left-0 h-2 w-px bg-black/35 dark:bg-white/50" />
                 <span className="absolute -top-1 right-0 h-2 w-px bg-black/35 dark:bg-white/50" />

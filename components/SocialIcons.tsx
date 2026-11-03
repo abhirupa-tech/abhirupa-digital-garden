@@ -95,7 +95,7 @@ export function SocialIcons({
           >
             {icons[s.key]}
             <span className={`relative ${mobileIconsOnly ? 'hidden sm:inline' : ''}`}>
-              <span className="label text-[0.72rem] text-current">{s.label}</span>
+              <span className="label text-[0.75rem] text-current">{s.label}</span>
               <motion.span
                 aria-hidden="true"
                 variants={underlineVariants}

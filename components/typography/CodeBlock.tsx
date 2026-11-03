@@ -18,7 +18,7 @@ export function CodeBlock({ children }: { children: ReactNode }) {
         <span className="h-3 w-3 rounded-full bg-[#ffbd2e] shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)]" />
         <span className="h-3 w-3 rounded-full bg-[#27c93f] shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)]" />
       </div>
-      <pre className="relative overflow-x-auto px-3 py-3 font-mono text-[0.7rem] leading-relaxed text-[#e5e7eb] sm:px-5 sm:py-4 sm:text-[0.92rem]">
+      <pre className="relative overflow-x-auto px-3 py-3 font-mono text-[0.75rem] leading-relaxed text-[#e5e7eb] sm:px-5 sm:py-4 sm:text-[0.92rem]">
         {children}
       </pre>
     </div>

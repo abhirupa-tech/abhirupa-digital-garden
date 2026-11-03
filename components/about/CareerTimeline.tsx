@@ -222,7 +222,7 @@ export function CareerTimeline() {
               {e.stack.map((tech) => (
                 <li
                   key={tech}
-                  className="rounded-full bg-sunset/15 px-2.5 py-0.5 font-rounded text-[0.72rem] font-semibold text-highlight-strong"
+                  className="rounded-full bg-sunset/15 px-2.5 py-0.5 font-rounded text-[0.75rem] font-semibold text-highlight-strong"
                 >
                   {tech}
                 </li>

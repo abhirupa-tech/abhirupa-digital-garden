@@ -63,7 +63,7 @@ export function DesignThinkingCollage({
                     // centered glyph and the title, so the tile still reads.
                     <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-linear-to-br from-sand-deep via-sand to-sand-soft p-3 text-center">
                       <TypeGlyph type={entry.type} className="h-9 w-9 text-white/90 drop-shadow-sm" />
-                      <span className="line-clamp-3 font-rounded text-[0.62rem] font-semibold leading-snug tracking-wide text-white/80">
+                      <span className="line-clamp-3 font-rounded text-[0.75rem] font-semibold leading-snug tracking-wide text-white/80">
                         {entry.title}
                       </span>
                     </div>
@@ -115,7 +115,7 @@ export function DesignThinkingCollage({
                       {/* Type chip over real cover art — navy → greyish-blue */}
                       <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-linear-to-br from-sand-deep to-sand-soft px-2.5 py-1 text-white shadow-md ring-1 ring-white/15">
                         <TypeGlyph type={entry.type} className="h-3.5 w-3.5" />
-                        <span className="font-rounded text-[0.62rem] font-semibold tracking-wide uppercase">
+                        <span className="font-rounded text-[0.75rem] font-semibold tracking-wide uppercase">
                           {entry.type}
                         </span>
                       </span>
@@ -125,7 +125,7 @@ export function DesignThinkingCollage({
                     // centered glyph, so the shelf still reads as a set.
                     <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-linear-to-br from-sand-deep via-sand to-sand-soft">
                       <TypeGlyph type={entry.type} className="h-16 w-16 text-white/90 drop-shadow-sm" />
-                      <span className="font-rounded text-[0.7rem] font-semibold tracking-[0.18em] uppercase text-white/70">
+                      <span className="font-rounded text-[0.75rem] font-semibold tracking-[0.18em] uppercase text-white/70">
                         {entry.type}
                       </span>
                     </div>

@@ -56,12 +56,10 @@ export const metadata: Metadata = {
   publisher: site.name,
   applicationName: site.name,
   category: 'technology',
-  alternates: {
-    canonical: '/',
-    types: {
-      'application/rss+xml': [{ url: '/feed.xml', title: site.name }],
-    },
-  },
+  // The RSS <link> lives in <head> below rather than here: a page's own
+  // `alternates` (set for its canonical URL) replaces this object wholesale,
+  // which dropped the feed link from every page but the homepage.
+  alternates: { canonical: '/' },
   robots: {
     index: true,
     follow: true,
@@ -240,6 +238,7 @@ export default function RootLayout({
         <ThemeInit />
         <PlatformFontFix />
         <StructuredData />
+        <link rel="alternate" type="application/rss+xml" title={site.name} href="/feed.xml" />
       </head>
       <body>
         <TopNav />

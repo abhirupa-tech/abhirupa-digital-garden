@@ -24,7 +24,7 @@ export function Figure({ src, alt = '', caption, ratio = 'landscape' }: FigurePr
         <ImagePlaceholder label={alt || 'Image'} ratio={ratio} />
       )}
       {caption && (
-        <figcaption className="mt-3 text-center font-rounded text-[0.7rem] uppercase tracking-label text-parchment-faint">
+        <figcaption className="mt-3 text-center font-rounded text-[0.75rem] uppercase tracking-label text-parchment-faint">
           {caption}
         </figcaption>
       )}

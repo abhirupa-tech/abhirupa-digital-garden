@@ -190,7 +190,7 @@ export default async function PiecePage({ params }: { params: Promise<PageParams
                 className="aspect-16/9 max-h-[68vh] w-full rounded-xs border border-parchment/10 object-cover sm:aspect-2/1"
               />
               {entry.coverCaption && (
-                <figcaption className="mt-3 text-center font-rounded text-[0.7rem] uppercase tracking-label text-parchment-faint">
+                <figcaption className="mt-3 text-center font-rounded text-[0.75rem] uppercase tracking-label text-parchment-faint">
                   {entry.coverCaption}
                 </figcaption>
               )}

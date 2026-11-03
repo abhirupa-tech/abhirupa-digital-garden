@@ -8,7 +8,7 @@ import { HoverLink, AnimatedTitle } from './motion/HoverLink';
 /**
  * The homepage's featured "hero blog": the single newest piece across every
  * section, given full editorial billing right after the intro and before the
- * section lists. A large cover on the left with a glassmorphism tag marquee
+ * section lists. A large cover on the left with a short tag row
  * beneath it; the story's framing on the right. Ships BlogPosting structured
  * data so the piece can rank on its own from the homepage.
  */
@@ -52,30 +52,29 @@ function FeaturedStructuredData({ entry, minutes }: { entry: ContentEntry; minut
 }
 
 /**
- * The tag marquee: translucent, blurred glass pills scrolling horizontally
- * beneath the cover. The list is rendered twice so the -50% slide loops
- * seamlessly; edges are masked to fade into the canvas.
+ * The piece's first few tags as a static, wrapping row under the cover. Kept
+ * to four so the row never runs off the card.
  */
-function TagMarquee({ tags }: { tags: string[] }) {
+function TagRow({ tags }: { tags: string[] }) {
   if (tags.length === 0) return null;
-  const run = [...tags, ...tags];
   return (
-    <div
-      className="mt-4 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_7%,#000_93%,transparent)]"
-      aria-hidden="true"
-    >
-      <ul className="marquee-track flex w-max items-center gap-2.5">
-        {run.map((tag, i) => (
-          <li
-            key={`${tag}-${i}`}
-            className="whitespace-nowrap rounded-lg border border-hairline bg-secondary-bg/50 px-3 py-1.5 font-rounded text-[0.72rem] text-parchment-muted backdrop-blur-md"
-          >
-            #{tag}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul className="mt-4 flex flex-wrap gap-2">
+      {tags.slice(0, 4).map((tag) => (
+        <li
+          key={tag}
+          className="rounded-lg border border-hairline bg-secondary-bg/50 px-3 py-1 font-rounded text-[0.75rem] text-parchment-muted"
+        >
+          #{tag}
+        </li>
+      ))}
+    </ul>
   );
+}
+
+/** Call-to-action wording that matches the piece's type: "Read the essay". */
+function ctaLabel(type: string): string {
+  const t = type.trim().toLowerCase();
+  return t ? `Read the ${t}` : 'Read the piece';
 }
 
 export function FeaturedBlog({ entry }: { entry: ContentEntry }) {
@@ -93,7 +92,7 @@ export function FeaturedBlog({ entry }: { entry: ContentEntry }) {
           ariaLabel={`Read: ${entry.title}`}
           className="group grid grid-cols-1 gap-7 md:grid-cols-2 md:items-center md:gap-12"
         >
-          {/* Left: cover + glass tag marquee below it */}
+          {/* Left: cover with its tag row below */}
           <div className="min-w-0">
             <div className="overflow-hidden rounded-2xl border border-parchment/10 shadow-sm">
               <CoverImage
@@ -103,7 +102,7 @@ export function FeaturedBlog({ entry }: { entry: ContentEntry }) {
                 className="h-full w-full transition-transform duration-700 ease-out group-hover:scale-[1.04]"
               />
             </div>
-            <TagMarquee tags={entry.tags} />
+            <TagRow tags={entry.tags} />
           </div>
 
           {/* Right: the story's framing */}
@@ -143,7 +142,7 @@ export function FeaturedBlog({ entry }: { entry: ContentEntry }) {
             )}
 
             <span className="mt-7 inline-flex w-fit items-center gap-2 rounded-full border border-spark/40 bg-spark/10 px-5 py-2.5 font-rounded text-sm font-medium text-spark transition-[gap,background-color] duration-300 group-hover:gap-3.5 group-hover:bg-spark/20">
-              Read the guide
+              {ctaLabel(entry.type)}
               <span aria-hidden="true">→</span>
             </span>
           </div>

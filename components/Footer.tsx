@@ -71,7 +71,7 @@ export function Footer() {
             >
               {sitemapLinks.map((group) => (
                 <div key={group.heading}>
-                  <h3 className="label mb-2.5 text-[0.62rem] text-white/45 md:mb-4 md:text-[0.7rem]">
+                  <h3 className="label mb-2.5 text-[0.75rem] text-white/45 md:mb-4 md:text-[0.75rem]">
                     {group.heading}
                   </h3>
                   <ul className="space-y-2 md:space-y-3">
@@ -106,10 +106,10 @@ export function Footer() {
         </div>
 
         <div className="mt-10 flex flex-col gap-2 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between md:mt-16 md:gap-3 md:pt-6">
-          <p className="label text-[0.62rem] text-white/45 md:text-[0.7rem]">
+          <p className="label text-[0.75rem] text-white/45 md:text-[0.75rem]">
             © {year} {site.name}
           </p>
-          <p className="label text-[0.62rem] text-white/45 md:text-[0.7rem]">
+          <p className="label text-[0.75rem] text-white/45 md:text-[0.75rem]">
             Built with ❤️ in the garden
           </p>
         </div>
