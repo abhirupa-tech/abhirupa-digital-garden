@@ -30,7 +30,7 @@ export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: Conten
               // A fixed height (with the title and summary clamped to two lines
               // each) keeps every card the same size whatever its text length.
               // Border warms to rust on hover.
-              className="group flex h-[9.5rem] items-stretch overflow-hidden rounded-xl border border-black/[0.12] bg-[#ebe6da]/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-highlight/60 hover:bg-white/70 hover:shadow-sm dark:border-white/[0.08] dark:bg-white/[0.035] dark:hover:border-highlight/60 dark:hover:bg-white/[0.06]"
+              className="group flex h-[9.5rem] items-stretch overflow-hidden rounded-xl border border-black/[0.12] bg-[#fcfbf8]/80 transition-all duration-300 hover:-translate-y-0.5 hover:border-highlight/60 hover:bg-white hover:shadow-sm dark:border-white/[0.08] dark:bg-white/[0.035] dark:hover:border-highlight/60 dark:hover:bg-white/[0.06]"
             >
               {/* Left — the cover image, flush to the card edge. A near-square
                   width paired with the row-height stretch keeps it roughly 1:1. */}
