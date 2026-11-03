@@ -26,7 +26,10 @@ export function LinkCard({ href, title, description, site }: LinkCardProps) {
       href={href}
       target={external ? '_blank' : undefined}
       rel={external ? 'noreferrer' : undefined}
-      className="group my-8 flex items-center gap-4 rounded-xs border border-parchment/15 px-5 py-4 no-underline transition-colors duration-300 hover:border-highlight/60 hover:bg-sand/5 sm:my-12 sm:px-6"
+      // Background sits a half-step off the canvas so the card reads as an
+      // embed without a heavy fill: warm off-white on the light parchment, a
+      // cool slate against the neutral greys of dark mode.
+      className="group my-8 flex items-center gap-4 rounded-xs border border-parchment/15 bg-[#fdfcf8] px-5 py-4 no-underline shadow-[0_1px_2px_rgba(60,50,30,0.06)] transition-colors duration-300 hover:border-highlight/60 hover:bg-[#fffefb] sm:my-12 sm:px-6 dark:bg-[#232a33] dark:shadow-none dark:hover:bg-[#28303a]"
     >
       <span className="min-w-0 flex-1">
         <span className="block font-serif text-lg font-medium leading-snug text-parchment transition-colors duration-300 group-hover:text-highlight sm:text-xl">
