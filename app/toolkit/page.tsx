@@ -16,7 +16,7 @@ import {
 } from '@/components/typography';
 
 const DESCRIPTION =
-  'The UI components every essay, guide and playbook by Abhirupa Mitra is written with: callouts, margin notes, link cards, stat rows, figures and more, each shown live with its MDX.';
+  'The UI components every essay, guide and playbook by Abhirupa Mitra is written with: callouts, hover notes, link cards, stat rows, figures and more, each shown live with its MDX.';
 
 export const metadata: Metadata = {
   title: 'Toolkit',
@@ -51,7 +51,7 @@ const TOOLS: Tool[] = [
   {
     name: 'Subnote',
     tag: '<Subnote note="…">',
-    purpose: 'A definition or aside. Sits in the margin on wide screens, opens on tap on phones.',
+    purpose: 'A definition or aside that opens on hover, focus or tap.',
     demo: (
       <p className="font-rounded text-[1.08rem] leading-[1.6] text-parchment sm:text-[1.22rem]">
         Agents are tested by turning their findings into{' '}

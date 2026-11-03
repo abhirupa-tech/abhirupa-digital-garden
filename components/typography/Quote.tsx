@@ -6,18 +6,20 @@ type QuoteProps = {
 };
 
 /**
- * Maps markdown's `blockquote` (`> …`) and is also usable directly. Markdown
- * quotes arrive with their text already wrapped in a Paragraph, so the pull-
- * quote type treatment is applied both to the blockquote itself (for plain
- * string children) and via a `[&_p]` override (for the nested Paragraph,
- * whose own classes would otherwise win on specificity).
+ * A pull quote in the Medium style: large, light-grey sans text, indented from
+ * the body column, with no rule and no italics. Maps markdown's `blockquote`
+ * (`> …`) and is usable directly. Markdown quotes arrive wrapped in a
+ * Paragraph, so the same treatment is applied to nested `p` through `[&_p]`
+ * (the Paragraph's own classes would otherwise win on specificity).
  */
 export function Quote({ children, attribution }: QuoteProps) {
   return (
-    <blockquote className="my-8 border-l border-sand/25 pl-8 font-serif text-2xl font-light italic leading-relaxed tracking-tight text-parchment/95 sm:my-14 md:text-3xl [&_p]:mb-0 [&_p]:font-serif [&_p]:text-2xl [&_p]:font-light [&_p]:italic [&_p]:leading-relaxed [&_p]:tracking-tight [&_p]:text-parchment/95 md:[&_p]:text-3xl">
+    <blockquote className="my-8 pl-6 font-rounded text-[1.45rem] font-normal leading-[1.45] text-parchment-muted sm:my-12 sm:pl-10 md:text-[1.75rem] [&_p]:mb-0 [&_p]:font-rounded [&_p]:text-[1.45rem] [&_p]:font-normal [&_p]:leading-[1.45] [&_p]:text-parchment-muted md:[&_p]:text-[1.75rem]">
       {children}
       {attribution && (
-        <cite className="label mt-4 block not-italic text-parchment-faint">— {attribution}</cite>
+        <cite className="mt-4 block font-rounded text-base not-italic text-parchment-faint">
+          — {attribution}
+        </cite>
       )}
     </blockquote>
   );
