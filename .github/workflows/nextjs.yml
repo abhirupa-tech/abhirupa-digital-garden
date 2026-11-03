@@ -35,7 +35,17 @@ jobs:
         run: npm ci
 
       - name: Build static export
-        run: npm run build
+        # next/font downloads the Google Fonts at build time, and a dropped
+        # download fails the whole build as "module not found" on a font CSS
+        # file. Retry so one network blip doesn't block a deploy; a real build
+        # error fails all three attempts and still stops the job.
+        run: |
+          for attempt in 1 2 3; do
+            npm run build && exit 0
+            echo "::warning::Build attempt $attempt failed; retrying in $((attempt * 10))s"
+            sleep $((attempt * 10))
+          done
+          exit 1
         env:
           # Optional: set these as repo variables/secrets to enable Cloudinary
           # image delivery. Unset simply serves image srcs as-authored.
