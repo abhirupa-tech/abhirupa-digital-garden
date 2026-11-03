@@ -1,0 +1,166 @@
+---
+title: "Can LLMs Think in Parallel? Explaining NVIDIA's Nemotron and Diffusion Models for Text Generation"
+slug: "can-llms-think-in-parallel-nemotron-diffusion"
+section: "field-notes"
+type: "Guide"
+description: "Autoregressive vs diffusion LLMs, simplified: how NVIDIA's Sigma brings continuous, image-style denoising to text, and how Nemotron-Labs Diffusion's self-speculation decodes ~4x faster with the same output."
+tags: ["llm", "diffusion-models", "nvidia", "nemotron", "machine-learning", "inference"]
+date: "2026-10-22"
+cover: "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*1wiuHB9hG20bevBUXVwBwQ.png"
+medium: "https://medium.com/data-science-collective/can-llms-think-in-parallel-explaining-nvidias-nemotron-and-diffusion-models-for-text-generation-2ab4cc5f1d8f"
+aspect: "wide"
+draft: false
+---
+
+*Simplifying autoregressive vs diffusion LLMs, and how Sigma brings image-style
+denoising to text.*
+
+Traditional LLMs work by predicting one token after another. It is always
+sequential, and the next prediction is always based on the tokens generated so
+far. Which means that once you generate something, there is no going back.
+
+This is the basis of an
+<Subnote note="A model that generates left to right, one token at a time, each prediction conditioned on everything it has already written.">autoregressive LLM</Subnote>.
+
+To contrast this, we have **diffusion models**, the backbone of how images are
+generated.
+
+These models start with pure noise and refine it step by step, making the output
+better each time. Picture dropping ink into a glass of water and watching it
+spread until it's a cloudy mess. That spreading is diffusion.
+
+<Quote>
+  Diffusion models learn to play that film backwards: start from the mess, and
+  un-mix it back into something clear.
+</Quote>
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:2000/format:webp/1*cDg-8VN7Hbmj6zFkilJn7g.png"
+  alt="Side-by-side diagram: an autoregressive model writing one token at a time versus a diffusion model refining a whole block from noise"
+  caption="Autoregressive models versus diffusion models"
+  ratio="landscape"
+/>
+
+## The fundamentals: autoregressive LLMs versus diffusion models
+
+Image-style diffusion is hard for natural language because text is made of
+discrete symbols. Each token is a fixed value from a finite vocabulary.
+
+<Highlight>You can make a pixel slightly brighter, but you cannot make a token
+slightly more "strawberry".</Highlight>
+
+Text diffusion models so far have worked around this with **masking**: hide
+tokens, then fill in the blanks over several steps. But every step is still a
+hard swap from one token to another, not a smooth refinement.
+
+<Callout variant="aside" label="The question">
+  So how does NVIDIA claim to bring smooth, image-style diffusion to text, and
+  still generate tokens in parallel?
+</Callout>
+
+That brings us to their paper on **Large Language Continuous Diffusion Models**,
+and the model it introduces,
+<Subnote note="NVIDIA's continuous diffusion language model. Instead of swapping discrete tokens, it denoises small continuous vectors that stand in for them.">Sigma</Subnote>.
+
+## What do continuous diffusion models do, and why do they matter?
+
+Diffusion models for text have mostly been pushed for speed: generating many
+tokens in parallel. NVIDIA proposes using them in a *continuous* form.
+
+Here's the watered-down version. Every piece of output is a token.
+Autoregressive models predict each token from the ones before it, one after
+another. In a continuous diffusion model, a whole chunk of tokens starts out as
+noise, and the model cleans all of them up together, step by step.
+
+<Callout variant="note" title="How Sigma works, in five steps">
+
+1. **Tokens become vectors.** Every token maps to a small vector of 16 numbers,
+   like a lookup table. Sigma adds noise to these vectors and trains the model
+   to remove it.
+2. **Each pass blends a best guess.** The model scores every possible token and
+   blends them into one best guess. It also feeds its last guess back in, so
+   each step builds on the previous one.
+3. **Chunks of 32.** Text is generated in chunks of 32 tokens. Tokens inside a
+   chunk see each other, while earlier text is
+   <Subnote note="Stored after it's computed so later chunks reuse it instead of recomputing it, the same trick autoregressive models use with their KV cache.">cached and reused</Subnote>.
+4. **It doesn't start from scratch.** Sigma starts from an existing
+   autoregressive model instead of training a new one.
+5. **Speed vs. quality.** Fewer cleanup steps make it faster, so the team spread
+   the vectors out to keep quality stable.
+
+</Callout>
+
+<StatRow caption="Sigma's shape at a glance">
+  <Stat value="16" label="numbers per token vector" />
+  <Stat value="32" label="tokens denoised together per chunk" />
+</StatRow>
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*6Or8BDpg0yksmCbWYYisCw.png"
+  alt="Diagram of continuous diffusion for text: a chunk of noisy token vectors denoised together over several steps into clean tokens"
+  caption="A simple depiction of how continuous diffusion models generate text"
+  ratio="landscape"
+/>
+
+## How will this matter in software engineering?
+
+If you want to see where this is heading in practice, NVIDIA's Nemotron-Labs
+Diffusion blog is the one to read. Nemotron is Sigma's older sibling: it uses
+masked diffusion instead of continuous, but it shows exactly how diffusion could
+end up in the tools we use every day.
+
+The use cases are any task that is **latency sensitive**. Sequential token
+generation takes time, and every extra word is another wait. NVIDIA points to
+interactive chat, agentic loops and on-device assistants as the places where
+this parallelism pays off most.
+
+<LinkCard
+  href="https://huggingface.co/blog"
+  title="Towards Speed-of-Light Text Generation with Nemotron-Labs Diffusion Language Models"
+  description="A blog post by NVIDIA on Hugging Face."
+  site="huggingface.co"
+/>
+
+Nemotron-Labs Diffusion is built around a simple idea:
+<Highlight>autoregressive and diffusion generation shouldn't be separate model
+families. They should be capabilities of the same model.</Highlight>
+
+The model supports three generation modes:
+
+- **Autoregressive mode** generates like a standard left-to-right LLM.
+- **Diffusion mode** generates block by block, cleaning up noise each time.
+- **Self-speculation mode** uses diffusion to draft several candidate tokens,
+  then uses autoregressive decoding to verify them. It combines the speed of
+  diffusion-style drafting with the reliability of autoregressive
+  verification.
+
+That last one is the interesting part for engineers. At
+<Subnote note="Temperature 0 means the model always picks its single most likely token, so the output is deterministic.">temperature 0</Subnote>
+the output is identical to plain autoregressive decoding, yet NVIDIA reports a
+big jump in speed.
+
+<StatRow caption="Self-speculation on one NVIDIA B200, as reported by NVIDIA">
+  <Stat value="~865" label="tokens per second" />
+  <Stat value="~4×" label="the autoregressive baseline" />
+  <Stat value="0" label="change in output at temperature 0" />
+</StatRow>
+
+Same answer, just faster.
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*NALTjl90NK7HT760DokVgA.png"
+  alt="Diagram of self-speculative decoding: a diffusion pass drafts several tokens, and an autoregressive pass verifies and accepts them"
+  caption="How self-speculation combines diffusion drafting with autoregressive verification"
+  ratio="landscape"
+/>
+
+And speed is only half of it. Because diffusion models can go back and revise
+tokens they've already generated, they're a better fit for editing existing text
+and <Subnote note="Generating the missing middle of a document given both the text before it and the text after it, like completing the body of a function between its signature and its return.">fill-in-the-middle</Subnote>
+tasks.
+
+<Callout variant="takeaway">
+  If you've ever wanted your coding assistant to patch the middle of a function
+  instead of rewriting the whole file, this is why it matters. You also get a
+  built-in dial for cost: fewer refinement steps means less compute at runtime.
+</Callout>
