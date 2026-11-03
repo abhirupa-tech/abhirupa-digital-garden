@@ -239,6 +239,11 @@ export default function RootLayout({
         <PlatformFontFix />
         <StructuredData />
         <link rel="alternate" type="application/rss+xml" title={site.name} href="/feed.xml" />
+        {/* Without JavaScript the fade-in animations never run, so show
+            anything the server rendered at opacity 0. */}
+        <noscript>
+          <style>{`[style*="opacity:0"]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
       </head>
       <body>
         <TopNav />

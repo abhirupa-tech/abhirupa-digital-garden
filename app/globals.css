@@ -682,69 +682,13 @@
   .lab-bracket { transition: border-color 0.2s ease; }
 }
 
-/* ── Margin notes (Subnote) ────────────────────────────────────────────────
-   Subnote renders a tooltip (.sn-tip) and a margin-note pair (.sn-ref +
-   .sn-margin). Below xl, and anywhere outside an article body, only the
-   tooltip shows. From xl, inside .article-body, the phrase gets a number and
-   the note floats into the right margin that .article-body reserves with its
-   padding. Inside boxed blocks (callouts) the tooltip stays, since a margin
-   note would float out of the box. */
-.sn-ref,
-.sn-margin {
-  display: none;
-}
-
-@media (min-width: 80rem) {
-  .article-body {
-    counter-reset: sidenote;
-    padding-right: 17rem;
-  }
-  .article-body .sn-tip {
-    display: none;
-  }
-  .article-body .sn-ref {
-    display: inline;
-    counter-increment: sidenote;
-    border-bottom: 1px dotted rgb(var(--raw-sand) / 0.6);
-  }
-  .article-body .sn-ref::after {
-    content: counter(sidenote);
-    margin-left: 0.12em;
-    vertical-align: super;
-    font-size: 0.68em;
-    line-height: 0;
-    color: var(--color-highlight);
-  }
-  .article-body .sn-margin {
-    display: block;
-    float: right;
-    clear: right;
-    width: 14rem;
-    margin-right: -17rem;
-    margin-top: 0.3rem;
-    margin-bottom: 1rem;
-    font-family: var(--font-rounded);
-    font-size: 0.9rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1.5;
-    color: var(--color-parchment-muted);
-  }
-  .article-body .sn-margin::before {
-    content: counter(sidenote) '. ';
-    color: var(--color-highlight);
-  }
-  /* Figures still use the full width, below any note still hanging. */
-  .article-body figure {
-    clear: right;
-    margin-right: -17rem;
-  }
-  /* Boxed blocks keep the tooltip. */
-  .article-body aside .sn-tip {
-    display: inline;
-  }
-  .article-body aside .sn-ref,
-  .article-body aside .sn-margin {
-    display: none;
+/* Failsafe for motion that starts hidden: Framer Motion writes opacity:0 into
+   the server HTML for elements that fade in. Printing should never depend on
+   that animation having run. (The no-JavaScript case is a <noscript> rule in
+   app/layout.tsx.) */
+@media print {
+  [style*='opacity:0'] {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
