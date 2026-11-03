@@ -13,7 +13,13 @@ export type WritingItem = {
   year: string;
   minutes: number;
   section: string;
+  /** Topic slugs, for filtering. */
   tags: string[];
+  /** Topic display names, for the card. */
+  tagNames: string[];
+  /** Ready-to-use cover URL, or '' when the piece has none. */
+  cover: string;
+  coverAlt: string;
 };
 
 type Facet = { slug: string; label: string; count: number };
@@ -159,33 +165,54 @@ export function WritingIndex({
         )}
       </p>
 
-      <ol className="mt-4">
-        {shown.map((item, i) => {
-          const showYear = i === 0 || shown[i - 1].year !== item.year;
-          return (
-            <li key={item.href} className="grid grid-cols-1 gap-x-8 border-b border-parchment/10 py-6 sm:grid-cols-[5rem_1fr]">
-              <span className="hidden font-display text-lg text-parchment-faint sm:block" aria-hidden={!showYear}>
-                {showYear ? item.year : ''}
-              </span>
-              <a href={item.href} className="group block">
-                <h2 className="font-display text-xl leading-snug text-parchment transition-colors duration-200 group-hover:text-highlight sm:text-2xl">
+      {/* Masonry: three balanced columns (two on tablets, one on phones).
+          Cards with a cover show it at a fixed 16:9; the text sets each
+          card's height, so cards pack by their content. */}
+      <ol className="mt-6 columns-1 gap-6 sm:columns-2 lg:columns-3">
+        {shown.map((item) => (
+          <li key={item.href} className="mb-6 break-inside-avoid">
+            <a
+              href={item.href}
+              className="group block overflow-hidden rounded-xl border border-black/[0.1] bg-[#fcfbf8]/80 transition-all duration-300 hover:-translate-y-0.5 hover:border-highlight/60 hover:bg-white hover:shadow-sm dark:border-white/[0.08] dark:bg-white/[0.035] dark:hover:border-highlight/60 dark:hover:bg-white/[0.06]"
+            >
+              {item.cover && (
+                <div className="aspect-video overflow-hidden border-b border-black/[0.06] dark:border-white/[0.06]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={item.cover}
+                    alt={item.coverAlt}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  />
+                </div>
+              )}
+              <div className="p-5">
+                <p className="label flex flex-wrap gap-x-3 gap-y-1">
+                  <span>{item.type}</span>
+                  <span className="text-parchment-faint">{item.dateLabel}</span>
+                  <span className="normal-case tracking-normal text-parchment-faint">
+                    {item.minutes} min read
+                  </span>
+                </p>
+                <h2 className="mt-2.5 font-display text-xl leading-snug text-parchment transition-colors duration-200 group-hover:text-highlight">
                   {item.title}
                 </h2>
                 {item.description && (
-                  <p className="mt-2 max-w-3xl font-rounded text-base leading-relaxed text-parchment-muted">
+                  <p className="mt-2 font-rounded text-base leading-relaxed text-parchment-muted">
                     {item.description}
                   </p>
                 )}
-                <p className="label mt-3 flex flex-wrap gap-x-3 gap-y-1 normal-case tracking-normal">
-                  <span className="uppercase tracking-label">{item.type}</span>
-                  <span>{item.dateLabel}</span>
-                  <span>{item.minutes} min read</span>
-                  <span>{item.section}</span>
-                </p>
-              </a>
-            </li>
-          );
-        })}
+                {item.tagNames.length > 0 && (
+                  <p className="mt-4 flex flex-wrap gap-x-3 gap-y-1 font-rounded text-sm text-rust">
+                    {item.tagNames.slice(0, 3).map((t) => (
+                      <span key={t}>{t}</span>
+                    ))}
+                  </p>
+                )}
+              </div>
+            </a>
+          </li>
+        ))}
       </ol>
       {shown.length === 0 && (
         <p className="mt-10 font-rounded text-parchment-muted">Nothing matches both filters yet.</p>

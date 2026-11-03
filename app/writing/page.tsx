@@ -3,6 +3,7 @@ import { visibleZones, zoneById } from '@/lib/data';
 import { getEntries, typeSlug } from '@/lib/content';
 import { formatDate, readingTime, tagSlug } from '@/lib/format';
 import { site } from '@/lib/site';
+import { cloudinaryUrl } from '@/lib/cloudinary';
 import { Footer } from '@/components/Footer';
 import { WritingIndex, type WritingItem } from '@/components/writing/WritingIndex';
 
@@ -50,6 +51,9 @@ function allItems(): WritingItem[] {
       minutes: readingTime(e.body),
       section: zoneById[e.section]?.kicker ?? e.section,
       tags: e.tags.map(tagSlug),
+      tagNames: e.tags,
+      cover: e.cover ? cloudinaryUrl(e.cover, { width: 800 }) : '',
+      coverAlt: e.coverAlt || e.title,
     }));
 }
 
