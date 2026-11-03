@@ -23,17 +23,17 @@ export type WritingItem = {
 };
 
 /**
- * One card style per format, in four colours (cream, sand, terracotta, deep
- * brown), each with a darker dark-mode twin:
- *   Essay    -> type poster: solid terracotta or deep brown, big title, no image
+ * One card style per format, in warm light tones (cream, sand, light
+ * terracotta, light clay), each with a darker dark-mode twin:
+ *   Essay    -> type poster: light terracotta or light clay, big title, no image
  *   Guide    -> cream or sand card, title on top, cover filling the lower half
  *   Playbook -> full-bleed cover with the title set over it
  * Essays and guides alternate between their two fills by their order in the
  * full list, so a card keeps its colour when filters change.
  */
 const POSTER_TONES = [
-  'bg-[#c2603a] text-[#fbf0e6] dark:bg-[#9e4a2c] dark:text-[#fbeee2]',
-  'bg-[#3a1d12] text-[#f3e4d4] dark:bg-[#0f0b09] dark:text-[#ead8c6]',
+  'bg-[#f2cfb8] text-[#3a1d12] dark:bg-[#7a3b24] dark:text-[#fbeee2]',
+  'bg-[#e8d3bf] text-[#3a1d12] dark:bg-[#33241b] dark:text-[#f1e1d1]',
 ];
 const PAPER_TONES = [
   'bg-[#fbf6ee] text-[#2b160d] dark:bg-[#211a15] dark:text-[#f1e6da]',
