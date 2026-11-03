@@ -1,6 +1,5 @@
 'use client';
 
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { featureFlags } from '@/lib/featureflag';
@@ -8,8 +7,8 @@ import { featureFlags } from '@/lib/featureflag';
 /**
  * Fixed, full-height beige navigation bar — runs top to bottom on the left.
  * Minimalist black line-art icons, no text; they warm to a muted blue on hover
- * and for the section currently in view (scroll-spy). Collapses to a beige
- * hamburger panel below `lg`.
+ * and for the section currently in view (scroll-spy). Desktop only: below `lg`
+ * the top bar's menu carries the same destinations.
  */
 
 const S = {
@@ -95,13 +94,6 @@ const iconItems: { id: string; label: string; icon: keyof typeof icons; hub?: st
 
 const spyIds = ['top', ...iconItems.map((i) => i.id)];
 
-// Black by default; muted blue on hover / when active.
-function iconClass(active: boolean) {
-  return `flex h-11 w-11 items-center justify-center rounded-xl transition-colors duration-300 hover:text-[#274a80] focus-visible:text-[#274a80] focus-visible:outline-hidden dark:hover:text-accent dark:focus-visible:text-accent ${
-    active ? 'text-[#274a80] dark:text-accent' : 'text-[#0b0c10] dark:text-secondary-text'
-  }`;
-}
-
 // Nav icon link: a dark-blue circle grows from a dot behind the icon on
 // hover/focus (and shrinks back inward on hover-out), turning the icon white.
 // A small labelled tooltip slides out (right on the desktop bar, left in the
@@ -155,10 +147,8 @@ function NavIcon({
 }
 
 export function SideNav() {
-  const reduce = useReducedMotion();
   const pathname = usePathname();
   const [active, setActive] = useState('top');
-  const [open, setOpen] = useState(false);
 
   // The site exports with trailingSlash, so usePathname yields e.g. "/about/".
   const isHome = !pathname || pathname === '/' || pathname === '';
@@ -215,53 +205,6 @@ export function SideNav() {
         </div>
       </nav>
 
-      {/* Mobile hamburger */}
-      <div className="lg:hidden">
-        <button
-          type="button"
-          onClick={() => setOpen((o) => !o)}
-          aria-label={open ? 'Close navigation' : 'Open navigation'}
-          aria-expanded={open}
-          className="fixed right-4 top-4 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-linear-to-b from-[#f5f1e9] to-[#ddd6c4] text-[#0b0c10] shadow-xs transition-colors duration-300 hover:text-[#274a80] dark:from-secondary-bg dark:to-tertiary-bg dark:text-secondary-text dark:hover:text-accent"
-        >
-          {open ? icons.close : icons.menu}
-        </button>
-
-        <AnimatePresence>
-          {open && (
-            <motion.nav
-              aria-label="Section navigation"
-              initial={reduce ? { opacity: 0 } : { opacity: 0, x: 16 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={reduce ? { opacity: 0 } : { opacity: 0, x: 16 }}
-              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed right-4 top-19 z-40 flex flex-col items-center gap-2 rounded-3xl bg-linear-to-b from-[#f5f1e9] to-[#ddd6c4] p-2.5 shadow-lg dark:from-secondary-bg dark:to-tertiary-bg"
-            >
-              <a
-                href={isHome ? '/#top' : '/'}
-                aria-label={isHome ? 'Top' : 'Home'}
-                title={isHome ? 'Top' : 'Home'}
-                onClick={() => setOpen(false)}
-                className={iconClass(active === 'top')}
-              >
-                <span className="font-display text-xl leading-none">A</span>
-              </a>
-              {links.map((it) => (
-                <NavIcon
-                  key={it.id}
-                  href={it.href}
-                  label={it.label}
-                  active={active === it.id}
-                  side="left"
-                  onClick={() => setOpen(false)}
-                >
-                  {icons[it.icon]}
-                </NavIcon>
-              ))}
-            </motion.nav>
-          )}
-        </AnimatePresence>
-      </div>
     </>
   );
 }
