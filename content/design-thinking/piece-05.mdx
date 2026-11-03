@@ -1,0 +1,254 @@
+---
+title: "RIP, Chat Box: A Guide to Designing AI Interfaces That Are Intuitive and Adaptive"
+slug: "rip-chat-box-designing-intuitive-adaptive-ai-interfaces"
+section: "design-thinking"
+type: "Guide"
+description: "From blank text boxes to intent-aware UIs and A2UI, an explainer for designers building with AI."
+tags: ["ai-ux", "agentic-ui", "a2ui", "mcp-apps", "frontend-for-ai", "hci"]
+date: "2026-10-13"
+cover: "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*dTRTu9TFaxgFVvICdLQIBw.png"
+medium: "https://medium.com/design-bootcamp/rip-chat-box-a-guide-to-designing-ai-interfaces-that-are-intuitive-and-adaptive-faaa1cd899e1"
+aspect: "wide"
+draft: false
+---
+
+It's very difficult to talk to an LLM, and you probably don't even realize
+you're doing it wrong.
+
+Let me explain.
+
+You can instruct an LLM to solve a problem in a certain way, but how good its
+output is depends on how well you articulate it. Are you just stating the
+problem and asking ChatGPT for a solution?
+
+Or are you clearly explaining the boundaries and the data you have, asking it to
+research step by step, and binding its answers with a
+<Subnote note="The scaffolding around a model: the instructions, tools, checks and constraints that keep its output on track.">harness</Subnote>?
+
+Obviously not. Or at least, not every time.
+
+My last question to ChatGPT was something like this:
+
+<Quote>
+  "Hey! What are the best South Asian scuba diving destinations for the month of
+  February?"
+</Quote>
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*1QVineE9k2Kt6oBawaJONA.png"
+  alt="A generic, text-heavy chatbot answer compared with an intent-aware interface that offers dive-trip options and structured results"
+  caption="From generic, text-heavy answers to intent-aware interfaces with relevant options and fewer steps"
+  ratio="landscape"
+/>
+
+Point proven! It's not always possible to give an LLM a complete briefing before
+asking a question, and that's exactly why these chatbots are dying.
+
+<Highlight>Text-based conversational chatbots are slower, need constant human
+intervention, and can't run on their own.</Highlight>
+
+They're slowly giving way to autonomous, goal-oriented agents. Think Meta Muse,
+Grok bots and Dots.
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*EQzZnIC7cUYo3vO4KEDnew.png"
+  alt="A chat session executing tasks one after another, compared with agents running in parallel on a server while the user is offline"
+  caption="Chat sessions run tasks one by one; agents keep working on a server while you log off"
+  ratio="landscape"
+/>
+
+There's an increased focus on running background agents in parallel, without
+constantly asking humans for permission.
+
+To break this constant back-and-forth, new design patterns are emerging (and old
+anti-patterns are being called out) that make the move to a more intuitive
+agentic experience easier.
+
+## The text-box anti-pattern
+
+Building opaque, simple text boxes for a conversational LLM is now considered a
+design anti-pattern. Here's why:
+
+- **It shifts the burden onto prompt engineering.** A plain text box tells you
+  nothing about what the model can do, and forces the user to guess its
+  capabilities.
+- **It breaks the user's flow**, because the user has to keep switching between
+  reading and writing.
+
+[Jakob Nielsen calls it the articulation barrier](https://www.uxtigers.com/post/ai-articulation-barrier):
+roughly half the population in rich countries are low-literacy users, so writing
+a precise prompt is genuinely hard for them.
+
+A CHI 2023 study, *Why Johnny Can't Prompt*, found that people without AI
+expertise tried prompts at random instead of systematically, and struggled
+because they instructed the model the way they'd instruct a human.
+
+These issues are sharply laid out in this piece by
+[Adi Leviim](https://medium.com/u/a8963cd80b5c):
+
+<LinkCard
+  href="https://uxdesign.cc/the-chat-box-isnt-a-ui-paradigm-it-s-what-shipped-96e931d92769"
+  title="The chat box isn't a UI paradigm. It's what shipped."
+  description="Before LLMs we had direct manipulation, structured forms, and progressive disclosure. Then we collapsed all of it into…"
+  site="uxdesign.cc"
+/>
+
+Leviim notes that before LLMs, frontend design relied on robust patterns like
+direct manipulation, structured forms and progressive disclosure. Instead of
+building on them, we collapsed all of those paradigms into a single, lazy text
+container.
+
+<Highlight>Then in 2024, every major lab quietly bolted the GUI back on: Canvas,
+Artifacts, Deep Research.</Highlight>
+
+### Cheap wins that make the chat box smarter
+
+The way around this lack of context about the model's capabilities is design
+that makes the chat box itself more powerful.
+
+<Callout variant="note" title="A few cheap wins in React">
+
+- **Rotating placeholder examples** that hint at what the model can do, instead
+  of "Ask anything…"
+- **Context-aware suggestion chips** under the input.
+- **A `/` slash-command menu**, built as an accessible
+  <Subnote note="The ARIA pattern for a text input paired with a pop-up list, with proper keyboard navigation and screen-reader announcements.">combobox</Subnote>,
+  that surfaces tools without making users memorize them.
+
+</Callout>
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*3r9OJt058Nsweg6lK7kEVg.png"
+  alt="Concept of an AI chat input with intent-aware suggestions, a slash-command tool menu, keyboard navigation and attached file context"
+  caption="Intent-aware input, slash-command tool discovery, keyboard navigation, file context and suggestions"
+  ratio="landscape"
+/>
+
+## Passive, intent-based micro-interaction loops
+
+This is another approach to the text-box anti-pattern, and more broadly to the
+single dimension of a one-way conversational interface.
+
+In simpler terms: <Highlight>map the user's behavioral patterns and feed that
+data into the UI, so the interactions feel more natural.</Highlight>
+
+But how do we do this? Here's my take, as a frontend engineer.
+
+### Step 1: Study what the user's tasks normally look like
+
+- **The creator.** Does the user mostly use the LLM as a generative tool?
+- **The problem solver.** Do most of their interactions involve deep research,
+  data collection and analysis?
+- **The specifier.** How much does the user spell out? Do they explicitly state
+  boundaries and conditions for the task?
+
+### Step 2: Collect the signals (without using AI)
+
+What data can tell us about the user's interaction patterns, without using AI?
+We can track
+<Subnote note="Usage data the client measures as the user works, such as timings and interaction events, rather than the content they type.">telemetry</Subnote>
+like typing speed, clipboard payloads, cursor dwell and text-selection patterns.
+
+<Callout variant="aside" label="Privacy first">
+  Be mindful of what you track. All PII stays on the client and should never be
+  logged, for obvious ethical reasons. Unless you enjoy explaining to a user why
+  their copied bank OTP is sitting in your Datadog logs.
+</Callout>
+
+### Step 3: Close the loop
+
+By feeding this real-time behavioral data into the UI, we can build passive
+micro-interaction loops that adapt the canvas. Instead of a static text box:
+
+- a **generative user** is met with rapid formatting presets;
+- a **researcher** sees source-mapping overlays and data-extraction toggles
+  right away.
+
+<Quote>
+  By translating silent habits into UI affordances, we make the interface
+  respond not just to what the user types, but to how they work.
+</Quote>
+
+<Figure
+  src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*4inIFF2V3B_xfkSKTkgYDQ.png"
+  alt="A loop that identifies the user's role, reads privacy-preserving behavioral signals locally, and tailors the UI for creation or research"
+  caption="A micro-interaction loop that adapts the interface to user intent"
+  ratio="landscape"
+/>
+
+Human-computer interaction (HCI) research is now heavily focused on how people
+interact with the interfaces that connect them to AI. Zijian Ding's 2024 paper
+maps intent-AI interactions across three task types: **content curation**,
+**atomic creative tasks** and **complex interdependent tasks**. These line up
+neatly with the user types above.
+
+<LinkCard
+  href="https://www.semanticscholar.org/reader/0a0813ae3c132ee55c33e9bc17729c7f31fdc09a"
+  title="Towards Intent-based User Interfaces: Charting the Design Space of Intent-AI Interactions Across Task Types"
+  description="Zijian Ding, 2024. Also on arXiv: 2404.18196."
+  site="semanticscholar.org"
+/>
+
+## When to use native rendering (A2UI) vs. the iframe
+
+We've talked enough about how we communicate with the models. But often the
+reverse is needed: the agent needs data from us. Asking for it through a long,
+often laggy, textual question feels like a low-effort attempt.
+
+Until now, the go-to answer was rendering custom HTML (forms, text boxes,
+checkboxes) inside a sandboxed iframe. That approach isn't dead. It's
+standardized today as
+<Subnote note="The MCP extension that lets a tool return an interactive HTML app, which the host renders in a sandboxed iframe.">MCP Apps</Subnote>.
+
+But Google's **A2UI** takes the opposite bet:
+<Highlight>send a description of the UI, not the code.</Highlight>
+
+Here's what that looks like on the wire (simplified):
+
+```json
+{"surfaceUpdate": {"surfaceId": "dive", "components": [
+  {"id": "root",  "component": {"Column": {"children": {"explicitList": ["q", "dates"]}}}},
+  {"id": "q",     "component": {"Text": {"text": {"literalString": "When are you diving?"}}}},
+  {"id": "dates", "component": {"DateTimeInput": {"value": {"path": "/trip/dates"}}}}
+]}}
+{"beginRendering": {"surfaceId": "dive", "root": "root"}}
+```
+
+<Callout variant="note" title="Things to note if you're a frontend nerd">
+
+- **It's a flat adjacency list, not a nested tree.** LLMs are bad at closing
+  deeply nested JSON in one pass. Flat IDs stream piece by piece, and any
+  component updates in O(1) by ID.
+- **Structure and state are separate.** Think Redux: `surfaceUpdate` is your
+  component tree, `dataModelUpdate` is your store. Change a price without
+  re-sending the UI.
+- **The catalog is the security boundary.** If the agent asks for a component
+  your client never registered, it simply doesn't render. There is no `eval`,
+  ever.
+- **The iframe still has a job.** MCP Apps use a `ui/initialize` handshake and
+  report their own height via `size-changed` notifications. That's great for a
+  full interactive dashboard, but overkill for a date picker.
+
+</Callout>
+
+<Callout variant="takeaway" title="My rule of thumb">
+  If the agent is *asking* for something, use A2UI. If it's *handing you an
+  app*, use the iframe. Google even documents nesting an MCP App inside an A2UI
+  component.
+</Callout>
+
+## What are the risks of an adaptive UI?
+
+- **Predictability vs. accuracy.** A classic CHI study found that users wanted
+  both. Surprisingly, the accuracy of the adaptation mattered more for
+  performance than its predictability. <Highlight>Wrong guesses hurt more than
+  surprising ones.</Highlight>
+- **Spatial memory breaks.** If a button moves, users lose muscle memory. The
+  fix from the same research is the **split interface**: adaptive suggestions
+  live in their own zone, and the original controls never move. It's a neat
+  design that works with human habits instead of against them.
+- **Accessibility becomes probabilistic.** When the model picks the layout,
+  screen-reader semantics and focus order are no longer guaranteed. A2UI's
+  catalog helps here, because every component is pre-built and pre-audited.
+- **You can't A/B test a moving target.** Traditional usability metrics assume
+  a fixed design.
