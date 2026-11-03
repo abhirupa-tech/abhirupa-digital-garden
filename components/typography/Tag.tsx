@@ -9,13 +9,22 @@ export function Tag({ children }: { children: ReactNode }) {
   );
 }
 
+/**
+ * A piece's topics as quiet text links, each opening the Writing index
+ * filtered to that topic.
+ */
 export function TagList({ tags }: { tags: string[] }) {
   if (!tags.length) return null;
   return (
-    <ul className="my-6 flex flex-wrap gap-2">
+    <ul className="my-6 flex flex-wrap gap-x-4 gap-y-1" aria-label="Topics">
       {tags.map((t) => (
         <li key={t}>
-          <Tag>{t}</Tag>
+          <a
+            href={`/writing/?topic=${encodeURIComponent(t)}`}
+            className="font-rounded text-sm text-rust underline decoration-rust/0 underline-offset-4 transition-colors duration-200 hover:decoration-rust/60"
+          >
+            #{t}
+          </a>
         </li>
       ))}
     </ul>

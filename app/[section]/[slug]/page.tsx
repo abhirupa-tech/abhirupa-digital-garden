@@ -8,7 +8,8 @@ import { cloudinaryUrl } from '@/lib/cloudinary';
 import { SideNav } from '@/components/SideNav';
 import { Footer } from '@/components/Footer';
 import { ArticleFooter } from '@/components/ArticleFooter';
-import { Heading, Subtitle, TagList, typographyComponents } from '@/components/typography';
+import { Callout, Heading, Subtitle, TagList, typographyComponents } from '@/components/typography';
+import { formatDate, readingTime } from '@/lib/format';
 
 type PageParams = { section: string; slug: string };
 
@@ -118,7 +119,7 @@ function ArticleStructuredData({
         mainEntityOfPage: { '@type': 'WebPage', '@id': url },
         image: pieceImage(entry),
         datePublished: entry.date || undefined,
-        dateModified: entry.date || undefined,
+        dateModified: entry.updated || entry.date || undefined,
         author: { '@id': `${site.url}/#person` },
         publisher: { '@id': `${site.url}/#person` },
         isPartOf: { '@id': `${site.url}/#website` },
@@ -201,10 +202,20 @@ export default async function PiecePage({ params }: { params: Promise<PageParams
               entry.cover ? 'pt-8 sm:pt-12 md:pt-16' : 'pt-10 sm:pt-16 md:pt-28'
             }`}
           >
-            <div className="flex items-baseline gap-4">
+            <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
               <span className="font-display text-lg text-sand/70">{zone.index}</span>
               <span className="label">{entry.type}</span>
-              {entry.date && <span className="label text-parchment-faint">{entry.date}</span>}
+              {entry.date && (
+                <span className="label text-parchment-faint">
+                  <time dateTime={entry.date}>{formatDate(entry.date)}</time>
+                </span>
+              )}
+              {entry.updated && entry.updated !== entry.date && (
+                <span className="label text-parchment-faint">
+                  Updated <time dateTime={entry.updated}>{formatDate(entry.updated)}</time>
+                </span>
+              )}
+              <span className="label text-parchment-faint">{readingTime(entry.body)} min read</span>
             </div>
 
             <Heading level={1} className="mt-4">
@@ -213,7 +224,19 @@ export default async function PiecePage({ params }: { params: Promise<PageParams
             {entry.description && <Subtitle>{entry.description}</Subtitle>}
             <TagList tags={entry.tags} />
 
-            <div className="mt-9 sm:mt-16">{content}</div>
+            {entry.audience && (
+              <div className="mt-8 sm:mt-10">
+                <Callout variant="aside" label="Assumed audience">
+                  <p className="font-rounded text-base leading-relaxed text-parchment sm:text-lg">
+                    {entry.audience}
+                  </p>
+                </Callout>
+              </div>
+            )}
+
+            <div className={`article-body ${entry.audience ? 'mt-6 sm:mt-10' : 'mt-9 sm:mt-16'}`}>
+              {content}
+            </div>
           </article>
 
           <ArticleFooter entry={entry} related={related} />

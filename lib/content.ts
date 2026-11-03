@@ -29,6 +29,10 @@ export type ContentEntry = {
   description: string;
   tags: string[];
   date: string;
+  /** Optional "last meaningfully revised" date (YYYY-MM-DD). */
+  updated: string;
+  /** Optional one or two sentences on who the piece is written for. */
+  audience: string;
   cover: string;
   /** Alt text for the cover where it's shown as the article's header image. */
   coverAlt: string;
@@ -94,6 +98,8 @@ export function getEntries(section: string): ContentEntry[] {
         description: String(data.description ?? ''),
         tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
         date: String(data.date ?? ''),
+        updated: String(data.updated ?? ''),
+        audience: String(data.audience ?? ''),
         cover: coverOverrides[`${section}/${fileId}`] || String(data.cover ?? ''),
         coverAlt: String(data.coverAlt ?? ''),
         coverCaption: String(data.coverCaption ?? ''),
