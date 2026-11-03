@@ -6,6 +6,8 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
+  /* Type scale override: text-lg runs larger than Tailwind's 1.125rem default. */
+  --text-lg: 1.35rem;
   /* ── Semantic palette ────────────────────────────────────────────────
      Meaningful, role-based color tokens usable directly as Tailwind
      utilities: bg-primary-bg, bg-secondary-bg, text-primary-text,
@@ -150,7 +152,7 @@
 }
 /* Every card/list description — one subheading size site-wide. */
 @utility t-card-sub {
-  @apply font-rounded leading-relaxed text-[0.875rem];
+  @apply font-rounded leading-relaxed text-[1rem];
 }
 
 @utility accent-rule {
