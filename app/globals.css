@@ -53,7 +53,7 @@
   --color-parchment-muted: rgb(var(--raw-parchment-muted));
   --color-parchment-faint: rgb(var(--raw-parchment-faint));
 
-  --font-display: var(--font-playfair), Georgia, serif;
+  --font-display: var(--font-fraunces), Georgia, serif;
   --font-serif: var(--font-cormorant), Georgia, serif;
   --font-body: var(--font-garamond), Georgia, serif;
   --font-rounded: var(--font-quicksand), ui-sans-serif, system-ui, sans-serif;

@@ -1,15 +1,19 @@
 import type { Metadata, Viewport } from 'next';
-import { Playfair_Display, Cormorant_Garamond, EB_Garamond, Quicksand } from 'next/font/google';
+import { Fraunces, Cormorant_Garamond, EB_Garamond, Quicksand } from 'next/font/google';
 import { site } from '@/lib/site';
 import { TopNav } from '@/components/TopNav';
 import './globals.css';
 
 // 4-level serif hierarchy loaded as CSS variables (see tailwind.config.ts).
-const playfair = Playfair_Display({
+// Display serif for headings and titles. Variable font: weight plus the
+// optical-size (opsz) and softness (SOFT) axes, so large headlines and small
+// card titles each get the right drawing.
+const fraunces = Fraunces({
   subsets: ['latin'],
-  variable: '--font-playfair',
+  variable: '--font-fraunces',
   display: 'swap',
-  weight: ['400', '500', '600', '700'],
+  axes: ['opsz', 'SOFT'],
+  style: ['normal', 'italic'],
 });
 
 const cormorant = Cormorant_Garamond({
@@ -232,7 +236,7 @@ export default function RootLayout({
       // script, so the server markup intentionally differs from the first client
       // render. Suppress the (one-level-deep) attribute mismatch warning here.
       suppressHydrationWarning
-      className={`${playfair.variable} ${cormorant.variable} ${garamond.variable} ${quicksand.variable}`}
+      className={`${fraunces.variable} ${cormorant.variable} ${garamond.variable} ${quicksand.variable}`}
     >
       <head>
         <ThemeInit />
