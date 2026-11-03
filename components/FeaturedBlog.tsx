@@ -64,7 +64,7 @@ function TagRow({ tags }: { tags: string[] }) {
           key={tag}
           className="rounded-lg border border-hairline bg-secondary-bg/50 px-3 py-1 font-rounded text-[0.75rem] text-parchment-muted"
         >
-          #{tag}
+          {tag}
         </li>
       ))}
     </ul>

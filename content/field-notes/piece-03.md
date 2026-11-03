@@ -3,7 +3,7 @@ title: "How I Make AI Handle the Boring Parts of Frontend — So I Could Focus o
 section: "field-notes"
 type: "Guide"
 description: "Offload the repetitive chaos to AI-powered tools and MCP servers, and save your focus for the tasks that actually make you a better engineer."
-tags: ["frontend", "ai-tooling", "developer-workflow", "mcp", "react"]
+tags: ["Frontend Engineering", "Developer Tools", "MCP", "Artificial Intelligence"]
 date: "2025-12-01"
 cover: "https://miro.medium.com/v2/resize:fit:1400/1*ox4sYu3OFbiW1UhqYtF0xA.png"
 aspect: "wide"

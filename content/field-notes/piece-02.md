@@ -3,7 +3,7 @@ title: "Anthropic Proved AI Thinks: The Frontend Architecture We Need to Watch I
 section: "field-notes"
 type: "Essay"
 description: "Exploring how modern frontend design can make an AI's hidden reasoning visible — turning abstract model introspection into human-understandable insight."
-tags: ["llm-introspection", "frontend-architecture", "agentic-ai", "ui-design", "anthropic"]
+tags: ["Large Language Models", "Agentic UI", "Frontend Engineering", "UI Exploration", "Machine Learning"]
 date: "2025-11-13"
 cover: "https://miro.medium.com/v2/resize:fit:1400/1*uqcLiMxXFwfgFQFSyS2IGA.png"
 aspect: "wide"

@@ -23,6 +23,9 @@ type Facet = { slug: string; label: string; count: number };
 // no request), and the client re-reads it after hydration and on every change.
 const FILTER_EVENT = 'writing-filters';
 
+// Topics shown before the 'All N topics' toggle.
+const TOPIC_LIMIT = 16;
+
 function subscribe(onChange: () => void) {
   window.addEventListener('popstate', onChange);
   window.addEventListener(FILTER_EVENT, onChange);
@@ -90,8 +93,8 @@ export function WritingIndex({
   const type = params.get('type') ?? '';
   const topic = params.get('topic') ?? '';
   const [expanded, setExpanded] = useState(false);
-  // A linked topic outside the top 12 opens the full list so it shows as active.
-  const allTopics = expanded || (!!topic && !topics.slice(0, 12).some((t) => t.slug === topic));
+  // A linked topic outside the first TOPIC_LIMIT opens the full list so it shows as active.
+  const allTopics = expanded || (!!topic && !topics.slice(0, TOPIC_LIMIT).some((t) => t.slug === topic));
 
   const update = (nextType: string, nextTopic: string) => writeParams(nextType, nextTopic);
 
@@ -103,7 +106,7 @@ export function WritingIndex({
     [items, type, topic],
   );
 
-  const visibleTopics = allTopics ? topics : topics.slice(0, 12);
+  const visibleTopics = allTopics ? topics : topics.slice(0, TOPIC_LIMIT);
 
   return (
     <div>
@@ -126,7 +129,7 @@ export function WritingIndex({
               {t.label}
             </Chip>
           ))}
-          {topics.length > 12 && (
+          {topics.length > TOPIC_LIMIT && (
             <button
               type="button"
               onClick={() => setExpanded(!allTopics)}

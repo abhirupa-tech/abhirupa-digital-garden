@@ -56,3 +56,11 @@ export function plainExcerpt(markdown: string, max = 500): string {
 export function topicLabel(tag: string): string {
   return tag.replace(/-/g, ' ');
 }
+
+/** "Agentic UI" -> "agentic-ui": a topic tag as it appears in /writing/?topic= links. */
+export function tagSlug(tag: string): string {
+  return tag
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}

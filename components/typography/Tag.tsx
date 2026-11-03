@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { tagSlug } from '@/lib/format';
 
 /** A tiny pill — muted burnt-orange fill, white text, readable at label size. */
 export function Tag({ children }: { children: ReactNode }) {
@@ -20,10 +21,10 @@ export function TagList({ tags }: { tags: string[] }) {
       {tags.map((t) => (
         <li key={t}>
           <a
-            href={`/writing/?topic=${encodeURIComponent(t)}`}
+            href={`/writing/?topic=${tagSlug(t)}`}
             className="font-rounded text-sm text-rust underline decoration-rust/0 underline-offset-4 transition-colors duration-200 hover:decoration-rust/60"
           >
-            #{t}
+            {t}
           </a>
         </li>
       ))}

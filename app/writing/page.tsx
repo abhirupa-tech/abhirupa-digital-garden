@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { visibleZones, zoneById } from '@/lib/data';
 import { getEntries, typeSlug } from '@/lib/content';
-import { formatDate, readingTime, topicLabel } from '@/lib/format';
+import { formatDate, readingTime, tagSlug } from '@/lib/format';
 import { site } from '@/lib/site';
 import { Footer } from '@/components/Footer';
 import { WritingIndex, type WritingItem } from '@/components/writing/WritingIndex';
@@ -49,7 +49,7 @@ function allItems(): WritingItem[] {
       year: e.date.slice(0, 4),
       minutes: readingTime(e.body),
       section: zoneById[e.section]?.kicker ?? e.section,
-      tags: e.tags,
+      tags: e.tags.map(tagSlug),
     }));
 }
 
@@ -68,7 +68,13 @@ export default function WritingPage() {
     items.map((i) => i.typeSlug),
     (slug) => pluralize(typeLabels.get(slug) ?? slug),
   );
-  const topics = facets(items.flatMap((i) => i.tags), topicLabel);
+  // Tags are written as display names ("Agentic UI"); the filter keys on their
+  // slug ("agentic-ui") and shows the display name.
+  const topicNames = new Map<string, string>();
+  visibleZones
+    .flatMap((zone) => getEntries(zone.id))
+    .forEach((e) => e.tags.forEach((t) => topicNames.set(tagSlug(t), t)));
+  const topics = facets(items.flatMap((i) => i.tags), (slug) => topicNames.get(slug) ?? slug);
 
   const structured = {
     '@context': 'https://schema.org',
