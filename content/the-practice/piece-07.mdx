@@ -1,0 +1,215 @@
+---
+title: "GitHub Universe 2026: Lessons That Will Change How Your Team Works With AI"
+slug: "github-universe-2026-lessons"
+section: "the-practice"
+type: "Essay"
+description: "What I learned at GitHub Universe 2026: agentic software delivery, multiplayer planning with agents in GitHub Next's Chopin, verification as the new craft, and why more pull requests don't mean more impact."
+tags: ["agentic-ai", "github", "developer-productivity", "ai-planning", "verification", "conference"]
+date: "2026-11-03"
+cover: ""
+medium: "https://medium.com/@mitra.abhirupa/github-universe-2026-lessons-that-will-change-how-your-team-works-with-ai-c54fb8176b3d"
+aspect: "wide"
+featured: true
+draft: false
+---
+
+*What I learned at GitHub Universe 2026, and why your next big project might be
+planned with an agent in the room.*
+
+This trip almost didn't happen.
+
+A few weeks before I was due to fly from Bangalore to California, I got an
+email saying the Grace Hopper Celebration had been cancelled. My bookings were
+made. My bags were mentally packed.
+
+So a group of us from Slack did what engineers do best. We found a workaround,
+and the workaround was GitHub Universe.
+
+I'm so glad we did.
+
+<Figure
+  alt="GitHub Universe 2026, the keynote hall"
+  caption="GitHub Universe 2026, San Francisco"
+  ratio="landscape"
+/>
+
+## The opening keynote, and what it told me about the future of tech
+
+The first thing I remember is the line for the keynote. It was very long. The
+second thing I remember is how quickly the conversation turned to one idea, and
+I heard versions of it all week.
+
+<Quote>
+  Writing code is cheap now. Deciding what to build, and how to build it, is
+  the real work.
+</Quote>
+
+That shifts our priorities. Knowing the depth of one codebase matters less than
+being able to work across its breadth: talking to real customers, and solving
+problems for real people.
+
+GitHub framed the whole event around an
+<Subnote note="GitHub's term for treating delivery as one system where agents plan, write, review and verify work alongside people, measured by finished outcomes rather than lines of code.">agentic software delivery system</Subnote>.
+Their message was that what matters is shipping completed work, like a feature
+or a fix, not producing more code.
+
+That sounds simpler than it is. <Highlight>If code is no longer the bottleneck,
+then planning, alignment, review and verification are.</Highlight>
+
+## The session that left the biggest mark on me
+
+On day one I found my way to a breakout session by Maggie Appleton from
+<Subnote note="GitHub's research and development team, which prototypes what software development could look like next.">GitHub Next</Subnote>.
+It was held in a silent-disco space, so we all sat there with headphones on,
+completely absorbed.
+
+She showed us **Chopin**: a real-time, multiplayer planning environment where
+coworkers and agents write plans together. GitHub Next has open-sourced it.
+
+<Figure
+  alt="Chopin, GitHub Next's multiplayer planning environment, shown during Maggie Appleton's session"
+  caption="Chopin: teammates and an agent planning in the same document"
+  ratio="landscape"
+/>
+
+### The problem with planning alone with an agent
+
+When you plan with an agent today, it's usually just you and the model. The
+agent asks you a long list of questions. Then it hands you a huge wall of text
+and asks you to approve it, yes or no.
+
+Your teammates can't see any of it. And nothing keeps that plan up to date as
+the design or the architecture changes.
+
+Maggie put a number on why this feels so draining.
+
+<StatRow caption="Reading speed vs. agent writing speed, in words per minute">
+  <Stat value="240" label="words a minute a person reads" />
+  <Stat value="4,500" label="words a minute an agent writes" />
+  <Stat value="~19×" label="faster than we can read" />
+</StatRow>
+
+No wonder agentic work feels exhausting some days.
+
+### What Chopin does differently
+
+<Callout variant="note" title="Three design choices worth stealing">
+
+- **The plan is shared.** Your whole team and the agent work in the same
+  document, at the same time.
+- **Decisions have owners.** Answers and accepted comments are kept in a
+  separate log, so a later rewrite of the plan can't quietly change what the
+  team decided.
+- **The agent knows its place.** It replies directly when you're working alone,
+  but waits its turn in a group discussion.
+
+</Callout>
+
+That last one made me smile. We spend so much energy making agents faster.
+Here was a team making an agent more polite.
+
+Later I got to have a one-on-one with Maggie. She was generous with her time,
+and honest that Chopin is still a research project, not a product. The value
+isn't the tool itself. It's the question it asks:
+
+<Quote>
+  What would happen if we treated planning as a shared workspace for the whole
+  team, agents included?
+</Quote>
+
+I think that question could change how we imagine teamwork.
+
+<LinkCard
+  href="https://githubnext.com"
+  title="GitHub Next"
+  description="The research team behind Chopin, prototyping what software development could look like next."
+/>
+
+## Verification is the new craft
+
+The second theme I kept hearing was verification. <Highlight>As code gets
+easier to generate, knowing it actually works becomes the real job.</Highlight>
+
+- **Cross-model review.** Let models from different families review each
+  other's code, because models from the same family tend to share the same
+  blind spots.
+- **Agentic testing.** The agent explores the product, finds issues, and those
+  findings become
+  <Subnote note="Tests that lock in behavior that already works, so a later change that breaks it fails the build.">regression tests</Subnote>.
+
+Microsoft Research went a step further. They showed **PDD Kit**, which turns a
+developer's intent into a
+<Subnote note="A precise, machine-checkable statement of what the code must do. A prover can then check the code against it, instead of a person reading every line.">formal specification</Subnote>
+and then proves that the generated code meets it. It only works for Rust today,
+through the Verus verifier, and it's early.
+
+But the idea behind it is powerful. <Highlight>You agree on the contract first,
+then you review the contract instead of every line of code.</Highlight>
+
+<LinkCard
+  href="https://alphasignal.ai/news/microsoft-s-pdd-kit-makes-formal-math-proofs-a-gate-for-ai-rust-code"
+  title="Microsoft's PDD Kit Makes Formal Math Proofs a Gate for AI Rust Code"
+  description="Microsoft Research unveils PDD Kit, bringing formal verification to AI-generated code via Verus for Rust."
+  site="AlphaSignal"
+/>
+
+<Figure
+  alt="Microsoft Research presenting PDD Kit at GitHub Universe 2026"
+  caption="Review the contract, not every line"
+  ratio="landscape"
+/>
+
+<Callout variant="takeaway">
+  The unglamorous part of engineering is quietly becoming the most important
+  part.
+</Callout>
+
+## More code is not more value
+
+One data point from a session by Jellyfish stopped me in my tracks.
+
+<StatRow caption="Teams using AI, per engineer (Jellyfish, GitHub Universe 2026)">
+  <Stat value="+152%" label="more pull requests" />
+  <Stat value="+27%" label="more deliverables" />
+</StatRow>
+
+More activity does not automatically mean more impact.
+
+The same talk shared that most teams believe AI improves delivery, but far
+fewer actually measure it. The suggestion was to measure in this order:
+
+1. **Adoption** first,
+2. then **speed and quality**,
+3. then **return on investment**.
+
+GitHub's answer to the review side of this is
+<Subnote note="Splitting one large change into a chain of small pull requests, each built on the one before it, so every piece can be reviewed and merged on its own.">stacked PRs</Subnote>.
+
+<Figure
+  alt="Slide on stacked pull requests from GitHub Universe 2026"
+  caption="Stacked PRs: smaller pieces, faster reviews"
+  ratio="landscape"
+/>
+
+## Things close to my heart
+
+I brought home a lot of notes, a few new friends, and a GitHub keyboard kit.
+
+I assembled it this weekend. It took me close to two hours. Some of the keycaps
+didn't fit, so I used the spare set they provided. It's wired only, no
+Bluetooth. But it works, and I built it myself.
+
+<Figure
+  alt="The assembled GitHub keyboard kit"
+  caption="Two hours, one spare keycap set, zero Bluetooth"
+  ratio="landscape"
+/>
+
+That feels like the right metaphor for this moment in our industry. The pieces
+don't always fit on the first try. It takes longer than you expect. But you
+figure it out, especially when you're not doing it alone.
+
+<Callout variant="takeaway">
+  We're getting very good at making agents do things. The next step is
+  rethinking how we work alongside them.
+</Callout>
