@@ -6,6 +6,7 @@ import {
   getSectionEntries,
   getAllTypes,
   getEntriesByType,
+  getNowEntries,
   type ContentEntry,
 } from '@/lib/content';
 import { labProjects } from '@/lib/lab';
@@ -26,7 +27,7 @@ export const dynamic = 'force-static';
  * whole file, which is the opposite of what a site fighting for crawl budget
  * needs. Every other URL here derives its date from real content instead.
  */
-const STATIC_PAGES_UPDATED = '2026-08-25';
+const STATIC_PAGES_UPDATED = '2026-11-03';
 
 /**
  * `lastmod` as a plain `YYYY-MM-DD` date.
@@ -80,6 +81,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: STATIC_PAGES_UPDATED,
   };
 
+  // Now changes with its newest entry; the Toolkit with the static pages.
+  const nowDate = getNowEntries()[0]?.date;
+  const now: MetadataRoute.Sitemap[number] = {
+    url: `${site.url}/now/`,
+    lastModified: nowDate ? isoDate(nowDate) : STATIC_PAGES_UPDATED,
+  };
+  const toolkit: MetadataRoute.Sitemap[number] = {
+    url: `${site.url}/toolkit/`,
+    lastModified: STATIC_PAGES_UPDATED,
+  };
+
   // The all-writing index changes whenever any piece does.
   const writing: MetadataRoute.Sitemap[number] = {
     url: `${site.url}/writing/`,
@@ -115,5 +127,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: entry.date ? isoDate(entry.date) : STATIC_PAGES_UPDATED,
   }));
 
-  return [home, about, writing, ...lab, ...sections, ...collections, ...articles];
+  return [home, about, writing, now, toolkit, ...lab, ...sections, ...collections, ...articles];
 }

@@ -145,7 +145,8 @@ function allSections(): string[] {
   if (!fs.existsSync(CONTENT_DIR)) return [];
   return fs
     .readdirSync(CONTENT_DIR, { withFileTypes: true })
-    .filter((d) => d.isDirectory())
+    // Folders starting with "_" hold non-article content (e.g. _now).
+    .filter((d) => d.isDirectory() && !d.name.startsWith('_'))
     .map((d) => d.name);
 }
 
@@ -194,4 +195,28 @@ export function getAllTypes(sections: string[]): { label: string; slug: string }
     .filter((e) => !e.draft && !e.link)
     .forEach((e) => bySlug.set(typeSlug(e.type), e.type));
   return [...bySlug.entries()].map(([slug, label]) => ({ slug, label }));
+}
+
+export type NowEntry = { slug: string; title: string; date: string; body: string };
+
+/**
+ * Entries for the /now page: one Markdown file per update in content/_now,
+ * newest first. Front matter: `title` (e.g. "November 2026") and `date`.
+ */
+export function getNowEntries(): NowEntry[] {
+  const dir = path.join(CONTENT_DIR, '_now');
+  if (!fs.existsSync(dir)) return [];
+  return fs
+    .readdirSync(dir)
+    .filter((f) => f.endsWith('.md') || f.endsWith('.mdx'))
+    .map((file) => {
+      const { data, content } = matter(fs.readFileSync(path.join(dir, file), 'utf8'));
+      return {
+        slug: file.replace(/\.mdx?$/, ''),
+        title: String(data.title ?? file),
+        date: String(data.date ?? ''),
+        body: content.trim(),
+      };
+    })
+    .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
