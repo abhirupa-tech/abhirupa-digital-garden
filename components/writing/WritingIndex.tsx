@@ -1,7 +1,6 @@
 'use client';
 
 import { useMemo, useState, useSyncExternalStore } from 'react';
-import { WavyClipDefs } from './WavyClip';
 
 export type WritingItem = {
   href: string;
@@ -187,9 +186,8 @@ export function WritingIndex({
       </p>
 
       {/* Masonry: three balanced columns (two on tablets, one on phones).
-          Each card has its own warm fill, the cover framed in a scalloped
-          squircle, and text that sets the card's height. */}
-      <WavyClipDefs />
+          Each card has its own warm fill, a rounded-rectangle cover, and
+          text that sets the card's height. */}
       <ol className="mt-6 columns-1 gap-5 sm:columns-2 lg:columns-3">
         {shown.map((item) => (
           <li key={item.href} className="mb-5 break-inside-avoid">
@@ -198,7 +196,7 @@ export function WritingIndex({
               className={`group block rounded-[2rem] p-4 transition-transform duration-300 hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-highlight ${toneOf.get(item.href)}`}
             >
               {item.cover && (
-                <div className="aspect-[4/3] overflow-hidden [clip-path:url(#wavy-frame)]">
+                <div className="aspect-[4/3] overflow-hidden rounded-[1.25rem]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={item.cover}
