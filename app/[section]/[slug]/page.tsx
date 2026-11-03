@@ -178,7 +178,29 @@ export default async function PiecePage({ params }: { params: Promise<PageParams
       <SideNav />
       <div className="lg:pl-20">
         <main>
-          <article className="zone max-w-4xl pb-10 pt-10 sm:pb-16 sm:pt-16 md:pt-28">
+          {entry.cover && (
+            // Header image: spans the content column edge to edge with a page
+            // gutter, cropped to a calm wide band so the title stays close.
+            <figure className="px-4 pt-20 sm:px-6 sm:pt-24 md:px-10">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={cloudinaryUrl(entry.cover, { width: 2000 })}
+                alt={entry.coverAlt || entry.title}
+                fetchPriority="high"
+                className="aspect-16/9 max-h-[68vh] w-full rounded-xs border border-parchment/10 object-cover sm:aspect-2/1"
+              />
+              {entry.coverCaption && (
+                <figcaption className="mt-3 text-center font-rounded text-[0.7rem] uppercase tracking-label text-parchment-faint">
+                  {entry.coverCaption}
+                </figcaption>
+              )}
+            </figure>
+          )}
+          <article
+            className={`zone max-w-4xl pb-10 sm:pb-16 ${
+              entry.cover ? 'pt-8 sm:pt-12 md:pt-16' : 'pt-10 sm:pt-16 md:pt-28'
+            }`}
+          >
             <div className="flex items-baseline gap-4">
               <span className="font-display text-lg text-sand/70">{zone.index}</span>
               <span className="label">{entry.type}</span>

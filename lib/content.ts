@@ -30,6 +30,10 @@ export type ContentEntry = {
   tags: string[];
   date: string;
   cover: string;
+  /** Alt text for the cover where it's shown as the article's header image. */
+  coverAlt: string;
+  /** Optional caption under the article's header image. */
+  coverCaption: string;
   /** Optional URL of the original Medium post, for attribution — this site stays canonical. */
   medium: string;
   /**
@@ -91,6 +95,8 @@ export function getEntries(section: string): ContentEntry[] {
         tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
         date: String(data.date ?? ''),
         cover: coverOverrides[`${section}/${fileId}`] || String(data.cover ?? ''),
+        coverAlt: String(data.coverAlt ?? ''),
+        coverCaption: String(data.coverCaption ?? ''),
         medium: String(data.medium ?? ''),
         link: String(data.link ?? ''),
         aspect: coerceAspect(data.aspect),
