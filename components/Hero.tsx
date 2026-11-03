@@ -17,8 +17,8 @@ export function Hero() {
   });
 
   return (
-    <header id="top" className="relative flex min-h-svh flex-col justify-center overflow-hidden">
-      <div className="zone flex-1 flex flex-col justify-center pt-14 pb-10 md:pt-28 md:pb-16">
+    <header id="top" className="relative overflow-hidden">
+      <div className="zone pt-24 pb-16 md:pt-32 md:pb-20">
         <motion.p {...rise(0.1)} className="label mb-5 sm:mb-8">
           <span className="sm:hidden">AI Frontend Engineer</span>
           <span className="hidden sm:inline">
@@ -28,34 +28,28 @@ export function Hero() {
 
         <motion.h1
           {...rise(0.25)}
-          className="max-w-[16ch] font-display text-[clamp(1.8rem,5.2vw,4.5rem)] font-medium leading-[1.08] tracking-[-0.015em] text-parchment lg:max-w-[25ch]"
+          className="max-w-[18ch] font-display text-[clamp(1.9rem,4.6vw,4rem)] font-medium leading-[1.08] tracking-[-0.015em] text-parchment lg:max-w-[24ch]"
         >
-          Abhirupa architects spaces where{' '}
-          <EmberPhrase text="AI breathes and thinks" className="pr-[0.14em] font-semibold italic" />{' '}
-          alongside humans.
+          Abhirupa writes about designing and building frontends for{' '}
+          <EmberPhrase text="AI agents" className="pr-[0.04em] font-semibold italic" />.
         </motion.h1>
 
-        {/* The H1 above carries the poetry; this H2 carries the search intent —
-            plain, keyword-bearing copy ("frontend engineering for agentic AI
-            interfaces") so the hero ranks for what the work actually is. */}
+        {/* The H1 says plainly what the site publishes (and carries the search
+            intent); this line keeps the poetry. */}
         <motion.h2
           {...rise(0.5)}
-          className="mt-5 max-w-2xl font-serif text-sub font-light text-parchment-muted sm:mt-8"
+          className="mt-5 max-w-2xl font-serif text-sub font-light text-secondary-text sm:mt-7"
         >
-          Frontend engineering for agentic AI interfaces — designing the
-          surfaces where agents reason, pause, and hand control back to people.
+          Architecting spaces where AI breathes and thinks alongside humans —
+          the surfaces where agents reason, pause, and hand control back to people.
         </motion.h2>
 
-        <motion.div {...rise(0.65)} className="mt-8 max-w-2xl sm:mt-10">
+        <motion.div {...rise(0.65)} className="mt-7 max-w-2xl sm:mt-8">
           <HeroSparkDivider />
         </motion.div>
 
-        <motion.div {...rise(0.8)} className="mt-8 flex flex-wrap items-center gap-x-10 gap-y-6 sm:mt-10">
+        <motion.div {...rise(0.8)} className="mt-6 sm:mt-7">
           <SocialIcons mobileIconsOnly />
-          <div className="flex items-center gap-3 text-parchment-faint">
-            <span className="accent-rule" />
-            <span className="label text-[0.62rem]">Scroll to wander</span>
-          </div>
         </motion.div>
       </div>
 
