@@ -83,7 +83,7 @@ export async function generateMetadata({
       title: `${title} · ${site.name}`,
       description,
       url,
-      siteName: `${site.name} — Digital Garden`,
+      siteName: site.name,
       locale: site.locale,
       images: [{ url: '/og-image.png', width: 1200, height: 630, alt: `${title} · ${site.name}` }],
     },

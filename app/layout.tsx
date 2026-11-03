@@ -47,14 +47,14 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — Agentic AI Interfaces & Frontend for AI | ${site.role}`,
+    default: `${site.name} — Agentic AI Interfaces & Frontend for AI`,
     template: `%s · ${site.name}`,
   },
   description: site.description,
   authors: [{ name: site.name, url: site.url }],
   creator: site.name,
   publisher: site.name,
-  applicationName: `${site.name} — Digital Garden`,
+  applicationName: site.name,
   category: 'technology',
   alternates: {
     canonical: '/',
@@ -191,8 +191,11 @@ function StructuredData() {
         url: site.url,
         // The concise site name Google shows in results (the domain is used as
         // a fallback when this is missing or reads as a long descriptive title).
+        // Keep it identical to og:site_name and application-name on every page:
+        // Google only adopts a site name when these signals agree, and falls
+        // back to the bare domain when they don't.
         name: site.name,
-        alternateName: `${site.name} — Digital Garden`,
+        alternateName: [site.shortName, 'abhirupamitra.com'],
         description: site.description,
         publisher: { '@id': `${site.url}/#person` },
         inLanguage: 'en-US',

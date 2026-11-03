@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     title: `About · ${site.name}`,
     description: ABOUT_DESCRIPTION,
     url: `${site.url}/about/`,
-    siteName: `${site.name} — Digital Garden`,
+    siteName: site.name,
     locale: site.locale,
     images: [{ url: '/og-image.png', width: 1200, height: 630, alt: `About ${site.name}` }],
   },
