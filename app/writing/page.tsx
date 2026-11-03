@@ -105,15 +105,17 @@ export default function WritingPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structured) }}
       />
-      <main className="zone pt-28 pb-16 md:pt-36 md:pb-24">
-        <header className="max-w-3xl">
-          <span className="label">Essays · Guides · Playbooks · {items.length} pieces</span>
-          <h1 className="mt-4 font-display text-section font-medium leading-[1.05] text-parchment">
-            Writing
+      <main className="zone pt-24 pb-16 md:pt-32 md:pb-24">
+        <header className="max-w-4xl">
+          <span className="font-rounded text-xs font-semibold uppercase tracking-[0.14em] text-parchment-muted">
+            Essays · Guides · Playbooks · {items.length} pieces
+          </span>
+          <h1 className="mt-3.5 font-display text-[3.6rem] font-semibold leading-[0.95] tracking-[-0.02em] text-parchment [font-variation-settings:'opsz'_144,'SOFT'_50] sm:text-[4.5rem] lg:text-[6rem]">
+            Writing,{' '}
+            <em className="font-normal italic text-highlight">out loud.</em>
           </h1>
-          <p className="mt-5 font-rounded text-lg leading-relaxed text-secondary-text md:text-xl">
-            Essays, guides and playbooks on designing and building frontends for AI agents,
-            gathered from The Practice, Field Notes and Design Thinking.
+          <p className="mt-5 max-w-[620px] font-rounded text-lg leading-relaxed text-parchment-muted md:text-[1.1875rem]">
+            Essays, guides and playbooks on designing and building frontends for AI agents.
           </p>
         </header>
         <div className="mt-10">

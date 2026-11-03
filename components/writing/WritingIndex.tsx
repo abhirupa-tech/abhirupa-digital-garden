@@ -23,23 +23,140 @@ export type WritingItem = {
 };
 
 /**
- * Card fills, beige through to rust: light tones in light mode, deep browns in
- * dark mode. Each card keeps its tone across filters (it's picked by the
- * piece's place in the full list, not the filtered one).
+ * One card style per format, in four colours (cream, sand, terracotta, deep
+ * brown), each with a darker dark-mode twin:
+ *   Essay    -> type poster: solid terracotta or deep brown, big title, no image
+ *   Guide    -> cream or sand card, title on top, cover filling the lower half
+ *   Playbook -> full-bleed cover with the title set over it
+ * Essays and guides alternate between their two fills by their order in the
+ * full list, so a card keeps its colour when filters change.
  */
-const TONES = [
-  'bg-[#f4ece0] dark:bg-[#2a241e]',
-  'bg-[#efdcc6] dark:bg-[#33281e]',
-  'bg-[#f3d6bd] dark:bg-[#3c2b1f]',
-  'bg-[#ecc7a9] dark:bg-[#452f21]',
-  'bg-[#f7e6d6] dark:bg-[#30261f]',
+const POSTER_TONES = [
+  'bg-[#c2603a] text-[#fbf0e6] dark:bg-[#9e4a2c] dark:text-[#fbeee2]',
+  'bg-[#3a1d12] text-[#f3e4d4] dark:bg-[#0f0b09] dark:text-[#ead8c6]',
+];
+const PAPER_TONES = [
+  'bg-[#fbf6ee] text-[#2b160d] dark:bg-[#211a15] dark:text-[#f1e6da]',
+  'bg-[#efe2cf] text-[#2b160d] dark:bg-[#2a2019] dark:text-[#f1e6da]',
 ];
 
-/** "Read the essay" / "Read the guide" from the piece's format. */
-function ctaLabel(type: string): string {
-  const t = type.trim().toLowerCase();
-  return t ? `Read the ${t}` : 'Read the piece';
+type Variant = 'poster' | 'paper' | 'photo';
+
+function variantOf(item: WritingItem): Variant {
+  if (item.typeSlug === 'essay') return 'poster';
+  if (item.typeSlug === 'playbook' && item.cover) return 'photo';
+  return item.cover ? 'paper' : 'poster';
 }
+
+/** Kicker (date) above the title, shared by every card style. */
+function Kicker({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="font-rounded text-xs font-semibold uppercase tracking-[0.12em] opacity-70">
+      {children}
+    </span>
+  );
+}
+
+/** "Essay · 5 min" on the left, the section on the right. */
+function CardFooter({ item, rule }: { item: WritingItem; rule?: boolean }) {
+  return (
+    <footer
+      className={`mt-auto flex justify-between gap-3 pt-3.5 font-rounded text-[0.8125rem] font-medium opacity-80 ${
+        rule ? 'border-t border-current/15' : ''
+      }`}
+    >
+      <span>
+        {item.type} · {item.minutes} min
+      </span>
+      <span>{item.section}</span>
+    </footer>
+  );
+}
+
+const CARD =
+  'group relative flex flex-col overflow-hidden rounded-[14px] px-[26px] pb-5 pt-[26px] transition-transform duration-300 hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-highlight';
+
+function Card({ item, tone }: { item: WritingItem; tone: string }) {
+  const variant = variantOf(item);
+
+  if (variant === 'photo') {
+    return (
+      <a href={item.href} className={`${CARD} aspect-[4/5] text-white`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={item.cover} alt={item.coverAlt} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+        <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,10,5,.62)_0%,rgba(20,10,5,.12)_45%,rgba(20,10,5,.55)_100%)]" />
+        <span className="relative flex h-full flex-col">
+          <Kicker>{item.dateLabel}</Kicker>
+          <h2 className="mt-2.5 font-display text-[2.25rem] font-semibold leading-[1.02] tracking-[-0.01em] [font-variation-settings:'opsz'_120,'SOFT'_50]">
+            {item.title}
+          </h2>
+          <CardFooter item={item} />
+        </span>
+      </a>
+    );
+  }
+
+  if (variant === 'paper') {
+    return (
+      <a href={item.href} className={`${CARD} aspect-[4/5] ${tone}`}>
+        <Kicker>{item.dateLabel}</Kicker>
+        <h2 className="mt-2.5 font-display text-[1.5625rem] font-semibold leading-[1.15] tracking-[-0.01em] [font-variation-settings:'opsz'_48,'SOFT'_50]">
+          {item.title}
+        </h2>
+        <div className="-mx-[26px] mt-[18px] min-h-0 flex-1 overflow-hidden">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={item.cover} alt={item.coverAlt} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+        </div>
+        <CardFooter item={item} rule />
+      </a>
+    );
+  }
+
+  // Poster: 4:5 from tablets up; on phones it sizes to its text.
+  return (
+    <a href={item.href} className={`${CARD} sm:aspect-[4/5] ${tone}`}>
+      <Kicker>{item.dateLabel}</Kicker>
+      <h2 className="mt-2.5 font-display text-[2rem] font-semibold leading-[1.05] tracking-[-0.01em] [font-variation-settings:'opsz'_96,'SOFT'_30] sm:text-[2.125rem]">
+        {item.title}
+      </h2>
+      {item.description && (
+        <p className="mt-3.5 line-clamp-3 font-rounded text-[0.9375rem] leading-normal opacity-85">
+          {item.description}
+        </p>
+      )}
+      <div className="min-h-10 flex-1 sm:min-h-0" />
+      <CardFooter item={item} />
+    </a>
+  );
+}
+
+/** A filter in the text row: muted, or ink with a terracotta underline when on. */
+function FilterLink({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      aria-pressed={active}
+      onClick={onClick}
+      className={`font-rounded text-[0.9375rem] font-medium underline-offset-[6px] transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-highlight ${
+        active
+          ? 'text-parchment underline decoration-highlight decoration-2'
+          : 'text-parchment-muted hover:text-parchment'
+      }`}
+    >
+      {children}
+    </button>
+  );
+}
+
+const ROW_LABEL = 'font-rounded text-xs font-semibold uppercase tracking-[0.14em] text-parchment-muted';
 
 type Facet = { slug: string; label: string; count: number };
 
@@ -49,7 +166,7 @@ type Facet = { slug: string; label: string; count: number };
 const FILTER_EVENT = 'writing-filters';
 
 // Topics shown before the 'All N topics' toggle.
-const TOPIC_LIMIT = 16;
+const TOPIC_LIMIT = 6;
 
 function subscribe(onChange: () => void) {
   window.addEventListener('popstate', onChange);
@@ -67,31 +184,6 @@ function writeParams(type: string, topic: string) {
   const qs = p.toString();
   window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
   window.dispatchEvent(new Event(FILTER_EVENT));
-}
-
-function Chip({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      aria-pressed={active}
-      onClick={onClick}
-      className={`rounded-full border px-3 py-1 font-rounded text-sm transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-highlight ${
-        active
-          ? 'border-highlight bg-highlight/10 text-parchment'
-          : 'border-parchment/15 text-parchment-muted hover:border-parchment/35 hover:text-parchment'
-      }`}
-    >
-      {children}
-    </button>
-  );
 }
 
 /**
@@ -132,105 +224,66 @@ export function WritingIndex({
   );
 
   const visibleTopics = allTopics ? topics : topics.slice(0, TOPIC_LIMIT);
-  const toneOf = useMemo(() => new Map(items.map((item, i) => [item.href, TONES[i % TONES.length]])), [items]);
+  const toneOf = useMemo(() => {
+    const counts = { poster: 0, paper: 0 };
+    return new Map(
+      items.map((item) => {
+        const v = variantOf(item);
+        if (v === 'photo') return [item.href, ''];
+        const n = counts[v]++;
+        return [item.href, (v === 'poster' ? POSTER_TONES : PAPER_TONES)[n % 2]];
+      }),
+    );
+  }, [items]);
 
   return (
     <div>
-      <div className="space-y-4 border-y border-parchment/10 py-6">
-        <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filter by format">
-          <span className="label mr-2 w-16">Format</span>
-          <Chip active={!type} onClick={() => update('', topic)}>
-            All
-          </Chip>
-          {types.map((t) => (
-            <Chip key={t.slug} active={type === t.slug} onClick={() => update(type === t.slug ? '' : t.slug, topic)}>
-              {t.label} <span className="text-parchment-faint">{t.count}</span>
-            </Chip>
-          ))}
-        </div>
-        <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filter by topic">
-          <span className="label mr-2 w-16">Topic</span>
-          {visibleTopics.map((t) => (
-            <Chip key={t.slug} active={topic === t.slug} onClick={() => update(type, topic === t.slug ? '' : t.slug)}>
-              {t.label}
-            </Chip>
-          ))}
-          {topics.length > TOPIC_LIMIT && (
-            <button
-              type="button"
-              onClick={() => setExpanded(!allTopics)}
-              className="font-rounded text-sm text-rust underline decoration-rust/40 underline-offset-4"
-            >
-              {allTopics ? 'Fewer topics' : `All ${topics.length} topics`}
-            </button>
-          )}
-        </div>
-      </div>
-
-      <p className="mt-6 font-rounded text-sm text-parchment-muted" aria-live="polite">
-        {shown.length === items.length
-          ? `${items.length} pieces, newest first`
-          : `${shown.length} of ${items.length} pieces`}
-        {(type || topic) && (
-          <>
-            {' · '}
-            <button
-              type="button"
-              onClick={() => update('', '')}
-              className="text-rust underline decoration-rust/40 underline-offset-4"
-            >
-              Clear filters
-            </button>
-          </>
+      <nav
+        aria-label="Filter writing"
+        className="flex flex-wrap items-baseline gap-x-[18px] gap-y-2 border-y border-parchment/12 py-4"
+      >
+        <span className={ROW_LABEL}>Format</span>
+        <FilterLink active={!type} onClick={() => update('', topic)}>
+          All
+        </FilterLink>
+        {types.map((t) => (
+          <FilterLink key={t.slug} active={type === t.slug} onClick={() => update(type === t.slug ? '' : t.slug, topic)}>
+            {t.label} {t.count}
+          </FilterLink>
+        ))}
+        <span aria-hidden="true" className="mx-1.5 hidden h-4 w-px self-center bg-parchment/15 sm:block" />
+        <span className={ROW_LABEL}>Topic</span>
+        {visibleTopics.map((t) => (
+          <FilterLink key={t.slug} active={topic === t.slug} onClick={() => update(type, topic === t.slug ? '' : t.slug)}>
+            {t.label}
+          </FilterLink>
+        ))}
+        {topics.length > TOPIC_LIMIT && (
+          <FilterLink active={false} onClick={() => setExpanded(!allTopics)}>
+            {allTopics ? 'Fewer' : `+${topics.length - TOPIC_LIMIT} more`}
+          </FilterLink>
         )}
-      </p>
+      </nav>
 
-      {/* Masonry: three balanced columns (two on tablets, one on phones).
-          Each card has its own warm fill, a rounded-rectangle cover, and
-          text that sets the card's height. */}
-      <ol className="mt-6 columns-1 gap-5 sm:columns-2 lg:columns-3">
+      {(type || topic) && (
+        <p className="mt-5 font-rounded text-sm text-parchment-muted" aria-live="polite">
+          {shown.length} of {items.length} pieces ·{' '}
+          <button
+            type="button"
+            onClick={() => update('', '')}
+            className="text-rust underline decoration-rust/40 underline-offset-4"
+          >
+            Clear filters
+          </button>
+        </p>
+      )}
+
+      <ol className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {shown.map((item) => (
-          <li key={item.href} className="mb-5 break-inside-avoid">
-            <a
-              href={item.href}
-              className={`group block rounded-[2rem] p-4 transition-transform duration-300 hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-highlight ${toneOf.get(item.href)}`}
-            >
-              {item.cover && (
-                <div className="aspect-[4/3] overflow-hidden rounded-[1.25rem]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={item.cover}
-                    alt={item.coverAlt}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                  />
-                </div>
-              )}
-              <div className="px-2 pb-2 pt-5">
-                <p className="label flex flex-wrap gap-x-3 gap-y-1 text-parchment-muted">
-                  <span>{item.type}</span>
-                  <span>{item.dateLabel}</span>
-                  <span className="normal-case tracking-normal">{item.minutes} min read</span>
-                </p>
-                <h2 className="mt-2 font-display text-xl leading-snug text-parchment">{item.title}</h2>
-                {item.description && (
-                  <p className="mt-2 font-rounded text-base leading-relaxed text-secondary-text">
-                    {item.description}
-                  </p>
-                )}
-                {item.tagNames.length > 0 && (
-                  <p className="mt-3 flex flex-wrap gap-x-3 gap-y-1 font-rounded text-sm text-rust-deep dark:text-rust-soft">
-                    {item.tagNames.slice(0, 3).map((t) => (
-                      <span key={t}>{t}</span>
-                    ))}
-                  </p>
-                )}
-                <span className="mt-5 inline-flex items-center gap-2 rounded-full border border-parchment/40 px-4 py-1.5 font-rounded text-sm text-parchment transition-colors duration-300 group-hover:border-parchment group-hover:bg-parchment group-hover:text-primary-bg">
-                  {ctaLabel(item.type)}
-                  <span aria-hidden="true">→</span>
-                </span>
-              </div>
-            </a>
+          <li key={item.href} className="flex">
+            <div className="flex w-full [&>a]:w-full">
+              <Card item={item} tone={toneOf.get(item.href) ?? ''} />
+            </div>
           </li>
         ))}
       </ol>
