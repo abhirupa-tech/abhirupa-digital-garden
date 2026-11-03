@@ -80,6 +80,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: STATIC_PAGES_UPDATED,
   };
 
+  // The all-writing index changes whenever any piece does.
+  const writing: MetadataRoute.Sitemap[number] = {
+    url: `${site.url}/writing/`,
+    lastModified: newestDate(published),
+  };
+
   // The Lab hub plus each experiment's own page.
   const lab: MetadataRoute.Sitemap = [
     { url: `${site.url}/lab/`, lastModified: STATIC_PAGES_UPDATED },
@@ -109,5 +115,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: entry.date ? isoDate(entry.date) : STATIC_PAGES_UPDATED,
   }));
 
-  return [home, about, ...lab, ...sections, ...collections, ...articles];
+  return [home, about, writing, ...lab, ...sections, ...collections, ...articles];
 }

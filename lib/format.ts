@@ -51,3 +51,8 @@ export function plainExcerpt(markdown: string, max = 500): string {
   if (text.length <= max) return text;
   return `${text.slice(0, max).replace(/\s+\S*$/, '')}…`;
 }
+
+/** "agentic-ai" -> "agentic ai": a tag slug read as words. */
+export function topicLabel(tag: string): string {
+  return tag.replace(/-/g, ' ');
+}
