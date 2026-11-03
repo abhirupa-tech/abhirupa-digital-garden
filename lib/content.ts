@@ -40,6 +40,11 @@ export type ContentEntry = {
   link: string;
   aspect: 'tall' | 'wide' | 'square';
   draft: boolean;
+  /**
+   * Pins the piece to the homepage's highlight slot regardless of date. When
+   * several pieces set it, the newest of them wins.
+   */
+  featured: boolean;
   body: string;
 };
 
@@ -90,6 +95,7 @@ export function getEntries(section: string): ContentEntry[] {
         link: String(data.link ?? ''),
         aspect: coerceAspect(data.aspect),
         draft: Boolean(data.draft),
+        featured: data.featured === true,
         body: content.trim(),
       } satisfies ContentEntry;
     });
@@ -114,16 +120,18 @@ export function getSectionEntries(section: string): ContentEntry[] {
 }
 
 /**
- * The single newest published, page-backed piece across every section — the
- * homepage's featured "hero blog." Draws from all content folders so the most
- * recent thing written anywhere gets top billing, and updates automatically as
- * new pieces land. Returns null when there's no eligible content.
+ * The homepage's featured "hero blog." A piece pinned with `featured: true`
+ * front matter takes the slot; otherwise it's the single newest published,
+ * page-backed piece across every section, so the most recent thing written
+ * anywhere gets top billing automatically. Returns null when there's no
+ * eligible content.
  */
 export function getLatestEntry(): ContentEntry | null {
-  return allSections()
+  const published = allSections()
     .flatMap((s) => getEntries(s))
     .filter((e) => !e.draft && !e.link)
-    .sort((a, b) => (a.date < b.date ? 1 : -1))[0] ?? null;
+    .sort((a, b) => (a.date < b.date ? 1 : -1));
+  return published.find((e) => e.featured) ?? published[0] ?? null;
 }
 
 /** Every content folder under /content (the section ids). */
