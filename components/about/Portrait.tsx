@@ -26,7 +26,7 @@ export function Portrait() {
           Bengaluru, India
         </p>
         <p className="mt-1 font-rounded text-xs font-light text-parchment-muted">
-          Frontend for AI · tending a digital garden
+          Frontend for AI · essays, guides, playbooks
         </p>
       </div>
     </Reveal>

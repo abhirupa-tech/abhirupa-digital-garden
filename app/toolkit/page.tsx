@@ -16,7 +16,7 @@ import {
 } from '@/components/typography';
 
 const DESCRIPTION =
-  'The UI components every piece in Abhirupa Mitra’s garden is written with: callouts, margin notes, link cards, stat rows, figures and more, each shown live with its MDX.';
+  'The UI components every essay, guide and playbook by Abhirupa Mitra is written with: callouts, margin notes, link cards, stat rows, figures and more, each shown live with its MDX.';
 
 export const metadata: Metadata = {
   title: 'Toolkit',

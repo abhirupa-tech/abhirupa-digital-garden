@@ -97,7 +97,7 @@ export default function WritingPage() {
       />
       <main className="zone pt-28 pb-16 md:pt-36 md:pb-24">
         <header className="max-w-3xl">
-          <span className="label">The Garden · {items.length} pieces</span>
+          <span className="label">Essays · Guides · Playbooks · {items.length} pieces</span>
           <h1 className="mt-4 font-display text-section font-medium leading-[1.05] text-parchment">
             Writing
           </h1>

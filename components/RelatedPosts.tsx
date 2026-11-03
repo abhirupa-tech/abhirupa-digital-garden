@@ -21,7 +21,7 @@ export function RelatedPosts({ entries }: { entries: ContentEntry[] }) {
       <h2 id="related-heading" className="font-display text-2xl leading-tight text-parchment md:text-3xl">
         If you liked this, you&rsquo;ll like these
       </h2>
-      <p className="label mt-2 text-parchment-muted">A few more from the garden</p>
+      <p className="label mt-2 text-parchment-muted">More essays, guides and playbooks</p>
 
       <div className="mt-7 grid gap-5 sm:grid-cols-3">
         {entries.map((entry, i) => (

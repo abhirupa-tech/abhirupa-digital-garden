@@ -48,7 +48,7 @@ function formatCopy(slug: string, label: string, count: number) {
   return {
     lede:
       known?.lede ??
-      `Every ${label.toLowerCase()} in the garden, gathered in one place — written across the practice, field notes, and design thinking.`,
+      `Every ${label.toLowerCase()}, gathered in one place — written across the practice, field notes, and design thinking.`,
     meta:
       known?.meta ??
       `${count} ${count === 1 ? label.toLowerCase() : `${label.toLowerCase()}s`} by ${site.name} on agentic AI interfaces, frontend for AI, and design thinking.`,
@@ -178,7 +178,7 @@ export default async function CollectionPage({ params }: { params: Promise<PageP
       />
       <main className="zone relative pt-28 pb-10 md:pt-36 md:pb-20">
         <Reveal className="max-w-2xl">
-          <span className="label text-parchment-muted">The Garden · by format</span>
+          <span className="label text-parchment-muted">Writing · by format</span>
           <h1 className="mt-5 font-display text-section font-medium leading-[1.05] text-parchment">
             {title}
           </h1>
