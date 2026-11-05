@@ -43,8 +43,8 @@ spread until it's a cloudy mess. That spreading is diffusion.
 Image-style diffusion is hard for natural language because text is made of
 discrete symbols. Each token is a fixed value from a finite vocabulary.
 
-<Highlight>You can make a pixel slightly brighter, but you cannot make a token
-slightly more "strawberry".</Highlight>
+You can make a pixel slightly brighter, but you cannot make a token
+slightly more "strawberry".
 
 Text diffusion models so far have worked around this with **masking**: hide
 tokens, then fill in the blanks over several steps. But every step is still a
@@ -87,7 +87,7 @@ noise, and the model cleans all of them up together, step by step.
 
 </Callout>
 
-<StatRow caption="Sigma's shape at a glance">
+<StatRow>
   <Stat value="16" label="numbers per token vector" />
   <Stat value="32" label="tokens denoised together per chunk" />
 </StatRow>
@@ -119,8 +119,8 @@ this parallelism pays off most.
 />
 
 Nemotron-Labs Diffusion is built around a simple idea:
-<Highlight>autoregressive and diffusion generation shouldn't be separate model
-families. They should be capabilities of the same model.</Highlight>
+autoregressive and diffusion generation shouldn't be separate model
+families. They should be capabilities of the same model.
 
 The model supports three generation modes:
 
@@ -136,7 +136,7 @@ That last one is the interesting part for engineers. At
 the output is identical to plain autoregressive decoding, yet NVIDIA reports a
 big jump in speed.
 
-<StatRow caption="Self-speculation on one NVIDIA B200, as reported by NVIDIA">
+<StatRow>
   <Stat value="~865" label="tokens per second" />
   <Stat value="~4×" label="the autoregressive baseline" />
   <Stat value="0" label="change in output at temperature 0" />

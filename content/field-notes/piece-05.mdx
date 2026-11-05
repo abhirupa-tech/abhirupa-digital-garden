@@ -17,7 +17,7 @@ like a conscience — and I suspect that's a *sooner* problem rather than a
 *later* one — none of the loudest voices in the room would be in a position to
 do much about it.
 
-<Highlight>A2A is a step in that direction.</Highlight> So let's talk about what
+A2A is a step in that direction. So let's talk about what
 it actually does, and how it works under the hood.
 
 ## What is the A2A protocol?
@@ -55,7 +55,7 @@ once per agent, forever, in a system that's supposed to be growing.
 
 A2A collapses that. One fixed way to connect to any compliant agent means your
 code stays maintainable, and — the part people underrate —
-<Highlight>it makes agents discoverable.</Highlight>
+it makes agents discoverable.
 
 ## How does an agent introduce itself?
 
@@ -110,7 +110,7 @@ So when you read one, look for:
 - Skills that are narrow and specific, not one vague "I can help with anything"
 - Auth scoped per client, not a single shared key
 
-<Highlight>An unverified card is an open door.</Highlight>
+An unverified card is an open door.
 
 ### A2A isn't Google's project anymore
 
@@ -133,7 +133,7 @@ The genuinely interesting one is `INPUT_REQUIRED`. The agent stops mid-task and
 asks you a question. There's also `AUTH_REQUIRED`, for when it needs credentials
 to keep going.<Citation n={2} source="Life of a Task — the full A2A task state machine and transition rules." href="https://a2a-protocol.org" />
 
-<Highlight>That's the thing plain REST never gave us — an agent that can pause and say "I need more from you," instead of just failing.</Highlight>
+That's the thing plain REST never gave us — an agent that can pause and say "I need more from you," instead of just failing.
 
 ## Creating a client is genuinely simple
 

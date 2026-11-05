@@ -72,7 +72,7 @@ In fact, you can even use it to create screen reader simulations in Playwright.
 
 AI can propose prop contracts, state models, event flows, and even full architecture variants before you write a single line. It's like having a second engineer give you multiple clean approaches you can choose from.
 
-In this use case, treat AI as your <Highlight>brainstorming partner</Highlight>. It suggests, rather than telling you.
+In this use case, treat AI as your brainstorming partner. It suggests, rather than telling you.
 
 Use it to:
 

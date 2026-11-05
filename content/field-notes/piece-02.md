@@ -20,7 +20,7 @@ We are talking about the future here — you'll want to stay till the very end.
 
 Anthropic recently shared something that genuinely made me stop and reread the paragraph. They claim their model can tell when its own thoughts are being messed with. Not in a sci-fi way — through a real concept-injection experiment, where they slipped completely unrelated ideas straight into the model's activation layers.
 
-And here's the part that was really interesting: Opus 4.\* actually noticed. It picked up that something foreign had been injected into its reasoning — quietly, mid-thought — long before it generated a final answer. No prompts, no nudges, nothing guiding it from the outside. <Highlight>It just knew it was being messed with.</Highlight>
+And here's the part that was really interesting: Opus 4.\* actually noticed. It picked up that something foreign had been injected into its reasoning — quietly, mid-thought — long before it generated a final answer. No prompts, no nudges, nothing guiding it from the outside. It just knew it was being messed with.
 
 Does this mean LLMs have a conscience? Is the inevitable happening? Well — not yet. But stay with me for a moment.
 
@@ -105,7 +105,7 @@ tokenizes the context) → Injects into LLM Layer
 
 - **Feedback** — the user provides feedback to any layer of the LLM's chain of thought, useful when the reasoning seen in the stream needs correction or reinforcement. This could be translated into bias vectors, temperature shifts, and more.
 
-The idea isn't to enable LLM introspection or thinking capabilities. It's about being ready to <Highlight>architect the entire user experience</Highlight> for the time when such performant models arrive.
+The idea isn't to enable LLM introspection or thinking capabilities. It's about being ready to architect the entire user experience for the time when such performant models arrive.
 
 ### Further reading
 

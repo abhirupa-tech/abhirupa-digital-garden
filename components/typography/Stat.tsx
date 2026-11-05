@@ -22,20 +22,14 @@ export function Stat({ value, label }: StatProps) {
 }
 
 /**
- * Two or three Stat figures side by side (stacked on phones), with an optional
- * caption underneath, for numbers that make the argument on their own.
+ * Two or three Stat figures side by side (stacked on phones), for numbers
+ * that make the argument on their own. No caption: each Stat's label says
+ * what it measures, and the surrounding text gives the source.
  */
-export function StatRow({ children, caption }: { children: ReactNode; caption?: string }) {
+export function StatRow({ children }: { children: ReactNode }) {
   return (
-    <figure className="my-8 sm:my-14">
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] sm:gap-8">
-        {children}
-      </div>
-      {caption && (
-        <figcaption className="mt-4 text-center font-rounded text-[0.75rem] uppercase tracking-label text-parchment-faint">
-          {caption}
-        </figcaption>
-      )}
-    </figure>
+    <div className="my-8 grid grid-cols-1 gap-6 sm:my-12 sm:grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] sm:gap-8">
+      {children}
+    </div>
   );
 }

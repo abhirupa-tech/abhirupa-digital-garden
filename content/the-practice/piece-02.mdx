@@ -26,7 +26,7 @@ Then came the moment I decided to actually host it.
 
 I won't lie — I was scared. I've always been a frontend developer. Servers, cloud infrastructure, deployment pipelines — that was always someone else's problem. I knew how to build things. I just never had to worry about where they lived.
 
-But here's the thing nobody tells you upfront: <Highlight>AI won't do this part for you</Highlight>. You can ask ChatGPT, you can ask Claude, you can read every tutorial on the internet — and none of it fully prepares you for the actual manual, step-by-step grind of moving a real full-stack app to the cloud.
+But here's the thing nobody tells you upfront: AI won't do this part for you. You can ask ChatGPT, you can ask Claude, you can read every tutorial on the internet — and none of it fully prepares you for the actual manual, step-by-step grind of moving a real full-stack app to the cloud.
 
 *So last weekend, I decided to just sit through it and get it done.*
 
@@ -40,7 +40,7 @@ For hosting, I went with Vercel for the frontend and Render for the backend. Bot
 
 *Simple enough split, right? Except here's what I didn't fully think through.*
 
-These two aren't independent. They're <Highlight>deeply interdependent</Highlight>. Which means I couldn't just deploy one and figure out the other later. I had to configure both platforms side by side, in sync, at the same time.
+These two aren't independent. They're deeply interdependent. Which means I couldn't just deploy one and figure out the other later. I had to configure both platforms side by side, in sync, at the same time.
 
 <Figure
 src="https://res.cloudinary.com/ra5tg986/image/upload/v1784737340/fd6241a2-071d-4827-9854-b2d1eb247323.png"
@@ -52,7 +52,7 @@ src="https://res.cloudinary.com/ra5tg986/image/upload/v1784737340/fd6241a2-071d-
 
 Before every API call your frontend makes, a <Subnote note="The browser's pre-check for a cross-origin (CORS) request — it asks the server whether the real call is allowed before sending it.">preflight request</Subnote> goes out first. You can see it in your network tab. It checks if the server allows the request, and only then does your actual fetch go through.
 
-<Highlight>When CORS fails, your frontend screams. Your backend doesn't even flinch.</Highlight>
+When CORS fails, your frontend screams. Your backend doesn't even flinch.
 
 <Figure
   src="https://res.cloudinary.com/ra5tg986/image/upload/v1784737343/ddc9f142-ea54-429d-860a-1553b52e920b.png"
@@ -135,7 +135,7 @@ src="https://res.cloudinary.com/ra5tg986/image/upload/v1784737361/c241868a-45a8-
 
 One thing worth knowing here. Vercel supports preview deployments out of the box. Every branch you push gets its own preview URL automatically. Render does not do this natively, but you can manually create a separate service pointing to a different branch if you want to test before touching production. Use the Vercel preview to get a sense of what you're shipping before it goes live.
 
-Once you push, go into both Vercel and Render and set up your environment variables. And here's a mistake that's way more common than you'd think. Do not reference any localhost ports in your environment variables on these platforms. No `localhost:8080`, no `127.0.0.1`, nothing local. <Highlight>Everything needs to point to the actual live URLs</Highlight> of your deployed services.
+Once you push, go into both Vercel and Render and set up your environment variables. And here's a mistake that's way more common than you'd think. Do not reference any localhost ports in your environment variables on these platforms. No `localhost:8080`, no `127.0.0.1`, nothing local. Everything needs to point to the actual live URLs of your deployed services.
 
 
 After that, there will be failures. That's not a maybe, that's a guarantee. Go into your deployment logs on both platforms, read them carefully, push the fixes, and redeploy. Rinse and repeat.

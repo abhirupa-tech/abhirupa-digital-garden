@@ -64,7 +64,7 @@ Here's what one row update actually costs:
 - Each client marks its cached copy stale and refetches, for every app that was
   modified.
 
-<Highlight>So one write is never one operation.</Highlight>
+So one write is never one operation.
 
 A single database write fans out across branches, leading to multiple updates
 and API calls from the client. Let's call this the **multiplier**. If an entity
@@ -119,7 +119,7 @@ cache refreshes and notifications behind the scenes. When I woke up, I was
 already tagged in multiple places, and someone had to step in to scale up the
 pipelines.
 
-<Highlight>But this piece isn't about the mess-up. It's about how to approach engineering problems like this one.</Highlight>
+But this piece isn't about the mess-up. It's about how to approach engineering problems like this one.
 
 ## Design patterns that would have prevented it
 
@@ -154,7 +154,7 @@ with a <Subnote note="A randomized delay within bounds you choose — say, anywh
 
 **Why random, and not just a fixed delay?** A fixed 15-minute delay just moves
 the spike 15 minutes into the future.
-<Highlight>Randomness is what breaks up the herd.</Highlight>
+Randomness is what breaks up the herd.
 
 ### 2. A circuit breaker on the job queue
 
@@ -183,7 +183,7 @@ nobody has opened yet usually doesn't.
 />
 
 Backfills look boring on paper. It's just a script that updates some rows. But
-in a system at scale, <Highlight>no row update is ever just a row update.</Highlight>
+in a system at scale, no row update is ever just a row update.
 
 Every write can quietly trigger caches, clients, notifications, and queues
 downstream — and none of that shows up while you watch the first few batches go

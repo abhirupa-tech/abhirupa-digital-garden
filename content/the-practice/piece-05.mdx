@@ -20,7 +20,7 @@ In this blog we'll be looking at the current Gemini chat experience as of 28th J
 There are some design constraints to be wary of:
 
 - **Scale.** When we are designing an agentic UI, we are expecting a huge number of users, each user carrying multiple sessions. If those sessions are all fetched and rendered at once, they completely burden the session sidebar and the experience degrades.
-- **Multi device.** Gemini chat is a single UI associated with an account, not with a browser. The same account can be open on another device, or in another tab, at the same time — so we <Highlight>cannot treat anything stored in the browser as authoritative</Highlight>, and we cannot rely on the browser cache as the source of truth.
+- **Multi device.** Gemini chat is a single UI associated with an account, not with a browser. The same account can be open on another device, or in another tab, at the same time — so we cannot treat anything stored in the browser as authoritative, and we cannot rely on the browser cache as the source of truth.
 - **Cold start.** Most sessions will begin with a cold start, which means greater latency on the first user message to the LLM — we'll talk about this further down.
 
 <Figure
@@ -85,7 +85,7 @@ We are looking at surfaces which are prone to collaboration, which means that in
 
 So in that case, we would go ahead with something that is called a soft editing lock. If two tabs are editing simultaneously, we don't hard lock, but we show a message which says that the user is currently editing this draft.
 
-We are also going to support live streaming, which means that since every tab is subscribing to the same conversation, any streaming response is going to be simultaneously streamed into every tab. This ensures there is a <Highlight>single generation</Highlight>, and all the tabs are in the same state at all times.
+We are also going to support live streaming, which means that since every tab is subscribing to the same conversation, any streaming response is going to be simultaneously streamed into every tab. This ensures there is a single generation, and all the tabs are in the same state at all times.
 
 <Figure
   src="https://miro.medium.com/v2/resize:fit:1400/1*9KjGh4XOJyXhGUgIdT68aw.png"

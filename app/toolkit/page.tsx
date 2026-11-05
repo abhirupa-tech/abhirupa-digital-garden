@@ -6,7 +6,6 @@ import {
   Callout,
   CodeBlock,
   Figure,
-  Highlight,
   LinkCard,
   Quote,
   Stat,
@@ -36,18 +35,6 @@ export const metadata: Metadata = {
 type Tool = { name: string; tag: string; purpose: string; demo: ReactNode; mdx: string };
 
 const TOOLS: Tool[] = [
-  {
-    name: 'Highlight',
-    tag: '<Highlight>',
-    purpose: 'Marks the one line a skimming reader should not miss.',
-    demo: (
-      <p className="font-rounded text-[1.08rem] leading-[1.6] text-parchment sm:text-[1.22rem]">
-        If code is no longer the bottleneck, <Highlight>then planning, alignment, review and
-        verification are.</Highlight>
-      </p>
-    ),
-    mdx: `<Highlight>then planning, alignment, review and verification are.</Highlight>`,
-  },
   {
     name: 'Subnote',
     tag: '<Subnote note="…">',
@@ -82,12 +69,12 @@ const TOOLS: Tool[] = [
     tag: '<StatRow> + <Stat>',
     purpose: 'Two or three numbers that make the argument on their own.',
     demo: (
-      <StatRow caption="Teams using AI, per engineer">
+      <StatRow>
         <Stat value="+152%" label="more pull requests" />
         <Stat value="+27%" label="more deliverables" />
       </StatRow>
     ),
-    mdx: `<StatRow caption="Teams using AI, per engineer">
+    mdx: `<StatRow>
   <Stat value="+152%" label="more pull requests" />
   <Stat value="+27%" label="more deliverables" />
 </StatRow>`,

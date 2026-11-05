@@ -14,7 +14,7 @@ draft: false
 
 I'm writing this after months of playing around with what works and what doesn't. Consider these notes on what failed, and what actually sped up my development process.
 
-We'll talk about setting up your entire process so that all you need is a CLI, and all you should be doing is <Highlight>writing sentences in English</Highlight>.
+We'll talk about setting up your entire process so that all you need is a CLI, and all you should be doing is writing sentences in English.
 
 But before everything — here's a pre-cap on the terms you need to be aware of.
 
@@ -40,7 +40,7 @@ CLAUDE.md is the file Claude Code auto-loads at the start of every session.
 
 AGENTS.md is the one nearly every other tool or agent reads. It showed up when OpenAI launched Codex in mid-2025 and has since spread to more than 60,000 public repositories, with GitHub, Google, Anthropic and Cursor all supporting their own flavour of it.
 
-You don't need both. AGENTS.md exists to solve one problem: to prevent maintaining separate files for separate LLMs (.cursorrules, CLAUDE.md, .github/copilot-instructions.md). AGENTS.md is the cross-tool standard. <Highlight>One file, every agent.</Highlight>
+You don't need both. AGENTS.md exists to solve one problem: to prevent maintaining separate files for separate LLMs (.cursorrules, CLAUDE.md, .github/copilot-instructions.md). AGENTS.md is the cross-tool standard. One file, every agent.
 
 ## Writing your context file
 
@@ -155,7 +155,7 @@ If you're building something that you're sure is going to be used during every c
 
 If you think you have a role-based action for an agent that you'd need only occasionally, but that is still repeatable, then that is something you should make a skill out of.
 
-The reason for the split is cost. Your context file loads on every single session whether it's relevant or not, so it pays token rent constantly. A skill doesn't. Only the description loads until it triggers, so a skill costs nothing while idle. <Highlight>That's the entire economics of the decision.</Highlight>
+The reason for the split is cost. Your context file loads on every single session whether it's relevant or not, so it pays token rent constantly. A skill doesn't. Only the description loads until it triggers, so a skill costs nothing while idle. That's the entire economics of the decision.
 
 ### Skills I personally use
 

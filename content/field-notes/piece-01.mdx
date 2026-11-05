@@ -52,7 +52,7 @@ one needs to know who else is listening. It decouples senders from receivers,
 which sounds clean on paper.
 
 In practice, both patterns break down for the same underlying reason: neither
-one models the <Highlight>relationships between agents</Highlight> explicitly.
+one models the relationships between agents explicitly.
 And once you've felt that pain, you're already halfway to a graph.
 
 You feel the breakdown in three ways:
@@ -61,7 +61,7 @@ You feel the breakdown in three ways:
 - **Coordination overhead.** Five agents on a message bus is a group chat. Fifty is a stadium where everyone is shouting. Without a structure that says who depends on whom, you can't reason about ordering, parallelism, or failure isolation.
 - **Lossy compression.** Each handoff paraphrases and truncates. By the final agent, the original intent has been through a game of telephone — because the pipeline was a chain, not a graph.
 
-The first fix is discipline at the boundary — <Highlight>typed contracts</Highlight>.
+The first fix is discipline at the boundary — typed contracts.
 A strict schema (JSON Schema, Pydantic, protobuf, or MCP) defines what an agent
 consumes and produces. Malformed handoffs fail loudly at the edge.
 
@@ -117,10 +117,10 @@ depends on all three of them: it can't propose a dish until it knows what's in
 stock and what you'll actually eat. And the shopping agent depends on the recipe
 agent — it only knows what to buy once a dish is chosen.
 
-This shape has a name. The recipe agent is a <Highlight>fan-in node</Highlight> —
+This shape has a name. The recipe agent is a fan-in node —
 multiple parallel branches converge into it. The orchestrator at the start,
 dispatching to fridge, pantry, and preferences simultaneously, is a
-<Highlight>fan-out node</Highlight> — one node spawning many parallel children.
+fan-out node — one node spawning many parallel children.
 Every non-trivial agent DAG is some combination of these two patterns.
 
 <Figure
