@@ -1,0 +1,84 @@
+/**
+ * Talks, one entry per appearance. The Speaking page renders each as its own
+ * section: the talk (recording + proposal), the slide deck, and the code.
+ *
+ * Every media field is optional. Leave it empty and the page shows a styled
+ * "coming soon" placeholder in its place; fill it in and the real thing
+ * renders — no component changes needed.
+ */
+
+export type TalkRepo = {
+  name: string;
+  href: string;
+  description: string;
+  /** Short status chip, e.g. "Live" or "Coming soon". */
+  status?: string;
+};
+
+export type Talk = {
+  /** Anchor id on the Speaking page, e.g. /speaking/#wearedevelopers-2026 */
+  id: string;
+  event: string;
+  edition: string;
+  /** Talk title. Empty while it's still being finalised. */
+  title: string;
+  /** One-paragraph abstract / proposal. Empty shows a placeholder. */
+  abstract: string;
+  /** ISO date of the session, or empty if not announced. */
+  date: string;
+  /** Session time slot as printed on the agenda, e.g. "10:00 – 10:30". */
+  time: string;
+  /** Stage or room. */
+  stage: string;
+  /** Session format, e.g. "Talk" or "Keynote". */
+  format: string;
+  /** Topic chips from the conference agenda. */
+  topics: string[];
+  /** The speaker page on the conference site. */
+  eventUrl: string;
+  /** The session's own page on the agenda. */
+  sessionUrl: string;
+  /** YouTube video id (the part after `v=`), once the recording is up. */
+  youtubeId: string;
+  /** Public link to the slide deck (PDF, Google Slides, Speaker Deck…). */
+  slidesUrl: string;
+  /** Optional embeddable version of the deck, rendered in an iframe. */
+  slidesEmbedUrl: string;
+  repos: TalkRepo[];
+};
+
+export const talks: Talk[] = [
+  {
+    id: 'wearedevelopers-2026',
+    event: 'WeAreDevelopers',
+    edition: 'Conference India 2026',
+    title: 'React Under Fire: Rendering Performance for Streaming Agent UIs',
+    abstract:
+      'A single streamed agent response can trigger dozens of React state updates a second. This talk takes the rendering and state problems unique to agentic UIs apart, drawing on production work and a public benchmark of rendering strategies under agent event streams. It covers state architecture (why partial and final text are different shapes, and why classic Redux patterns buckle under token streams), implementation tradeoffs (a streaming library versus a custom buffering layer, and where useSyncExternalStore fits, live-coded with real measurements), and standards (what the AG-UI protocol pins down for agent-to-UI communication, and what it leaves to you).',
+    date: '2026-11-26',
+    time: '10:00 – 10:30',
+    stage: 'Stage 4',
+    format: 'Talk',
+    topics: ['Agentic AI', 'React', 'Web Performance', 'AI Standards', 'UI/UX'],
+    eventUrl: 'https://www.wearedevelopers.com/conference-india/speakers/abhirupa-mitra',
+    sessionUrl:
+      'https://www.wearedevelopers.com/conference-india/agenda/sessions/react-under-fire-rendering-performance-for-streaming-agent-uis-1288492',
+    youtubeId: '',
+    slidesUrl: '',
+    slidesEmbedUrl: '',
+    repos: [
+      {
+        name: 'we-are-developers',
+        href: 'https://github.com/abhirupa-tech/we-are-developers',
+        description: 'Everything from the talk: the code samples, demos and notes.',
+        status: 'Repo',
+      },
+      {
+        name: 'MockGPT',
+        href: '',
+        description: 'A React performance analyzer for streaming LLM responses.',
+        status: 'Demo coming soon',
+      },
+    ],
+  },
+];

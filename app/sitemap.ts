@@ -27,7 +27,7 @@ export const dynamic = 'force-static';
  * whole file, which is the opposite of what a site fighting for crawl budget
  * needs. Every other URL here derives its date from real content instead.
  */
-const STATIC_PAGES_UPDATED = '2026-11-03';
+const STATIC_PAGES_UPDATED = '2026-11-17';
 
 /**
  * `lastmod` as a plain `YYYY-MM-DD` date.
@@ -92,6 +92,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: STATIC_PAGES_UPDATED,
   };
 
+  const speaking: MetadataRoute.Sitemap[number] = {
+    url: `${site.url}/speaking/`,
+    lastModified: STATIC_PAGES_UPDATED,
+  };
+
   // The all-writing index changes whenever any piece does.
   const writing: MetadataRoute.Sitemap[number] = {
     url: `${site.url}/writing/`,
@@ -127,5 +132,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: entry.date ? isoDate(entry.date) : STATIC_PAGES_UPDATED,
   }));
 
-  return [home, about, writing, now, toolkit, ...lab, ...sections, ...collections, ...articles];
+  return [home, about, writing, now, toolkit, speaking, ...lab, ...sections, ...collections, ...articles];
 }

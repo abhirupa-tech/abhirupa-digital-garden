@@ -24,6 +24,7 @@ const WRITING_LINKS: { href: string; label: string; blurb: string }[] = [
 
 const PAGE_LINKS = [
   { href: '/lab/', label: 'Lab' },
+  { href: '/speaking/', label: 'Speaking' },
   { href: '/now/', label: 'Now' },
   { href: '/about/', label: 'About' },
 ];
@@ -203,7 +204,7 @@ function MobileMenu({ path }: { path: string }) {
 /**
  * Site header: name on the left (home link), labelled destinations on the
  * right — a Writing menu with each section and its one-line description, then
- * Lab, Now, About and the theme switch. Phones get the name and one menu
+ * Lab, Speaking, Now, About and the theme switch. Phones get the name and one menu
  * button. Transparent at the top, an opaque canvas once scrolled.
  */
 export function TopNav() {
