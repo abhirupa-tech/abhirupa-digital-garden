@@ -31,14 +31,14 @@ export function TokenStream() {
 
   return (
     <div aria-hidden="true" className="font-mono text-[0.8rem] leading-relaxed">
-      <p className="min-h-[4.5em] text-[#e9e4d8]">
+      <p className="min-h-[4.5em] text-pastel-ink">
         {TOKENS.slice(0, shown).join('')}
-        {streaming && <span className="ml-0.5 inline-block h-[1em] w-[0.5em] translate-y-[0.15em] bg-[#f0a35e]" />}
+        {streaming && <span className="ml-0.5 inline-block h-[1em] w-[0.5em] translate-y-[0.15em] bg-pastel-peach" />}
       </p>
-      <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-3 text-[0.7rem] uppercase tracking-[0.14em] text-[#9aa3ad]">
+      <div className="mt-3 flex items-center justify-between border-t border-pastel-ink/10 pt-3 text-[0.7rem] uppercase tracking-[0.14em] text-pastel-ink/55">
         <span>tokens {String(shown).padStart(2, '0')}</span>
         <span>renders {String(shown).padStart(2, '0')}</span>
-        <span className={streaming ? 'text-[#f0a35e]' : 'text-[#7fc4a8]'}>{streaming ? '● streaming' : '● done'}</span>
+        <span className={streaming ? 'text-[#c77a4e] dark:text-[#e8b08c]' : 'text-[#5f8a6f] dark:text-[#a8c9b2]'}>{streaming ? '● streaming' : '● done'}</span>
       </div>
     </div>
   );

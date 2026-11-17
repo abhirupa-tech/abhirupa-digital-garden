@@ -28,6 +28,16 @@
   --color-sunset: var(--c-sunset); /* warm sunset orange — About page pictograms */
   --color-hairline: var(--c-hairline); /* dividers, borders */
 
+  /* Pastel set — the Speaking page's poster grid. Soft, low-contrast fills
+     that sit on the parchment canvas; dimmed rather than inverted in dark. */
+  --color-pastel-lilac: var(--c-pastel-lilac);
+  --color-pastel-peach: var(--c-pastel-peach);
+  --color-pastel-sky: var(--c-pastel-sky);
+  --color-pastel-sage: var(--c-pastel-sage);
+  --color-pastel-blush: var(--c-pastel-blush);
+  --color-pastel-cream: var(--c-pastel-cream);
+  --color-pastel-ink: var(--c-pastel-ink); /* text on pastel fills */
+
   --color-ink-400: rgb(var(--raw-ink-400));
   --color-ink-500: rgb(var(--raw-ink-500));
   --color-ink-600: rgb(var(--raw-ink-600));
@@ -203,6 +213,14 @@
     --c-sunset: #e05d1f;
     --c-hairline: rgba(20, 18, 16, 0.1);
 
+    --c-pastel-lilac: #ddd3ea;
+    --c-pastel-peach: #f4d4bc;
+    --c-pastel-sky: #d6e2ef;
+    --c-pastel-sage: #dbe5d3;
+    --c-pastel-blush: #f1dadb;
+    --c-pastel-cream: #f3eee2;
+    --c-pastel-ink: #34365e;
+
     /* ── Ember phrase (hero H1 hover) ──────────────────────────────────
        The fire ramp the hovered letters heat through, plus the pointer
        halo behind them. On this near-white parchment a white halo would
@@ -286,6 +304,14 @@
     /* Sunset: a warm, glowing orange for pictograms on the dark canvas. */
     --c-sunset: #fb7a3c;
     --c-hairline: rgba(224, 224, 224, 0.12);
+
+    --c-pastel-lilac: #36324a;
+    --c-pastel-peach: #45372f;
+    --c-pastel-sky: #2d3746;
+    --c-pastel-sage: #323b31;
+    --c-pastel-blush: #43343a;
+    --c-pastel-cream: #2a2927;
+    --c-pastel-ink: #e6e1f2;
 
     /* Ember phrase — dark canvas. The ramp can run all the way to a pale
        white-hot core here, and the halo is the whitish breath glow,
