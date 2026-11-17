@@ -10,6 +10,7 @@ import {
   type ContentEntry,
 } from '@/lib/content';
 import { labProjects } from '@/lib/lab';
+import { talks } from '@/lib/speaking';
 
 // Emit as a static file for `output: 'export'`.
 export const dynamic = 'force-static';
@@ -92,10 +93,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: STATIC_PAGES_UPDATED,
   };
 
-  const speaking: MetadataRoute.Sitemap[number] = {
-    url: `${site.url}/speaking/`,
-    lastModified: STATIC_PAGES_UPDATED,
-  };
+  // The Speaking index plus each talk's own page.
+  const speaking: MetadataRoute.Sitemap = [
+    { url: `${site.url}/speaking/`, lastModified: STATIC_PAGES_UPDATED },
+    ...talks.map((t) => ({ url: `${site.url}/speaking/${t.id}/`, lastModified: STATIC_PAGES_UPDATED })),
+  ];
 
   // The all-writing index changes whenever any piece does.
   const writing: MetadataRoute.Sitemap[number] = {
@@ -132,5 +134,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: entry.date ? isoDate(entry.date) : STATIC_PAGES_UPDATED,
   }));
 
-  return [home, about, writing, now, toolkit, speaking, ...lab, ...sections, ...collections, ...articles];
+  return [home, about, writing, now, toolkit, ...speaking, ...lab, ...sections, ...collections, ...articles];
 }

@@ -16,7 +16,7 @@ export type TalkRepo = {
 };
 
 export type Talk = {
-  /** Anchor id on the Speaking page, e.g. /speaking/#wearedevelopers-2026 */
+  /** URL slug: the talk lives at /speaking/<id>/ */
   id: string;
   event: string;
   edition: string;
@@ -82,3 +82,16 @@ export const talks: Talk[] = [
     ],
   },
 ];
+
+export function getTalk(id: string): Talk | undefined {
+  return talks.find((t) => t.id === id);
+}
+
+/** Upcoming talks soonest-first, then past talks newest-first. Undated talks count as upcoming. */
+export function splitTalks(today = new Date().toISOString().slice(0, 10)) {
+  const upcoming = talks
+    .filter((t) => !t.date || t.date >= today)
+    .sort((a, b) => (a.date || '9999').localeCompare(b.date || '9999'));
+  const past = talks.filter((t) => t.date && t.date < today).sort((a, b) => b.date.localeCompare(a.date));
+  return { upcoming, past };
+}
