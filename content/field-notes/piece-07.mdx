@@ -1,0 +1,256 @@
+---
+title: "A2UI 1.0: A Deep Dive on How Agents Build Native UI"
+slug: "a2ui-1-0-deep-dive-how-agents-build-native-ui"
+section: "field-notes"
+type: "Guide"
+description: "A guide to understanding, reading and rendering generative user interfaces: how AG-UI, A2UI and MCP Apps fit together, and how a client keeps an agent inside its own design system."
+tags: ["Agentic UI", "Frontend Engineering", "Agentic AI", "MCP", "System Design"]
+date: "2026-11-16"
+cover: ""
+coverAlt: "An agent composing a native interface from a trusted component catalog"
+aspect: "wide"
+draft: false
+---
+
+In an upcoming conference, I'm going to talk about building frontends that
+create a seamless and joyful experience for people who work with LLMs.
+
+I've been thinking about this a lot. Right now, when we talk about rendering or
+building interfaces for agentic AI, we mostly think of text. But at this point,
+text is one of the less interesting ways an agent communicates.
+
+LLMs do so much more now. They make tool calls, connect with MCP servers,
+handle connectors, ask for permissions, and sometimes even do background
+thinking. As [experience developers](https://chiryan.medium.com/ux-and-experience-design-whats-the-difference-bde8eaa67f21),
+it's our duty to make the interaction with an agent feel seamless and
+delightful.
+
+Google just launched [A2UI 1.0](https://a2ui.org/) — the first stable version
+of its framework-agnostic open standard for Generative UI!
+
+## Why the delight?
+
+Because I believe one of the core elements of building surfaces for users is
+that they should bring joy. AI has got all of us by the throat anyway, so why
+not bring a smile to someone's face while we can?
+
+This is going to be a deep explainer on AG-UI and A2UI.
+
+The two are closely interrelated. A2UI rides along with AG-UI.
+
+I like to think of AG-UI as a backend protocol, a standard in which LLMs
+communicate their events to a frontend. Those events could be tool calls, MCP
+server connections, permission checks, or even plain text.
+
+A2UI, on the other hand, is a structured format in which UI elements are
+described so they can be rendered for human eyes.
+
+I find this a very interesting concept. If the agent lived on our own devices,
+it would have been easy for it to manipulate the DOM directly. But we now live
+in a multi-system world, and we don't know which server the agent is hosted on,
+or which remote system is powering the LLM.
+
+Letting an agent send raw HTML to the client is risky, because you are
+executing markup written by a remote system you don't control.
+
+Sandboxed iframes, which is how MCP Apps works, contain that risk well, but the
+UI stays visually separate from your app and has to be styled independently.
+
+A2UI makes the opposite trade: the agent describes the interface as data, and
+your own components draw it, so styling, accessibility and behavior stay yours.
+
+This is where A2UI comes in. It lets us render UI in a way that is native. You
+provide the components and you provide the styling, and the LLM simply picks
+which components to render and how to render them.
+
+## A2UI 1.0 is stable — released early this November
+
+Google released 1.0 with open-source renderers for web, Android and iOS, plus
+agent SDKs for Python, TypeScript and Dart, and teams at Atlassian, Alation,
+Bloomberg and ByteDance are already building with it.
+
+A2UI's central safety idea is that the agent never sends code. It sends data: a
+flat list of component descriptions that the client validates against a
+catalog it already trusts. The model can only ask for components you have
+approved, and anything outside the catalog is rejected.
+
+Here is what that looks like in practice:
+
+```json
+{
+  "version": "1.0",
+  "createSurface": {
+    "surfaceId": "jira_ticket_form",
+    "catalogId": "https://a2ui.org/specification/v1_0/catalogs/basic/catalog.json",
+    "components": [
+      {
+        "id": "root",
+        "component": "Column",
+        "children": ["summary_input", "priority_picker", "submit_button"]
+      },
+      {
+        "id": "summary_input",
+        "component": "TextField",
+        "label": "Ticket Summary",
+        "variant": "shortText",
+        "value": { "@path": "/ticket/summary" }
+      },
+      {
+        "id": "priority_picker",
+        "component": "ChoicePicker",
+        "variant": "mutuallyExclusive",
+        "options": [
+          { "label": "High", "value": "high" },
+          { "label": "Medium", "value": "medium" },
+          { "label": "Low", "value": "low" }
+        ],
+        "value": { "@path": "/ticket/priority" }
+      },
+      { "id": "submit_label", "component": "Text", "text": "Create Ticket" },
+      {
+        "id": "submit_button",
+        "component": "Button",
+        "child": "submit_label",
+        "variant": "primary",
+        "action": {
+          "event": {
+            "name": "createJiraTicket",
+            "context": {
+              "summary": { "@path": "/ticket/summary" },
+              "priority": { "@path": "/ticket/priority" }
+            }
+          }
+        }
+      }
+    ],
+    "dataModel": {
+      "ticket": { "summary": "", "priority": ["medium"] }
+    }
+  }
+}
+```
+
+Another humongous advantage is that the render surface owner also owns the
+components, so there's no worry about the style matching the app. You create
+your components, and the agent tells you what to render and how.
+
+<LinkCard
+  href="https://developers.googleblog.com/a2ui-10-build-delightful-fast-reliable-agentic-experiences/"
+  title="A2UI 1.0: Build delightful, fast, reliable, agentic experiences"
+  description="Discover A2UI 1.0, an open protocol for generative UI enabling AI agents to respond with rich, interactive, and native…"
+  site="developers.googleblog.com"
+/>
+
+## How AG-UI, A2UI and MCP Apps sit in the stack
+
+These aren't rivals. AG-UI connects an agent runtime to a frontend, A2UI
+describes the interface as data, and MCP Apps lets an MCP server ship an HTML
+app that a host renders in a sandbox. A useful framing is that transport and
+generation format are two independent choices, so any pairing is valid.
+
+AG-UI, A2UI and MCP Apps are complementary rather than competitive. AG-UI deals
+with transporting A2UI messages, and an MCP server exposes a packaged MCP app,
+which further exposes multiple functions for an MCP client to call. The
+recommended selection rule is:
+
+- Use **AG-UI** when your product owns a frontend and needs a way to connect to
+  one or more agent runtimes.
+- Use **A2UI** when the agent you connect to must compose user interfaces from
+  a trusted component vocabulary without shipping executables.
+- Use **MCP Apps** when you want other conversational hosts to use your
+  self-contained interactive view.
+
+<LinkCard
+  href="https://appliedtechnologyindex.com/research/2026-comparative-analysis-agent-user-interface-protocols-generative-ui/"
+  title="2026 Comparative Analysis: Agent-to-User Interface Protocols for Generative UI"
+  description="Neutral comparison of AG-UI, A2UI, MCP Apps, and OpenAI's MCP Apps implementation for streaming agent runs, generating…"
+  site="appliedtechnologyindex.com"
+/>
+
+## What A2UI 1.0, the first stable release, brings to the table
+
+From Google's announcement:
+
+- Bidirectional function calls, "so a flight or reservation picker can check
+  availability on the spot".
+- Support for accessibility, and extensions "for any additional metadata".
+- Renderers for React, Angular and Lit on the web, Flutter on mobile, web and
+  desktop, and "SwiftUI on iOS and Jetpack Compose on Android (currently
+  v0.9.1, and v1.0 coming soon)". Further down, the post says "The Jetpack
+  Compose renderer supports 0.9.1 today, with 1.0 coming soon."
+- "New SDKs for TypeScript and Dart along with Python".
+- Swappable inference formats that "reduce latency", and in Python, A2UI
+  Macros, which "add programmatic component expansion and data binding".
+
+## How a client constrains the agent to its design system
+
+The client that owns the frontend specifies a design system.
+
+Let's assume that you are the client. You curate a list of trusted,
+pre-approved components that are in sync with your own design system, and you
+define their expected data structures and properties.
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "com.example.dashboard.v1",
+  "catalogId": "com.example.dashboard.v1",
+  "protocolVersion": "1.0",
+  "components": {
+    "StatusBadge": {
+      "type": "object",
+      "properties": {
+        "component": { "const": "StatusBadge" },
+        "label": { "$ref": "common_types.json#/$defs/DynamicString" },
+        "severity": { "enum": ["info", "warning", "error", "success"] }
+      },
+      "required": ["component", "label", "severity"]
+    }
+  },
+  "$defs": {
+    "anyComponent": {
+      "oneOf": [{ "$ref": "#/components/StatusBadge" }],
+      "discriminator": { "propertyName": "component" }
+    }
+  }
+}
+```
+
+The client tells the agent which catalogs it supports. The agent can then only
+compose UI from those components.
+
+```json
+{
+  "a2uiRendererCapabilities": {
+    "1.0": { "supportedCatalogIds": ["com.example.dashboard.v1"] }
+  }
+}
+```
+
+The conversation doesn't end when the UI renders. When the user fills in the
+form and clicks Create Ticket, the renderer resolves the bound values from its
+local data model and sends a single `action` message back to the agent.
+Nothing is sent while the user types; edits stay local until a button fires.
+
+```json
+{
+  "version": "1.0",
+  "action": {
+    "name": "createJiraTicket",
+    "surfaceId": "jira_ticket_form",
+    "sourceComponentId": "submit_button",
+    "timestamp": "2026-11-16T10:00:00Z",
+    "context": {
+      "summary": "Login fails on SSO",
+      "priority": ["high"]
+    }
+  }
+}
+```
+
+Ultimately, while AG-UI governs run streams, A2UI secures declarative component
+rendering, and MCP Apps handles isolated interactive tools, none of these
+protocols replace robust backend authorization and audit trails. By combining
+explicit capability negotiation, strict schema validation, and accessible
+design fallbacks, developers can safely unlock the full potential of
+generative user interfaces.
