@@ -11,18 +11,18 @@ export function Tag({ children }: { children: ReactNode }) {
 }
 
 /**
- * A piece's topics as quiet text links, each opening the Writing index
- * filtered to that topic.
+ * A piece's topics as Medium-style pills (soft tinted fill, fully rounded),
+ * each opening the Writing index filtered to that topic.
  */
 export function TagList({ tags }: { tags: string[] }) {
   if (!tags.length) return null;
   return (
-    <ul className="my-6 flex flex-wrap gap-x-4 gap-y-1" aria-label="Topics">
+    <ul className="my-6 flex flex-wrap gap-2" aria-label="Topics">
       {tags.map((t) => (
         <li key={t}>
           <a
             href={`/writing/?topic=${tagSlug(t)}`}
-            className="font-rounded text-sm text-rust underline decoration-rust/0 underline-offset-4 transition-colors duration-200 hover:decoration-rust/60"
+            className="inline-block rounded-full bg-black/[0.05] px-3.5 py-1.5 font-rounded text-sm leading-none text-parchment/80 transition-colors duration-200 hover:bg-black/[0.09] hover:text-parchment focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-highlight dark:bg-white/[0.08] dark:hover:bg-white/[0.14]"
           >
             {t}
           </a>
