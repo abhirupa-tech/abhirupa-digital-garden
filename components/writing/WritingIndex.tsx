@@ -112,9 +112,10 @@ function Card({ item, tone }: { item: WritingItem; tone: string }) {
     );
   }
 
-  // Poster: 4:5 from tablets up; on phones it sizes to its text.
+  // Poster: no image, so it sizes to its text (title, subtext, footer) with
+  // no empty band; the masonry columns absorb the height differences.
   return (
-    <a href={item.href} className={`${CARD} sm:aspect-[4/5] ${tone}`}>
+    <a href={item.href} className={`${CARD} ${tone}`}>
       <Kicker>{item.dateLabel}</Kicker>
       <h2 className="mt-2.5 font-display text-[2rem] font-semibold leading-[1.05] tracking-[-0.01em] [font-variation-settings:'opsz'_96,'SOFT'_30] sm:text-[2.125rem]">
         {item.title}
@@ -124,8 +125,9 @@ function Card({ item, tone }: { item: WritingItem; tone: string }) {
           {item.description}
         </p>
       )}
-      <div className="min-h-10 flex-1 sm:min-h-0" />
-      <CardFooter item={item} />
+      <div className="mt-6">
+        <CardFooter item={item} />
+      </div>
     </a>
   );
 }
@@ -168,6 +170,23 @@ const FILTER_EVENT = 'writing-filters';
 // Topics shown before the 'All N topics' toggle.
 const TOPIC_LIMIT = 6;
 
+// Masonry column count, from the same breakpoints as before (sm 40rem,
+// lg 64rem). The server snapshot is 0: static HTML renders a plain grid,
+// and the client swaps in the columns right after hydration.
+const COLUMN_QUERIES = ['(min-width: 64rem)', '(min-width: 40rem)'] as const;
+
+function subscribeColumns(onChange: () => void) {
+  const lists = COLUMN_QUERIES.map((q) => window.matchMedia(q));
+  lists.forEach((l) => l.addEventListener('change', onChange));
+  return () => lists.forEach((l) => l.removeEventListener('change', onChange));
+}
+
+function columnCount() {
+  if (window.matchMedia(COLUMN_QUERIES[0]).matches) return 3;
+  if (window.matchMedia(COLUMN_QUERIES[1]).matches) return 2;
+  return 1;
+}
+
 function subscribe(onChange: () => void) {
   window.addEventListener('popstate', onChange);
   window.addEventListener(FILTER_EVENT, onChange);
@@ -206,6 +225,7 @@ export function WritingIndex({
     () => window.location.search,
     () => '',
   );
+  const cols = useSyncExternalStore(subscribeColumns, columnCount, () => 0);
   const params = new URLSearchParams(search);
   const type = params.get('type') ?? '';
   const topic = params.get('topic') ?? '';
@@ -278,15 +298,33 @@ export function WritingIndex({
         </p>
       )}
 
-      <ol className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {shown.map((item) => (
-          <li key={item.href} className="flex">
-            <div className="flex w-full [&>a]:w-full">
+      {cols === 0 ? (
+        // Pre-hydration fallback: same cards in a grid, top-aligned.
+        <ol className="mt-7 grid grid-cols-1 items-start gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {shown.map((item) => (
+            <li key={item.href} className="flex [&>a]:w-full">
               <Card item={item} tone={toneOf.get(item.href) ?? ''} />
-            </div>
-          </li>
-        ))}
-      </ol>
+            </li>
+          ))}
+        </ol>
+      ) : (
+        // Masonry bento: cards dealt round-robin into columns, so the newest
+        // still run left to right across the top, and each column stacks
+        // its cards at their own heights with no gaps.
+        <div className="mt-7 flex items-start gap-4">
+          {Array.from({ length: cols }, (_, c) => (
+            <ol key={c} className="flex min-w-0 flex-1 flex-col gap-4">
+              {shown
+                .filter((_, i) => i % cols === c)
+                .map((item) => (
+                  <li key={item.href} className="flex [&>a]:w-full">
+                    <Card item={item} tone={toneOf.get(item.href) ?? ''} />
+                  </li>
+                ))}
+            </ol>
+          ))}
+        </div>
+      )}
       {shown.length === 0 && (
         <p className="mt-10 font-rounded text-parchment-muted">Nothing matches both filters yet.</p>
       )}
