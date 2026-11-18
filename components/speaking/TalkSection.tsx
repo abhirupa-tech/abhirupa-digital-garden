@@ -18,7 +18,7 @@ const tile = 'relative overflow-hidden rounded-[1.75rem]';
 
 /* ── Shared bits ─────────────────────────────────────────────────────────── */
 
-function SectionHead({ n, kicker, title, children }: { n: string; kicker: string; title: string; children?: ReactNode }) {
+function SectionHead({ n, kicker, title, children }: { n: string; kicker: string; title: ReactNode; children?: ReactNode }) {
   return (
     <div className="max-w-2xl">
       <div className="flex items-center gap-3">
@@ -180,12 +180,43 @@ function VideoStage({ talk }: { talk: Talk }) {
   );
 }
 
+/** "Session page" and "Speaker page" links: in the proposal card, or under the video on phones. */
+function TalkLinks({ talk, tone = 'page' }: { talk: Talk; tone?: 'card' | 'page' }) {
+  const cls = `group inline-flex items-center gap-1.5 font-rounded text-sm font-semibold underline underline-offset-4 ${
+    tone === 'card'
+      ? 'text-pastel-ink decoration-pastel-ink/25 hover:decoration-pastel-ink'
+      : 'text-parchment decoration-parchment/25 hover:decoration-parchment'
+  }`;
+  return (
+    <>
+      {talk.sessionUrl && (
+        <a href={talk.sessionUrl} target="_blank" rel="noopener noreferrer" className={cls}>
+          Session page <Arrow />
+        </a>
+      )}
+      <a href={talk.eventUrl} target="_blank" rel="noopener noreferrer" className={cls}>
+        Speaker page <Arrow />
+      </a>
+    </>
+  );
+}
+
 function TheTalk({ talk }: { talk: Talk }) {
   return (
     <section className="pt-20 md:pt-28">
       <Reveal>
-        <SectionHead n="01" kicker="The talk" title="Watch it, or read the proposal">
-          The full session recording, and the proposal it started from.
+        {/* Phones hide the proposal card, so the heading only promises the video there. */}
+        <SectionHead
+          n="01"
+          kicker="The talk"
+          title={
+            <>
+              <span className="sm:hidden">Watch the talk</span>
+              <span className="hidden sm:inline">Watch it, or read the proposal</span>
+            </>
+          }
+        >
+          The full session recording<span className="hidden sm:inline">, and the proposal it started from</span>.
         </SectionHead>
       </Reveal>
 
@@ -194,11 +225,15 @@ function TheTalk({ talk }: { talk: Talk }) {
           <div className={`${tile} bg-pastel-beige p-3 sm:p-4`}>
             <VideoStage talk={talk} />
           </div>
+          {/* Phones: no proposal card, but keep its two links under the video. */}
+          <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 px-1 sm:hidden">
+            <TalkLinks talk={talk} />
+          </div>
         </Reveal>
 
-        {/* On lg the proposal is taken out of flow so the video sets the row
-            height; the text clamps with "…" to fit. */}
-        <Reveal delay={0.08} className="relative lg:col-span-5">
+        {/* Hidden on phones. On lg the proposal is taken out of flow so the
+            video sets the row height; the text clamps with "…" to fit. */}
+        <Reveal delay={0.08} className="relative hidden sm:block lg:col-span-5">
           <article className={`${tile} flex flex-col bg-pastel-cream p-7 sm:p-9 lg:absolute lg:inset-0`}>
             <Quarter corner="bl" className="pointer-events-none absolute -right-2 -top-2 w-24 bg-pastel-peach" />
             <p className="relative font-rounded text-xs font-semibold uppercase tracking-[0.16em] text-pastel-ink/70">The proposal</p>
@@ -217,14 +252,7 @@ function TheTalk({ talk }: { talk: Talk }) {
             )}
 
             <div className="mt-6 flex shrink-0 flex-wrap gap-x-6 gap-y-2 border-t border-pastel-ink/10 pt-5">
-              {talk.sessionUrl && (
-                <a href={talk.sessionUrl} target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-1.5 font-rounded text-sm font-semibold text-pastel-ink underline decoration-pastel-ink/25 underline-offset-4 hover:decoration-pastel-ink">
-                  Session page <Arrow />
-                </a>
-              )}
-              <a href={talk.eventUrl} target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-1.5 font-rounded text-sm font-semibold text-pastel-ink underline decoration-pastel-ink/25 underline-offset-4 hover:decoration-pastel-ink">
-                Speaker page <Arrow />
-              </a>
+              <TalkLinks talk={talk} tone="card" />
             </div>
           </article>
         </Reveal>
