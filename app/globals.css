@@ -66,8 +66,7 @@
   --font-display: var(--font-fraunces), Georgia, serif;
   --font-serif: var(--font-cormorant), Georgia, serif;
   --font-body: var(--font-garamond), Georgia, serif;
-  /* font-rounded was Quicksand; it now maps to Young Serif like font-subhead. */
-  --font-rounded: var(--font-young-serif), Georgia, serif;
+  --font-rounded: var(--font-quicksand), ui-sans-serif, system-ui, sans-serif;
   --font-subhead: var(--font-young-serif), Georgia, serif;
 
   --text-hero: clamp(2.75rem, 7vw, 6rem);
@@ -129,15 +128,6 @@
   If we ever want to remove these styles, we need to add an explicit border
   color utility to any element that depends on these defaults.
 */
-/* Young Serif everywhere it is used (font-rounded and font-subhead):
-   0.2px letter-spacing, overriding any tracking-* on the same element, and
-   no synthesized bold since the face ships a single weight. */
-.font-rounded,
-.font-subhead {
-  letter-spacing: 0.2px !important;
-  font-synthesis-weight: none;
-}
-
 /* Everything clickable shows the hand cursor (Tailwind's preflight resets
    buttons to the default arrow). In the base layer, so a cursor-* utility
    can still override it. */

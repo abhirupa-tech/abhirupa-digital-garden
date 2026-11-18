@@ -13,8 +13,8 @@ const sizes: Record<NonNullable<HeadingProps['level']>, string> = {
   // a sturdy display serif (Young Serif, single weight), so the hierarchy is
   // title > subheading > body without faux-bolding.
   1: 'font-display text-section font-medium',
-  2: 'font-subhead text-[1.5rem] md:text-[1.75rem] font-normal leading-[1.2] tracking-[-0.005em]',
-  3: 'font-subhead text-[1.5rem] md:text-[1.75rem] font-normal leading-[1.2] tracking-[-0.005em]',
+  2: 'font-subhead text-[1.5rem] md:text-[1.75rem] font-normal leading-[1.2] tracking-[0.2px]',
+  3: 'font-subhead text-[1.5rem] md:text-[1.75rem] font-normal leading-[1.2] tracking-[0.2px]',
 };
 
 const tags = { 1: 'h1', 2: 'h2', 3: 'h3' } as const;
