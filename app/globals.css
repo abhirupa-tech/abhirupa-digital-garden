@@ -315,12 +315,14 @@
     --c-sunset: #fb7a3c;
     --c-hairline: rgba(224, 224, 224, 0.12);
 
-    --c-pastel-rose: #3d302c;
-    --c-pastel-peach: #45372f;
-    --c-pastel-beige: #2f2b25;
-    --c-pastel-sand: #3a3228;
-    --c-pastel-coral: #4a3029;
-    --c-pastel-cream: #2a2927;
+    /* Mid-tone warm fills so the Speaking cards read as cards, not holes,
+       on the #1a1a1a canvas; the light ink keeps ~4.5:1 or better on each. */
+    --c-pastel-rose: #68524a;
+    --c-pastel-peach: #735a4b;
+    --c-pastel-beige: #6b6252;
+    --c-pastel-sand: #5f5546;
+    --c-pastel-coral: #7a5245;
+    --c-pastel-cream: #5b5449;
     --c-pastel-ink: #f0e4da;
 
     /* Ember phrase — dark canvas. The ramp can run all the way to a pale
