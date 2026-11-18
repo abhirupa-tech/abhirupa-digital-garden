@@ -34,14 +34,6 @@ const garamond = localFont({
   display: 'swap',
 });
 
-// Simple rounded sans — used thin (300) for the section subtext.
-const quicksand = localFont({
-  src: './fonts/quicksand-latin-wght-normal.woff2',
-  weight: '300 700',
-  variable: '--font-quicksand',
-  display: 'swap',
-});
-
 // Sturdy, warm display serif for in-body subheadings (h2/h3) in posts.
 // Single weight; its heavy strokes read as bold.
 const youngSerif = localFont({
@@ -249,7 +241,7 @@ export default function RootLayout({
       // script, so the server markup intentionally differs from the first client
       // render. Suppress the (one-level-deep) attribute mismatch warning here.
       suppressHydrationWarning
-      className={`${fraunces.variable} ${cormorant.variable} ${garamond.variable} ${quicksand.variable} ${youngSerif.variable}`}
+      className={`${fraunces.variable} ${cormorant.variable} ${garamond.variable} ${youngSerif.variable}`}
     >
       <head>
         <ThemeInit />
