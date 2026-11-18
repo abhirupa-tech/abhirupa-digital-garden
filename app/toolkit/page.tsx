@@ -40,7 +40,7 @@ const TOOLS: Tool[] = [
     tag: '<Subnote note="…">',
     purpose: 'A definition or aside that opens on hover, focus or tap.',
     demo: (
-      <p className="font-rounded text-[1.08rem] leading-[1.6] text-parchment sm:text-[1.22rem]">
+      <p className="font-rounded text-[1.08rem] leading-[1.6] text-parchment sm:text-[1.2rem]">
         Agents are tested by turning their findings into{' '}
         <Subnote note="Tests that lock in behaviour that already works, so a later change that breaks it fails the build.">
           regression tests
@@ -109,7 +109,7 @@ const TOOLS: Tool[] = [
     tag: '<Citation n source href>',
     purpose: 'A numbered source marker that reveals the reference on hover or tap.',
     demo: (
-      <p className="font-rounded text-[1.08rem] leading-[1.6] text-parchment sm:text-[1.22rem]">
+      <p className="font-rounded text-[1.08rem] leading-[1.6] text-parchment sm:text-[1.2rem]">
         Self-speculation decodes about four times faster on the same hardware.
         <Citation n={1} source="NVIDIA, Nemotron-Labs Diffusion" />
       </p>
