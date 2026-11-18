@@ -3,7 +3,7 @@ import type { Talk } from '@/lib/speaking';
 import { formatDate } from '@/lib/format';
 import { Reveal } from '@/components/motion/Reveal';
 import { LinkCard } from '@/components/typography/LinkCard';
-import { Asterisk, Half, Quarter } from './Shapes';
+import { Asterisk, Quarter } from './Shapes';
 import { ClampToFit } from './ClampToFit';
 
 /*
@@ -18,7 +18,7 @@ const tile = 'relative overflow-hidden rounded-[1.75rem]';
 
 /* ── Shared bits ─────────────────────────────────────────────────────────── */
 
-function SectionHead({ n, kicker, title, children }: { n: string; kicker: string; title: ReactNode; children?: ReactNode }) {
+function SectionHead({ n, kicker, title, children }: { n: ReactNode; kicker: string; title: ReactNode; children?: ReactNode }) {
   return (
     <div className="max-w-2xl">
       <div className="flex items-center gap-3">
@@ -30,6 +30,16 @@ function SectionHead({ n, kicker, title, children }: { n: string; kicker: string
       <h3 className="mt-4 font-display text-3xl font-medium text-parchment md:text-4xl">{title}</h3>
       {children && <p className="mt-3 t-feature-sub text-parchment-muted">{children}</p>}
     </div>
+  );
+}
+
+/** One value on phones (below sm), another from sm up. */
+function PhoneSwap({ phone, wide }: { phone: string; wide: string }) {
+  return (
+    <>
+      <span className="sm:hidden">{phone}</span>
+      <span className="hidden sm:inline">{wide}</span>
+    </>
   );
 }
 
@@ -157,10 +167,8 @@ function VideoStage({ talk }: { talk: Talk }) {
   }
 
   return (
-    <figure className="relative aspect-video overflow-hidden rounded-2xl bg-gradient-to-br from-pastel-rose to-pastel-beige">
-      <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(ellipse_50%_65%_at_50%_0%,rgba(255,255,255,0.55),transparent_70%)] dark:bg-[radial-gradient(ellipse_50%_65%_at_50%_0%,rgba(255,255,255,0.08),transparent_70%)]" />
-      <Half className="pointer-events-none absolute -bottom-1 left-[8%] w-28 bg-pastel-peach/80 sm:w-36" />
-      <Asterisk className="pointer-events-none absolute right-[8%] top-[14%] h-10 w-10 text-pastel-cream sm:h-14 sm:w-14" />
+    // A plain slate-grey to dark-brown screen, the same in both themes.
+    <figure className="relative aspect-video overflow-hidden rounded-2xl bg-gradient-to-br from-[#4a5263] to-[#3a2a21]">
 
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-center">
         <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-pastel-cream text-pastel-ink">
@@ -170,8 +178,8 @@ function VideoStage({ talk }: { talk: Talk }) {
           </svg>
         </span>
         <figcaption className="px-6">
-          <span className="block font-display text-xl text-pastel-ink sm:text-2xl">Recording coming soon</span>
-          <span className="mt-1 block font-rounded text-sm text-pastel-ink/70">
+          <span className="block font-display text-xl text-[#f3ece4] sm:text-2xl">Recording coming soon</span>
+          <span className="mt-1 block font-rounded text-sm text-[#f3ece4]/75">
             The talk goes up on YouTube after {talk.date ? formatDate(talk.date) : 'the conference'}.
           </span>
         </figcaption>
@@ -207,7 +215,7 @@ function TheTalk({ talk }: { talk: Talk }) {
       <Reveal>
         {/* Phones hide the proposal card, so the heading only promises the video there. */}
         <SectionHead
-          n="01"
+          n={<PhoneSwap phone="02" wide="01" />}
           kicker="The talk"
           title={
             <>
@@ -280,7 +288,7 @@ function DeckAndCode({ talk }: { talk: Talk }) {
   return (
     <section className="pt-16 md:pt-20">
       <Reveal>
-        <SectionHead n="02" kicker="Deck and code" title="Slides and source" />
+        <SectionHead n={<PhoneSwap phone="01" wide="02" />} kicker="Deck and code" title="Slides and source" />
       </Reveal>
       <Reveal delay={0.06}>
         <div className="mt-8 grid gap-3 sm:grid-cols-2">
@@ -308,8 +316,16 @@ export function TalkSection({ talk }: { talk: Talk }) {
       <Reveal>
         <Poster talk={talk} />
       </Reveal>
-      <TheTalk talk={talk} />
-      <DeckAndCode talk={talk} />
+      {/* Phones: slides and source first, the recording after. sm and up keep
+          the talk first. Section numbers swap with the order (PhoneSwap). */}
+      <div className="flex flex-col">
+        <div className="order-2 sm:order-1">
+          <TheTalk talk={talk} />
+        </div>
+        <div className="order-1 sm:order-2">
+          <DeckAndCode talk={talk} />
+        </div>
+      </div>
     </section>
   );
 }
