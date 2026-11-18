@@ -180,15 +180,15 @@ export default async function PiecePage({ params }: { params: Promise<PageParams
       <div className="lg:pl-20">
         <main>
           {entry.cover && (
-            // Header image: spans the content column edge to edge with a page
-            // gutter, cropped to a calm wide band so the title stays close.
-            <figure className="px-4 pt-20 sm:px-6 sm:pt-24 md:px-10">
+            // Header image: the same width as the article text (zone-article
+            // shares its column and gutters), cropped to a wide band.
+            <figure className="zone-article pt-20 sm:pt-24">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={cloudinaryUrl(entry.cover, { width: 2000 })}
                 alt={entry.coverAlt || entry.title}
                 fetchPriority="high"
-                className="aspect-16/9 max-h-[68vh] w-full rounded-xs border border-parchment/10 object-cover sm:aspect-2/1"
+                className="aspect-16/9 w-full rounded-xs border border-parchment/10 object-cover sm:aspect-2/1"
               />
               {entry.coverCaption && (
                 <figcaption className="mt-3 text-center font-rounded text-[0.75rem] uppercase tracking-label text-parchment-faint">
