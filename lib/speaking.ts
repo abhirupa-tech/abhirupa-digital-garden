@@ -42,8 +42,6 @@ export type Talk = {
   youtubeId: string;
   /** Public link to the slide deck (PDF, Google Slides, Speaker Deck…). */
   slidesUrl: string;
-  /** Optional embeddable version of the deck, rendered in an iframe. */
-  slidesEmbedUrl: string;
   repos: TalkRepo[];
 };
 
@@ -69,7 +67,6 @@ export const talks: Talk[] = [
       'https://www.wearedevelopers.com/conference-india/agenda/sessions/react-under-fire-rendering-performance-for-streaming-agent-uis-1288492',
     youtubeId: '',
     slidesUrl: '',
-    slidesEmbedUrl: '',
     repos: [
       {
         name: 'we-are-developers',

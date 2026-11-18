@@ -4,6 +4,10 @@ type LinkCardProps = {
   description?: string;
   /** Shown as the source line; defaults to the link's hostname. */
   site?: string;
+  /** Vertical spacing; defaults to the in-article rhythm. */
+  className?: string;
+  /** Warm dark-mode fill instead of the cool slate (for warm-only pages). */
+  warm?: boolean;
 };
 
 function hostname(href: string): string {
@@ -19,7 +23,7 @@ function hostname(href: string): string {
  * source, used where a Medium post would show a bookmark card. Static HTML, so
  * it costs nothing at runtime and the link stays crawlable.
  */
-export function LinkCard({ href, title, description, site }: LinkCardProps) {
+export function LinkCard({ href, title, description, site, className = 'my-8 sm:my-12', warm = false }: LinkCardProps) {
   const external = /^https?:\/\//.test(href);
   return (
     <a
@@ -29,7 +33,9 @@ export function LinkCard({ href, title, description, site }: LinkCardProps) {
       // Background sits a half-step off the canvas so the card reads as an
       // embed without a heavy fill: warm off-white on the light parchment, a
       // cool slate against the neutral greys of dark mode.
-      className="group my-8 flex items-center gap-4 rounded-lg border border-parchment/15 bg-[#fdfcf8] px-5 py-4 no-underline shadow-[0_1px_2px_rgba(60,50,30,0.06)] transition-colors duration-300 hover:border-highlight/60 hover:bg-[#fffefb] sm:my-12 sm:px-6 dark:bg-[#232a33] dark:shadow-none dark:hover:bg-[#28303a]"
+      className={`group flex items-center gap-4 rounded-lg border border-parchment/15 bg-[#fdfcf8] px-5 py-4 no-underline shadow-[0_1px_2px_rgba(60,50,30,0.06)] transition-colors duration-300 hover:border-highlight/60 hover:bg-[#fffefb] sm:px-6 dark:shadow-none ${
+        warm ? 'dark:bg-[#26221f] dark:hover:bg-[#2c2723]' : 'dark:bg-[#232a33] dark:hover:bg-[#28303a]'
+      } ${className}`}
     >
       <span className="min-w-0 flex-1">
         <span className="block font-rounded text-base font-bold leading-snug text-parchment transition-colors duration-300 group-hover:text-highlight sm:text-lg">
