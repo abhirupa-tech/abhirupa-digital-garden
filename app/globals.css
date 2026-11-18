@@ -335,12 +335,14 @@
 
     /* Mid-tone warm fills so the Speaking cards read as cards, not holes,
        on the #1a1a1a canvas; the light ink keeps ~4.5:1 or better on each. */
-    --c-pastel-rose: #68524a;
-    --c-pastel-peach: #735a4b;
-    --c-pastel-beige: #6b6252;
-    --c-pastel-sand: #5f5546;
-    --c-pastel-coral: #7a5245;
-    --c-pastel-cream: #5b5449;
+    /* Dark pastels: same hues as the light set, more saturated, each the
+       lightest shade that keeps the light ink (#f0e4da) at 4.6:1 or better. */
+    --c-pastel-rose: #915651;
+    --c-pastel-peach: #875c40;
+    --c-pastel-beige: #726449;
+    --c-pastel-sand: #78624a;
+    --c-pastel-coral: #985341;
+    --c-pastel-cream: #71644f;
     --c-pastel-ink: #f0e4da;
 
     /* Ember phrase — dark canvas. The ramp can run all the way to a pale
