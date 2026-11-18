@@ -10,7 +10,7 @@ type HeadingProps = {
 const sizes: Record<NonNullable<HeadingProps['level']>, string> = {
   // Level 1 is the article masthead, on the display serif.
   // Levels 2 and 3 are in-body sub-headings and share ONE size, like Medium:
-  // a high-contrast display serif (Gloock, single weight), so the hierarchy is
+  // a sturdy display serif (Young Serif, single weight), so the hierarchy is
   // title > subheading > body without faux-bolding.
   1: 'font-display text-section font-medium',
   2: 'font-subhead text-[1.5rem] md:text-[1.75rem] font-normal leading-[1.2] tracking-[-0.005em]',

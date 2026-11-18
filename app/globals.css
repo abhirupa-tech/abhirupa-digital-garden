@@ -67,7 +67,7 @@
   --font-serif: var(--font-cormorant), Georgia, serif;
   --font-body: var(--font-garamond), Georgia, serif;
   --font-rounded: var(--font-quicksand), ui-sans-serif, system-ui, sans-serif;
-  --font-subhead: var(--font-gloock), Georgia, serif;
+  --font-subhead: var(--font-young-serif), Georgia, serif;
 
   --text-hero: clamp(2.75rem, 7vw, 6rem);
   --text-hero--line-height: 1.04;
