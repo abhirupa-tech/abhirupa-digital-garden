@@ -31,6 +31,13 @@ export const dynamic = 'force-static';
 const STATIC_PAGES_UPDATED = '2026-11-17';
 
 /**
+ * When the Speaking pages (index and one page per talk) last changed in
+ * content, kept separately so a talk-page rework doesn't re-date About, Lab
+ * and Toolkit. Bump by hand, like STATIC_PAGES_UPDATED.
+ */
+const SPEAKING_UPDATED = '2026-11-18';
+
+/**
  * `lastmod` as a plain `YYYY-MM-DD` date.
  *
  * Deliberately not a full ISO timestamp: publication dates in frontmatter have
@@ -95,8 +102,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // The Speaking index plus each talk's own page.
   const speaking: MetadataRoute.Sitemap = [
-    { url: `${site.url}/speaking/`, lastModified: STATIC_PAGES_UPDATED },
-    ...talks.map((t) => ({ url: `${site.url}/speaking/${t.id}/`, lastModified: STATIC_PAGES_UPDATED })),
+    { url: `${site.url}/speaking/`, lastModified: SPEAKING_UPDATED },
+    ...talks.map((t) => ({ url: `${site.url}/speaking/${t.id}/`, lastModified: SPEAKING_UPDATED })),
   ];
 
   // The all-writing index changes whenever any piece does.
