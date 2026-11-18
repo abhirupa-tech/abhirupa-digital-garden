@@ -198,7 +198,7 @@ export default async function PiecePage({ params }: { params: Promise<PageParams
             </figure>
           )}
           <article
-            className={`zone max-w-4xl pb-10 sm:pb-16 ${
+            className={`zone-article pb-10 sm:pb-16 ${
               entry.cover ? 'pt-8 sm:pt-12 md:pt-16' : 'pt-10 sm:pt-16 md:pt-28'
             }`}
           >

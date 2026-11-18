@@ -189,6 +189,13 @@
   @apply relative mx-auto w-full max-w-editorial px-6 md:px-10 3xl:max-w-[104rem] 3xl:px-20;
 }
 
+@utility zone-article {
+  /* Blog posts: a fixed reading column (max-w-4xl) at every width. Unlike
+     zone, it does not widen to 104rem on 3xl screens, and its 3xl gutter is
+     a slim 1.25rem. */
+  @apply relative mx-auto w-full max-w-4xl px-6 md:px-10 3xl:px-5;
+}
+
 @layer base {
   :root {
     color-scheme: light;
