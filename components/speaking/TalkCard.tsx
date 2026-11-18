@@ -5,10 +5,10 @@ import { Asterisk, Blob, Half, Quarter } from './Shapes';
 
 /** Each card takes the next pastel pair, so a long list stays varied. */
 const PALETTES = [
-  { card: 'bg-pastel-cream', date: 'bg-pastel-peach', shape: 'text-pastel-sky' },
-  { card: 'bg-pastel-sky', date: 'bg-pastel-lilac', shape: 'text-pastel-cream' },
-  { card: 'bg-pastel-blush', date: 'bg-pastel-sage', shape: 'text-pastel-peach' },
-  { card: 'bg-pastel-sage', date: 'bg-pastel-cream', shape: 'text-pastel-lilac' },
+  { card: 'bg-pastel-cream', date: 'bg-pastel-peach', shape: 'text-pastel-beige' },
+  { card: 'bg-pastel-beige', date: 'bg-pastel-rose', shape: 'text-pastel-cream' },
+  { card: 'bg-pastel-coral', date: 'bg-pastel-sand', shape: 'text-pastel-peach' },
+  { card: 'bg-pastel-sand', date: 'bg-pastel-cream', shape: 'text-pastel-rose' },
 ];
 
 function Status({ ready, children }: { ready: boolean; children: string }) {
@@ -18,7 +18,7 @@ function Status({ ready, children }: { ready: boolean; children: string }) {
         ready ? 'bg-primary-bg/80' : 'border border-dashed border-pastel-ink/25 text-pastel-ink/60'
       }`}
     >
-      <span className={`h-1.5 w-1.5 rounded-full ${ready ? 'bg-[#6f9a7e]' : 'bg-pastel-ink/25'}`} />
+      <span className={`h-1.5 w-1.5 rounded-full ${ready ? 'bg-[#d9774f]' : 'bg-pastel-ink/25'}`} />
       {children}
     </li>
   );
@@ -87,7 +87,7 @@ export function InviteCard() {
   return (
     <a
       href={`mailto:${site.email}?subject=Speaking%20invitation`}
-      className="group relative flex h-full min-h-[14rem] flex-col justify-between overflow-hidden rounded-[1.75rem] bg-pastel-lilac p-7 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1"
+      className="group relative flex h-full min-h-[14rem] flex-col justify-between overflow-hidden rounded-[1.75rem] bg-pastel-rose p-7 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1"
     >
       <Half className="pointer-events-none absolute -bottom-1 right-6 w-32 bg-pastel-peach/80" />
       <Asterisk className="h-12 w-12 text-pastel-cream transition-transform duration-700 group-hover:rotate-90" />

@@ -22,7 +22,7 @@ export type Talk = {
   edition: string;
   /** Talk title. Empty while it's still being finalised. */
   title: string;
-  /** One-paragraph abstract / proposal. Empty shows a placeholder. */
+  /** Abstract / proposal; separate paragraphs with a blank line. Empty shows a placeholder. */
   abstract: string;
   /** ISO date of the session, or empty if not announced. */
   date: string;
@@ -53,8 +53,12 @@ export const talks: Talk[] = [
     event: 'WeAreDevelopers',
     edition: 'Conference India 2026',
     title: 'React Under Fire: Rendering Performance for Streaming Agent UIs',
-    abstract:
-      'A single streamed agent response can trigger dozens of React state updates a second. This talk takes the rendering and state problems unique to agentic UIs apart, drawing on production work and a public benchmark of rendering strategies under agent event streams. It covers state architecture (why partial and final text are different shapes, and why classic Redux patterns buckle under token streams), implementation tradeoffs (a streaming library versus a custom buffering layer, and where useSyncExternalStore fits, live-coded with real measurements), and standards (what the AG-UI protocol pins down for agent-to-UI communication, and what it leaves to you).',
+    abstract: [
+      'A single streamed agent response can trigger dozens of React state updates a second. This talk takes apart the rendering and state problems unique to agentic UIs, drawing on production work and a public benchmark of rendering strategies under agent event streams.',
+      'State architecture: why partial and final text are different shapes, and why classic Redux patterns buckle under token streams.',
+      'Implementation tradeoffs: a streaming library versus a custom buffering layer, and where useSyncExternalStore fits, live-coded with real measurements.',
+      'Standards: what the AG-UI protocol pins down for agent-to-UI communication, and what it leaves to you.',
+    ].join('\n\n'),
     date: '2026-11-26',
     time: '10:00 – 10:30',
     stage: 'Stage 4',

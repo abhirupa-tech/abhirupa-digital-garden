@@ -38,7 +38,7 @@ export function TokenStream() {
       <div className="mt-3 flex items-center justify-between border-t border-pastel-ink/10 pt-3 text-[0.7rem] uppercase tracking-[0.14em] text-pastel-ink/55">
         <span>tokens {String(shown).padStart(2, '0')}</span>
         <span>renders {String(shown).padStart(2, '0')}</span>
-        <span className={streaming ? 'text-[#c77a4e] dark:text-[#e8b08c]' : 'text-[#5f8a6f] dark:text-[#a8c9b2]'}>{streaming ? '● streaming' : '● done'}</span>
+        <span className={streaming ? 'text-[#c77a4e] dark:text-[#e8b08c]' : 'text-[#a8553a] dark:text-[#f0b39a]'}>{streaming ? '● streaming' : '● done'}</span>
       </div>
     </div>
   );

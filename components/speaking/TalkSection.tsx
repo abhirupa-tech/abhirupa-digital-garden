@@ -79,7 +79,7 @@ function Poster({ talk }: { talk: Talk }) {
     <div className="grid grid-cols-2 gap-3 lg:grid-cols-12 lg:grid-rows-[repeat(3,minmax(11rem,auto))]">
       {/* Title */}
       <div className={`${tile} order-1 col-span-2 bg-pastel-cream p-7 sm:p-10 lg:order-none lg:col-span-7 lg:col-start-1 lg:row-span-2 lg:row-start-1`}>
-        <Blob className="pointer-events-none absolute -bottom-10 right-4 h-48 w-40 text-pastel-sky sm:h-60 sm:w-48" />
+        <Blob className="pointer-events-none absolute -bottom-10 right-4 h-48 w-40 text-pastel-beige sm:h-60 sm:w-48" />
         <div className="relative">
           <p className="font-rounded text-xs font-semibold uppercase tracking-[0.16em] text-pastel-ink/75">
             {talk.event} · {talk.edition}
@@ -103,7 +103,7 @@ function Poster({ talk }: { talk: Talk }) {
       </div>
 
       {/* Vertical band */}
-      <div className={`${tile} order-6 col-span-2 flex items-center bg-pastel-lilac px-7 lg:order-none py-6 lg:col-span-2 lg:col-start-8 lg:row-span-3 lg:row-start-1 lg:justify-center lg:px-0 lg:py-8`}>
+      <div className={`${tile} order-6 col-span-2 flex items-center bg-pastel-rose px-7 lg:order-none py-6 lg:col-span-2 lg:col-start-8 lg:row-span-3 lg:row-start-1 lg:justify-center lg:px-0 lg:py-8`}>
         <p className="font-display text-4xl font-medium leading-none text-pastel-ink lg:text-[clamp(3rem,4.6vw,4.6rem)] lg:[writing-mode:vertical-rl]">
           {talk.event}
         </p>
@@ -111,7 +111,7 @@ function Poster({ talk }: { talk: Talk }) {
 
       {/* Date */}
       <div className={`${tile} order-2 col-span-1 flex flex-col justify-between bg-pastel-peach p-6 lg:order-none lg:col-span-3 lg:col-start-10 lg:row-start-1`}>
-        <Quarter corner="tl" className="pointer-events-none absolute -bottom-6 -right-6 w-24 bg-pastel-blush" />
+        <Quarter corner="tl" className="pointer-events-none absolute -bottom-6 -right-6 w-24 bg-pastel-coral" />
         <span className="relative font-rounded text-xs font-semibold uppercase tracking-[0.16em] text-pastel-ink/70">
           {d ? d.getFullYear() : 'Date'}
         </span>
@@ -122,7 +122,7 @@ function Poster({ talk }: { talk: Talk }) {
       </div>
 
       {/* Photo in an arch */}
-      <figure className={`${tile} order-4 col-span-2 bg-pastel-sage p-4 pb-0 lg:order-none sm:p-5 sm:pb-0 lg:col-span-3 lg:col-start-10 lg:row-span-2 lg:row-start-2`}>
+      <figure className={`${tile} order-4 col-span-2 bg-pastel-sand p-4 pb-0 lg:order-none sm:p-5 sm:pb-0 lg:col-span-3 lg:col-start-10 lg:row-span-2 lg:row-start-2`}>
         <div className="relative h-56 overflow-hidden rounded-t-full sm:h-72 lg:h-full lg:min-h-[18rem]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -131,14 +131,14 @@ function Poster({ talk }: { talk: Talk }) {
             className="absolute inset-0 h-full w-full object-cover opacity-90 grayscale"
           />
           {/* Pastel wash so the photo sits in the palette instead of punching through it */}
-          <div aria-hidden="true" className="absolute inset-0 bg-pastel-lilac mix-blend-soft-light" />
-          <div aria-hidden="true" className="absolute inset-0 bg-pastel-sky/35" />
+          <div aria-hidden="true" className="absolute inset-0 bg-pastel-rose mix-blend-soft-light" />
+          <div aria-hidden="true" className="absolute inset-0 bg-pastel-beige/35" />
         </div>
         <figcaption className="sr-only">Photo by Kevin Gonzalez on Unsplash</figcaption>
       </figure>
 
       {/* Stage */}
-      <div className={`${tile} order-3 col-span-1 flex flex-col justify-between bg-pastel-sky p-6 lg:order-none lg:col-span-3 lg:col-start-1 lg:row-start-3`}>
+      <div className={`${tile} order-3 col-span-1 flex flex-col justify-between bg-pastel-beige p-6 lg:order-none lg:col-span-3 lg:col-start-1 lg:row-start-3`}>
         <Asterisk className="h-14 w-14 text-pastel-peach" />
         <span>
           <span className="block font-rounded text-xs font-semibold uppercase tracking-[0.16em] text-pastel-ink/70">Where</span>
@@ -147,7 +147,7 @@ function Poster({ talk }: { talk: Talk }) {
       </div>
 
       {/* Topics */}
-      <div className={`${tile} order-5 col-span-2 flex items-end justify-end bg-pastel-blush lg:order-none p-6 sm:p-8 lg:col-span-4 lg:col-start-4 lg:row-start-3`}>
+      <div className={`${tile} order-5 col-span-2 flex items-end justify-end bg-pastel-coral lg:order-none p-6 sm:p-8 lg:col-span-4 lg:col-start-4 lg:row-start-3`}>
         <Half className="pointer-events-none absolute -left-6 bottom-0 w-36 bg-pastel-peach" />
         <ul className="relative text-right font-rounded text-sm font-semibold uppercase leading-snug tracking-[0.12em] text-pastel-ink">
           {talk.topics.slice(0, 4).map((t) => (
@@ -178,7 +178,7 @@ function VideoStage({ talk }: { talk: Talk }) {
   }
 
   return (
-    <figure className="relative aspect-video overflow-hidden rounded-2xl bg-gradient-to-br from-pastel-lilac to-pastel-sky">
+    <figure className="relative aspect-video overflow-hidden rounded-2xl bg-gradient-to-br from-pastel-rose to-pastel-beige">
       <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(ellipse_50%_65%_at_50%_0%,rgba(255,255,255,0.55),transparent_70%)] dark:bg-[radial-gradient(ellipse_50%_65%_at_50%_0%,rgba(255,255,255,0.08),transparent_70%)]" />
       <Half className="pointer-events-none absolute -bottom-1 left-[8%] w-28 bg-pastel-peach/80 sm:w-36" />
       <Asterisk className="pointer-events-none absolute right-[8%] top-[14%] h-10 w-10 text-pastel-cream sm:h-14 sm:w-14" />
@@ -201,13 +201,6 @@ function VideoStage({ talk }: { talk: Talk }) {
   );
 }
 
-/** The talk's three movements, shown under the video. */
-const OUTLINE = [
-  { title: 'State architecture', body: 'Partial vs final text as state shapes, and why Redux strains under token streams.', bg: 'bg-pastel-cream' },
-  { title: 'Implementation tradeoffs', body: 'A streaming library or a custom buffer, and where useSyncExternalStore fits.', bg: 'bg-pastel-lilac' },
-  { title: 'Standards', body: 'What AG-UI specifies for agent-to-UI events, and what it leaves to you.', bg: 'bg-pastel-blush' },
-];
-
 function TheTalk({ talk }: { talk: Talk }) {
   return (
     <section className="pt-20 md:pt-28">
@@ -219,17 +212,8 @@ function TheTalk({ talk }: { talk: Talk }) {
 
       <div className="mt-10 grid gap-3 lg:grid-cols-12">
         <Reveal className="lg:col-span-7">
-          <div className={`${tile} flex h-full flex-col gap-3 bg-pastel-sky p-3 sm:p-4`}>
+          <div className={`${tile} bg-pastel-beige p-3 sm:p-4`}>
             <VideoStage talk={talk} />
-            <ol className="grid flex-1 gap-3 sm:grid-cols-3">
-              {OUTLINE.map((o, i) => (
-                <li key={o.title} className={`relative overflow-hidden rounded-2xl p-5 ${o.bg}`}>
-                  <span className="font-rounded text-xs font-semibold uppercase tracking-[0.16em] text-pastel-ink/60">Part {i + 1}</span>
-                  <span className="mt-2 block font-display text-xl leading-snug text-pastel-ink">{o.title}</span>
-                  <span className="mt-2 block font-rounded text-sm leading-relaxed text-pastel-ink/70">{o.body}</span>
-                </li>
-              ))}
-            </ol>
           </div>
         </Reveal>
 
@@ -238,11 +222,15 @@ function TheTalk({ talk }: { talk: Talk }) {
             <Quarter corner="bl" className="pointer-events-none absolute -right-2 -top-2 w-24 bg-pastel-peach" />
             <p className="relative font-rounded text-xs font-semibold uppercase tracking-[0.16em] text-pastel-ink/70">The proposal</p>
             {talk.abstract ? (
-              <p className="relative mt-5 font-body text-lg leading-relaxed text-pastel-ink/85">{talk.abstract}</p>
+              <div className="relative mt-5 space-y-4 font-body text-lg leading-relaxed text-pastel-ink/85">
+                {talk.abstract.split(/\n\s*\n/).map((para) => (
+                  <p key={para.slice(0, 32)}>{para.trim()}</p>
+                ))}
+              </div>
             ) : (
               <div className="mt-5 space-y-2" aria-label="Proposal coming soon">
                 {[100, 92, 96, 70].map((w) => (
-                  <span key={w} className="block h-3 rounded-full bg-pastel-lilac" style={{ width: `${w}%` }} />
+                  <span key={w} className="block h-3 rounded-full bg-pastel-rose" style={{ width: `${w}%` }} />
                 ))}
               </div>
             )}
@@ -282,14 +270,14 @@ function SlideFan({ title, kicker }: { title: string; kicker: string }) {
     'absolute inset-0 rounded-xl shadow-[0_18px_40px_-26px_rgba(52,54,94,0.45)] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] dark:shadow-none';
   return (
     <div aria-hidden="true" className="group relative mx-auto aspect-[16/10] w-full max-w-md">
-      <div className={`${slide} -rotate-6 bg-pastel-sky p-5 group-hover:-translate-x-6 group-hover:-rotate-[9deg]`}>
+      <div className={`${slide} -rotate-6 bg-pastel-beige p-5 group-hover:-translate-x-6 group-hover:-rotate-[9deg]`}>
         <div className="flex h-full items-end gap-2 pb-2">
           {[30, 55, 40, 85, 62, 95].map((h, i) => (
             <span key={i} className="flex-1 rounded-t-full bg-pastel-ink/15" style={{ height: `${h}%` }} />
           ))}
         </div>
       </div>
-      <div className={`${slide} rotate-3 bg-pastel-blush p-5 group-hover:translate-x-6 group-hover:rotate-[6deg]`}>
+      <div className={`${slide} rotate-3 bg-pastel-coral p-5 group-hover:translate-x-6 group-hover:rotate-[6deg]`}>
         <div className="space-y-2 font-mono text-[0.65rem] leading-none text-pastel-ink/70">
           <span className="block">useSyncExternalStore(</span>
           <span className="block pl-4">subscribe,</span>
@@ -310,8 +298,8 @@ function TheSlides({ talk }: { talk: Talk }) {
   return (
     <section className="pt-20 md:pt-28">
       <Reveal>
-        <div className={`${tile} grid gap-10 bg-pastel-lilac p-7 sm:p-10 lg:grid-cols-12 lg:items-center lg:p-14`}>
-          <span aria-hidden="true" className="pointer-events-none absolute -right-20 -top-20 h-80 w-80 rounded-full bg-pastel-sky/70" />
+        <div className={`${tile} grid gap-10 bg-pastel-rose p-7 sm:p-10 lg:grid-cols-12 lg:items-center lg:p-14`}>
+          <span aria-hidden="true" className="pointer-events-none absolute -right-20 -top-20 h-80 w-80 rounded-full bg-pastel-beige/70" />
           <Quarter corner="tr" className="pointer-events-none absolute -bottom-2 -left-2 w-28 bg-pastel-peach/80" />
 
           <div className="relative lg:col-span-5">
@@ -370,7 +358,7 @@ function RepoCard({ repo }: { repo: TalkRepo }) {
       href={repo.href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`${tile} group flex h-full flex-col bg-pastel-sage p-7 transition-transform duration-300 hover:-translate-y-1 sm:p-9`}
+      className={`${tile} group flex h-full flex-col bg-pastel-sand p-7 transition-transform duration-300 hover:-translate-y-1 sm:p-9`}
     >
       <Asterisk className="pointer-events-none absolute -right-5 -top-5 h-28 w-28 text-pastel-cream/70 transition-transform duration-700 group-hover:rotate-45" />
       <span className="relative flex items-center gap-3">
@@ -398,8 +386,8 @@ function DemoCard({ repo }: { repo: TalkRepo }) {
       <div className="relative mt-6 overflow-hidden rounded-xl bg-primary-bg/75">
         <div className="flex items-center gap-1.5 border-b border-pastel-ink/10 px-4 py-2.5">
           <span className="h-2.5 w-2.5 rounded-full bg-pastel-peach" />
-          <span className="h-2.5 w-2.5 rounded-full bg-pastel-lilac" />
-          <span className="h-2.5 w-2.5 rounded-full bg-pastel-sage" />
+          <span className="h-2.5 w-2.5 rounded-full bg-pastel-rose" />
+          <span className="h-2.5 w-2.5 rounded-full bg-pastel-sand" />
           <span className="ml-auto font-mono text-[0.7rem] text-pastel-ink/55">{repo.name.toLowerCase()} — live demo</span>
         </div>
         <div className="p-4">
@@ -408,7 +396,7 @@ function DemoCard({ repo }: { repo: TalkRepo }) {
       </div>
     </>
   );
-  const cls = `${tile} block h-full bg-pastel-blush p-7 sm:p-9`;
+  const cls = `${tile} block h-full bg-pastel-coral p-7 sm:p-9`;
   return repo.href ? (
     <a href={repo.href} target="_blank" rel="noopener noreferrer" className={`${cls} transition-transform duration-300 hover:-translate-y-1`}>
       {body}
