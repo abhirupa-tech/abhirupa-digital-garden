@@ -79,7 +79,7 @@ function ctaLabel(type: string): string {
 
 export function FeaturedBlog({ entry }: { entry: ContentEntry }) {
   const minutes = readingTime(entry.body);
-  const preview = plainExcerpt(entry.body, 260);
+  const preview = plainExcerpt(entry.body, 1200);
   const href = `/${entry.section}/${entry.slug}/`;
 
   return (
@@ -90,7 +90,7 @@ export function FeaturedBlog({ entry }: { entry: ContentEntry }) {
         <HoverLink
           href={href}
           ariaLabel={`Read: ${entry.title}`}
-          className="group grid grid-cols-1 gap-7 md:grid-cols-2 md:items-center md:gap-12"
+          className="group grid grid-cols-1 gap-7 md:grid-cols-2 md:items-stretch md:gap-12"
         >
           {/* Left: cover with its tag row below */}
           <div className="min-w-0">
@@ -134,14 +134,18 @@ export function FeaturedBlog({ entry }: { entry: ContentEntry }) {
               </p>
             )}
 
-            {/* A taste of the opening lines, under the framing. */}
+            {/* A taste of the opening lines, under the framing. From md up it
+                fills whatever height the cover leaves (taken out of flow so it
+                never stretches the row) and fades out toward the bottom. */}
             {preview && (
-              <p className="mt-4 max-w-xl border-l border-hairline pl-4 font-rounded text-sm leading-relaxed text-parchment-muted line-clamp-4">
-                {preview}
-              </p>
+              <div className="relative mt-4 max-w-xl md:min-h-24 md:flex-1">
+                <p className="line-clamp-4 border-l border-hairline pl-4 font-rounded text-sm leading-relaxed text-parchment-muted [mask-image:linear-gradient(to_bottom,black_45%,transparent)] md:absolute md:inset-0 md:line-clamp-none md:overflow-hidden">
+                  {preview}
+                </p>
+              </div>
             )}
 
-            <span className="mt-7 inline-flex w-fit items-center gap-2 rounded-full border border-spark/40 bg-spark/10 px-5 py-2.5 font-rounded text-sm font-medium text-spark transition-[gap,background-color] duration-300 group-hover:gap-3.5 group-hover:bg-spark/20">
+            <span className="mt-7 inline-flex w-fit shrink-0 items-center gap-2 rounded-full border border-spark/40 bg-spark/10 px-5 py-2.5 font-rounded text-sm font-medium text-spark transition-[gap,background-color] duration-300 group-hover:gap-3.5 group-hover:bg-spark/20">
               {ctaLabel(entry.type)}
               <span aria-hidden="true">→</span>
             </span>
