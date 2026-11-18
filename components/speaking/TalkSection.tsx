@@ -4,6 +4,7 @@ import { formatDate } from '@/lib/format';
 import { Reveal } from '@/components/motion/Reveal';
 import { LinkCard } from '@/components/typography/LinkCard';
 import { Asterisk, Half, Quarter } from './Shapes';
+import { ClampToFit } from './ClampToFit';
 
 /*
  * The Speaking page as a soft poster grid: pastel tiles of different sizes,
@@ -195,16 +196,18 @@ function TheTalk({ talk }: { talk: Talk }) {
           </div>
         </Reveal>
 
-        <Reveal delay={0.08} className="lg:col-span-5">
-          <article className={`${tile} h-full bg-pastel-cream p-7 sm:p-9`}>
+        {/* On lg the proposal is taken out of flow so the video sets the row
+            height; the text clamps with "…" to fit. */}
+        <Reveal delay={0.08} className="relative lg:col-span-5">
+          <article className={`${tile} flex flex-col bg-pastel-cream p-7 sm:p-9 lg:absolute lg:inset-0`}>
             <Quarter corner="bl" className="pointer-events-none absolute -right-2 -top-2 w-24 bg-pastel-peach" />
             <p className="relative font-rounded text-xs font-semibold uppercase tracking-[0.16em] text-pastel-ink/70">The proposal</p>
             {talk.abstract ? (
-              <div className="relative mt-5 space-y-4 font-body text-lg leading-relaxed text-pastel-ink/85">
+              <ClampToFit className="relative mt-5 flex-1" innerClassName="space-y-4 font-body text-lg leading-relaxed text-pastel-ink/85">
                 {talk.abstract.split(/\n\s*\n/).map((para) => (
                   <p key={para.slice(0, 32)}>{para.trim()}</p>
                 ))}
-              </div>
+              </ClampToFit>
             ) : (
               <div className="mt-5 space-y-2" aria-label="Proposal coming soon">
                 {[100, 92, 96, 70].map((w) => (
@@ -213,7 +216,7 @@ function TheTalk({ talk }: { talk: Talk }) {
               </div>
             )}
 
-            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 border-t border-pastel-ink/10 pt-5">
+            <div className="mt-6 flex shrink-0 flex-wrap gap-x-6 gap-y-2 border-t border-pastel-ink/10 pt-5">
               {talk.sessionUrl && (
                 <a href={talk.sessionUrl} target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-1.5 font-rounded text-sm font-semibold text-pastel-ink underline decoration-pastel-ink/25 underline-offset-4 hover:decoration-pastel-ink">
                   Session page <Arrow />
