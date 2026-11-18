@@ -70,8 +70,9 @@ export default function SpeakingPage() {
         <div className="lg:pl-8">
           <Reveal as="header" className="max-w-3xl">
             <span className="label">Speaking</span>
-            <h1 className="mt-4 font-display text-section font-medium leading-[1.05] text-parchment">
-              From the page <em className="font-serif italic text-highlight">to the stage</em>
+            {/* Same heading treatment as the Writing page, so the two read as a pair. */}
+            <h1 className="mt-3.5 font-display text-[3.6rem] font-semibold leading-[0.95] tracking-[-0.02em] text-parchment [font-variation-settings:'opsz'_144,'SOFT'_50] sm:text-[4.5rem] lg:text-[6rem]">
+              From the page <em className="font-normal italic text-highlight">to the stage</em>
             </h1>
             <p className="mt-5 font-rounded text-lg leading-relaxed text-secondary-text md:text-xl">
               Talks on building interfaces for agents: the recordings, the decks, and
