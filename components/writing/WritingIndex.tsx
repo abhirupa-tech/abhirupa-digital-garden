@@ -74,7 +74,7 @@ function CardFooter({ item, rule }: { item: WritingItem; rule?: boolean }) {
 }
 
 const CARD =
-  'group relative flex flex-col overflow-hidden rounded-[14px] px-[26px] pb-5 pt-[26px] transition-transform duration-300 hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-highlight';
+  'group relative flex flex-col overflow-hidden rounded-[14px] shadow-[0px_1px_3px_rgba(0,0,0,0.15)] px-[26px] pb-5 pt-[26px] transition-transform duration-300 hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-highlight';
 
 function Card({ item, tone }: { item: WritingItem; tone: string }) {
   const variant = variantOf(item);
