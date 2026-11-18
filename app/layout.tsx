@@ -1,41 +1,45 @@
 import type { Metadata, Viewport } from 'next';
-import { Fraunces, Cormorant_Garamond, EB_Garamond, Quicksand } from 'next/font/google';
+import localFont from 'next/font/local';
 import { site } from '@/lib/site';
 import { TopNav } from '@/components/TopNav';
 import './globals.css';
 
 // 4-level serif hierarchy loaded as CSS variables (see tailwind.config.ts).
+// Self-hosted from app/fonts (Fontsource builds, SIL OFL) rather than
+// next/font/google: fetching Google Fonts at build time intermittently failed
+// CI deploys with "module not found" on the generated font CSS.
 // Display serif for headings and titles. Variable font: weight plus the
 // optical-size (opsz) and softness (SOFT) axes, so large headlines and small
 // card titles each get the right drawing.
-const fraunces = Fraunces({
-  subsets: ['latin'],
+const fraunces = localFont({
+  src: [
+    { path: './fonts/fraunces-latin-full-normal.woff2', weight: '100 900', style: 'normal' },
+    { path: './fonts/fraunces-latin-full-italic.woff2', weight: '100 900', style: 'italic' },
+  ],
   variable: '--font-fraunces',
   display: 'swap',
-  axes: ['opsz', 'SOFT'],
-  style: ['normal', 'italic'],
 });
 
-const cormorant = Cormorant_Garamond({
-  subsets: ['latin'],
+const cormorant = localFont({
+  src: './fonts/cormorant-garamond-latin-wght-normal.woff2',
+  weight: '300 700',
   variable: '--font-cormorant',
   display: 'swap',
-  weight: ['300', '400', '500', '600'],
 });
 
-const garamond = EB_Garamond({
-  subsets: ['latin'],
+const garamond = localFont({
+  src: './fonts/eb-garamond-latin-wght-normal.woff2',
+  weight: '400 800',
   variable: '--font-garamond',
   display: 'swap',
-  weight: ['400', '500'],
 });
 
 // Simple rounded sans — used thin (300) for the section subtext.
-const quicksand = Quicksand({
-  subsets: ['latin'],
+const quicksand = localFont({
+  src: './fonts/quicksand-latin-wght-normal.woff2',
+  weight: '300 700',
   variable: '--font-quicksand',
   display: 'swap',
-  weight: ['300', '400', '500', '600'],
 });
 
 export const viewport: Viewport = {
