@@ -42,6 +42,15 @@ const quicksand = localFont({
   display: 'swap',
 });
 
+// High-contrast display serif with sharp wedge serifs, for in-body
+// subheadings (h2/h3) in posts. Single weight; its contrast reads as bold.
+const gloock = localFont({
+  src: './fonts/gloock-latin-400-normal.woff2',
+  weight: '400',
+  variable: '--font-gloock',
+  display: 'swap',
+});
+
 export const viewport: Viewport = {
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#f2ede2' },
@@ -240,7 +249,7 @@ export default function RootLayout({
       // script, so the server markup intentionally differs from the first client
       // render. Suppress the (one-level-deep) attribute mismatch warning here.
       suppressHydrationWarning
-      className={`${fraunces.variable} ${cormorant.variable} ${garamond.variable} ${quicksand.variable}`}
+      className={`${fraunces.variable} ${cormorant.variable} ${garamond.variable} ${quicksand.variable} ${gloock.variable}`}
     >
       <head>
         <ThemeInit />
