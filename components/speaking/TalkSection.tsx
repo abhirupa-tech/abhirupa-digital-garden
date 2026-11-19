@@ -21,7 +21,7 @@ function SectionHead({ n, kicker, title, children }: { n: ReactNode; kicker: str
   return (
     <div className="max-w-2xl">
       <div className="flex items-center gap-3">
-        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-pastel-peach font-rounded text-sm font-semibold text-pastel-ink">
+        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-pastel-peach font-rounded text-sm font-semibold text-pastel-ink dark:bg-[#f0e4da]/20">
           {n}
         </span>
         <span className="label text-parchment-muted">{kicker}</span>
@@ -81,19 +81,19 @@ function Poster({ talk }: { talk: Talk }) {
   return (
     <div className="grid grid-cols-2 gap-3 lg:grid-cols-12 lg:grid-rows-[repeat(2,minmax(9.5rem,auto))]">
       {/* Title over the conference photo */}
-      <div className={`${tile} col-span-2 flex min-h-[19rem] flex-col justify-end bg-[#1c1714] p-6 sm:p-8 lg:col-span-8 lg:row-span-2`}>
+      <div className={`${tile} col-span-2 flex min-h-[19rem] flex-col justify-end bg-[#f3ece2] p-6 sm:p-8 lg:col-span-8 lg:row-span-2 dark:bg-[#1c1714]`}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/speaking/conference.jpg"
           alt=""
           className="absolute inset-0 h-full w-full object-cover grayscale"
         />
-        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/45" />
+        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-[#f6efe4] via-[#f6efe4]/85 to-[#f6efe4]/45 dark:from-black/90 dark:via-black/70 dark:to-black/45" />
         <div className="relative">
-          <p className="font-rounded text-xs font-semibold uppercase tracking-[0.16em] text-white/75">
+          <p className="font-rounded text-xs font-semibold uppercase tracking-[0.16em] text-[#3a2a20]/75 dark:text-white/75">
             {talk.event} · {talk.edition}
           </p>
-          <h2 className="mt-3 max-w-2xl font-display text-[1.85rem] font-medium leading-[1.08] text-[#fbf6f0] sm:text-[2.3rem] xl:text-[2.6rem]">
+          <h2 className="mt-3 max-w-2xl font-display text-[1.85rem] font-medium leading-[1.08] text-[#2b1f17] sm:text-[2.3rem] xl:text-[2.6rem] dark:text-[#fbf6f0]">
             {talk.title || 'Talk title coming soon'}
           </h2>
           <dl className="mt-6 flex flex-wrap gap-x-8 gap-y-3">
@@ -103,8 +103,8 @@ function Poster({ talk }: { talk: Talk }) {
               ['Format', talk.format || 'Talk'],
             ].map(([k, v]) => (
               <div key={k}>
-                <dt className="font-rounded text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-white/60">{k}</dt>
-                <dd className="mt-1 font-rounded text-sm font-semibold uppercase tracking-wide text-[#fbf6f0]">{v}</dd>
+                <dt className="font-rounded text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-[#3a2a20]/60 dark:text-white/60">{k}</dt>
+                <dd className="mt-1 font-rounded text-sm font-semibold uppercase tracking-wide text-[#2b1f17] dark:text-[#fbf6f0]">{v}</dd>
               </div>
             ))}
           </dl>
@@ -125,7 +125,7 @@ function Poster({ talk }: { talk: Talk }) {
 
       {/* Stage */}
       <div className={`${tile} flex flex-col justify-between bg-pastel-beige p-5 lg:col-span-2`}>
-        <Asterisk className="h-8 w-8 text-pastel-coral" />
+        <Asterisk className="h-8 w-8 text-pastel-coral dark:text-[#f2bba5]" />
         <span className="mt-4">
           <span className="block font-rounded text-xs font-semibold uppercase tracking-[0.16em] text-pastel-ink/70">Where</span>
           <span className="mt-1 block font-display text-2xl text-pastel-ink">{talk.stage || 'Stage TBA'}</span>
@@ -170,8 +170,8 @@ function VideoStage({ talk }: { talk: Talk }) {
     <figure className="relative aspect-video overflow-hidden rounded-2xl bg-gradient-to-br from-[#5e4130] to-[#2e2019]">
 
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-center">
-        <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-pastel-cream text-pastel-ink">
-          <span aria-hidden="true" className="absolute inset-0 animate-ping rounded-full bg-pastel-cream/60 [animation-duration:2.8s] motion-reduce:animate-none" />
+        <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-pastel-cream text-pastel-ink dark:bg-[#f0e4da]/25">
+          <span aria-hidden="true" className="absolute inset-0 animate-ping rounded-full bg-pastel-cream/60 [animation-duration:2.8s] motion-reduce:animate-none dark:bg-[#f0e4da]/15" />
           <svg viewBox="0 0 24 24" aria-hidden="true" className="relative ml-1 h-6 w-6" fill="currentColor">
             <path d="M8 5.5v13l10.5-6.5L8 5.5Z" />
           </svg>
@@ -242,7 +242,7 @@ function TheTalk({ talk }: { talk: Talk }) {
             video sets the row height; the text clamps with "…" to fit. */}
         <Reveal delay={0.08} className="relative hidden sm:block lg:col-span-5">
           <article className={`${tile} flex flex-col bg-pastel-cream p-7 sm:p-9 lg:absolute lg:inset-0`}>
-            <Quarter corner="bl" className="pointer-events-none absolute -right-2 -top-2 w-24 bg-pastel-peach" />
+            <Quarter corner="bl" className="pointer-events-none absolute -right-2 -top-2 w-24 bg-pastel-peach dark:bg-[#f0e4da]/15" />
             <p className="relative font-rounded text-xs font-semibold uppercase tracking-[0.16em] text-pastel-ink/70">The proposal</p>
             {talk.abstract ? (
               <ClampToFit className="relative mt-5 flex-1" innerClassName="space-y-4 font-body text-lg leading-relaxed text-pastel-ink/85">
@@ -253,7 +253,7 @@ function TheTalk({ talk }: { talk: Talk }) {
             ) : (
               <div className="mt-5 space-y-2" aria-label="Proposal coming soon">
                 {[100, 92, 96, 70].map((w) => (
-                  <span key={w} className="block h-3 rounded-full bg-pastel-rose" style={{ width: `${w}%` }} />
+                  <span key={w} className="block h-3 rounded-full bg-pastel-rose dark:bg-[#f0e4da]/15" style={{ width: `${w}%` }} />
                 ))}
               </div>
             )}

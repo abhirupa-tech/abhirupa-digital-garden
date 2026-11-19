@@ -37,11 +37,11 @@ export function TalkCard({ talk, index }: { talk: Talk; index: number }) {
       href={`/speaking/${talk.id}/`}
       className={`group relative grid h-full overflow-hidden rounded-[1.75rem] ${p.card} p-3 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 sm:grid-cols-[9rem_1fr]`}
     >
-      <Blob className={`pointer-events-none absolute -bottom-12 -right-6 h-44 w-36 ${p.shape} transition-transform duration-700 group-hover:rotate-12`} />
+      <Blob className={`pointer-events-none absolute -bottom-12 -right-6 h-44 w-36 ${p.shape} transition-transform duration-700 group-hover:rotate-12 dark:text-[#f0e4da]/20`} />
 
       {/* Date block */}
       <div className={`relative flex items-center justify-between gap-4 overflow-hidden rounded-[1.25rem] ${p.date} p-5 sm:flex-col sm:items-start sm:justify-between`}>
-        <Quarter corner="tl" className="pointer-events-none absolute -bottom-4 -right-4 w-16 bg-primary-bg/40" />
+        <Quarter corner="tl" className="pointer-events-none absolute -bottom-4 -right-4 w-16 bg-primary-bg/40 dark:bg-[#f0e4da]/20" />
         <span className="relative font-rounded text-xs font-semibold uppercase tracking-[0.16em] text-pastel-ink/70">
           {d ? d.getFullYear() : 'Date TBA'}
         </span>
@@ -89,8 +89,8 @@ export function InviteCard() {
       href={`mailto:${site.email}?subject=Speaking%20invitation`}
       className="group relative flex h-full min-h-[14rem] flex-col justify-between overflow-hidden rounded-[1.75rem] bg-pastel-rose p-7 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1"
     >
-      <Half className="pointer-events-none absolute -bottom-1 right-6 w-32 bg-pastel-peach/80" />
-      <Asterisk className="h-12 w-12 text-pastel-cream transition-transform duration-700 group-hover:rotate-90" />
+      <Half className="pointer-events-none absolute -bottom-1 right-6 w-32 bg-pastel-peach/80 dark:bg-[#f0e4da]/20" />
+      <Asterisk className="h-12 w-12 text-pastel-cream transition-transform duration-700 group-hover:rotate-90 dark:text-[#f0e4da]/70" />
       <div className="relative">
         <p className="font-display text-2xl text-pastel-ink">Your stage next?</p>
         <p className="mt-2 max-w-xs font-rounded text-sm leading-relaxed text-pastel-ink/75">
