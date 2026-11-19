@@ -284,11 +284,12 @@ function PendingCard({ title, description }: { title: string; description: strin
 }
 
 function DeckAndCode({ talk }: { talk: Talk }) {
-  const repo = talk.repos.find((r) => r.href);
+  const repo = talk.repos.find((r) => r.href && r.kind !== 'demo');
+  const demo = talk.repos.find((r) => r.href && r.kind === 'demo');
   return (
     <section className="pt-16 md:pt-20">
       <Reveal>
-        <SectionHead n={<PhoneSwap phone="01" wide="02" />} kicker="Deck and code" title="Slides and source" />
+        <SectionHead n={<PhoneSwap phone="01" wide="02" />} kicker="Deck, code and demo" title="Slides, source and demo" />
       </Reveal>
       <Reveal delay={0.06}>
         <div className="mt-8 grid gap-3 sm:grid-cols-2">
@@ -301,6 +302,16 @@ function DeckAndCode({ talk }: { talk: Talk }) {
             <LinkCard warm className="h-full" href={repo.href} title={repo.href.replace(/^https?:\/\/github\.com\//, '')} description={repo.description} site="github.com" />
           ) : (
             <PendingCard title="Source code" description="Goes public after the talk." />
+          )}
+          {demo && (
+            <LinkCard
+              warm
+              className="h-full sm:col-span-2"
+              href={demo.href}
+              title={`${demo.name} · live demo`}
+              description={demo.description}
+              site={demo.href.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+            />
           )}
         </div>
       </Reveal>

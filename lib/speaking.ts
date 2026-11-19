@@ -13,6 +13,8 @@ export type TalkRepo = {
   description: string;
   /** Short status chip, e.g. "Live" or "Coming soon". */
   status?: string;
+  /** 'demo' for a hosted, runnable demo; omitted for a source repository. */
+  kind?: 'demo';
 };
 
 export type Talk = {
@@ -76,9 +78,10 @@ export const talks: Talk[] = [
       },
       {
         name: 'MockGPT',
-        href: '',
-        description: 'A React performance analyzer for streaming LLM responses.',
-        status: 'Demo coming soon',
+        href: 'https://abhirupa-tech.github.io/we-are-developers/',
+        kind: 'demo',
+        description: 'Replay a recorded LLM stream through three React state strategies, with a live render profiler.',
+        status: 'Live demo',
       },
     ],
   },

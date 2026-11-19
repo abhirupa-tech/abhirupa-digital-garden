@@ -35,7 +35,7 @@ const STATIC_PAGES_UPDATED = '2026-11-17';
  * content, kept separately so a talk-page rework doesn't re-date About, Lab
  * and Toolkit. Bump by hand, like STATIC_PAGES_UPDATED.
  */
-const SPEAKING_UPDATED = '2026-11-18';
+const SPEAKING_UPDATED = '2026-11-19';
 
 /**
  * `lastmod` as a plain `YYYY-MM-DD` date.
