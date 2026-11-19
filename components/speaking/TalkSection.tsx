@@ -271,166 +271,136 @@ function TheTalk({ talk }: { talk: Talk }) {
 /* ── 02 · Deck, code and demo ───────────────────────────────────────────── */
 
 /*
- * Three object-like cards, monochrome in the page's ink so they read as
- * tools rather than decoration:
- *   row 1  demo (a terminal card)  ·  code (a folder, tabs stacked behind)
- *   row 2  slides (a deck of cards fanned behind, with a slide counter)
- * Each card is a link once its URL is set, and a quiet "coming" state before.
+ * Spot-icon rows: a soft tinted pill, a small flat illustration hanging off
+ * its left edge, title and subtext, and a round arrow button. Demo and code
+ * share a row; the deck sits below. A link once its URL is set, otherwise a
+ * quiet "soon" chip in place of the arrow.
  */
 
-const INK_CARD =
-  'relative block rounded-2xl border-[1.5px] border-parchment/80 bg-primary-bg text-parchment transition-transform duration-300';
-/** A blank card stacked behind another (same shape, no content). */
-const BACK_CARD = 'absolute inset-0 rounded-2xl border-[1.5px] bg-primary-bg transition-transform duration-500';
-
-function Prompt({ children, live }: { children: ReactNode; live: boolean }) {
+function DemoSpot() {
   return (
-    <span className="font-mono text-xs uppercase tracking-[0.14em] text-parchment-muted">
-      &gt; {children}{' '}
-      <span aria-hidden="true" className={live ? 'animate-pulse motion-reduce:animate-none' : ''}>
-        _
-      </span>
-    </span>
+    <svg viewBox="0 0 72 64" aria-hidden="true" className="h-full w-full">
+      <rect x="10" y="14" width="54" height="40" rx="7" fill="#1f1611" />
+      <rect x="6" y="10" width="54" height="40" rx="7" fill="#3a2a20" />
+      <circle cx="14" cy="18" r="2" fill="#f2bba5" />
+      <circle cx="20" cy="18" r="2" fill="#f4d4bc" />
+      <circle cx="26" cy="18" r="2" fill="#e8e2d3" />
+      <path d="M28 27v14l12-7-12-7Z" fill="#f4d4bc" />
+    </svg>
   );
 }
 
-function MaybeLink({ href, className, children }: { href?: string; className: string; children: ReactNode }) {
+function CodeSpot() {
+  return (
+    <svg viewBox="0 0 72 64" aria-hidden="true" className="h-full w-full">
+      <path d="M8 16a5 5 0 0 1 5-5h12l5 5h24a5 5 0 0 1 5 5v4H8v-9Z" fill="#a85f3a" />
+      <rect x="10" y="22" width="54" height="34" rx="6" fill="#7d4129" />
+      <rect x="6" y="20" width="54" height="34" rx="6" fill="#c77a4e" />
+      <path d="M27 31l-6 6 6 6M39 31l6 6-6 6" fill="none" stroke="#fbeee2" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function DeckSpot() {
+  return (
+    <svg viewBox="0 0 72 64" aria-hidden="true" className="h-full w-full">
+      <rect x="16" y="6" width="48" height="34" rx="5" fill="#d9c2a3" transform="rotate(8 40 23)" />
+      <rect x="10" y="16" width="50" height="36" rx="5" fill="#8c6a4a" />
+      <rect x="6" y="13" width="50" height="36" rx="5" fill="#f3e3cc" />
+      <rect x="14" y="34" width="6" height="9" rx="1.5" fill="#d9774f" />
+      <rect x="24" y="28" width="6" height="15" rx="1.5" fill="#d9774f" />
+      <rect x="34" y="22" width="6" height="21" rx="1.5" fill="#d9774f" />
+      <rect x="44" y="20" width="4" height="3" rx="1.5" fill="#3a2a20" />
+    </svg>
+  );
+}
+
+function SpotCard({
+  href,
+  icon,
+  title,
+  subtitle,
+  tone,
+  soon,
+}: {
+  href?: string;
+  icon: ReactNode;
+  title: string;
+  subtitle: string;
+  tone: string;
+  soon?: string;
+}) {
+  const body = (
+    <>
+      <span className="pointer-events-none absolute -left-5 top-1/2 h-16 w-[4.5rem] -translate-y-1/2 transition-transform duration-300 group-hover:-rotate-6 sm:h-[4.5rem] sm:w-20">
+        {icon}
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block truncate font-rounded text-base font-bold leading-snug text-pastel-ink sm:text-lg">{title}</span>
+        <span className="mt-0.5 block font-rounded text-sm leading-snug text-pastel-ink/65">{subtitle}</span>
+      </span>
+      {href ? (
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary-bg text-pastel-ink transition-transform duration-300 group-hover:translate-x-0.5 dark:bg-[#f0e4da]/15">
+          <svg viewBox="0 0 16 16" aria-hidden="true" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4" />
+          </svg>
+        </span>
+      ) : (
+        <span className="shrink-0 rounded-full border border-dashed border-pastel-ink/30 px-3 py-1 font-rounded text-xs font-medium text-pastel-ink/70">
+          <span className="sm:hidden">Soon</span>
+          <span className="hidden sm:inline">{soon || 'Soon'}</span>
+        </span>
+      )}
+    </>
+  );
+  const cls = `group relative ml-5 flex min-h-24 items-center gap-4 rounded-[1.75rem] py-5 pl-[4.25rem] pr-5 sm:pl-20 ${tone}`;
   return href ? (
-    <a href={href} target="_blank" rel="noopener noreferrer" className={`group ${className}`}>
-      {children}
+    <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>
+      {body}
     </a>
   ) : (
-    <div className={className}>{children}</div>
-  );
-}
-
-/** Terminal-style card: a mono title and a run prompt. */
-function DemoCard({ talk }: { talk: Talk }) {
-  const demo = talk.repos.find((r) => r.href && r.kind === 'demo');
-  const host = demo?.href.replace(/^https?:\/\//, '').replace(/\/$/, '');
-  return (
-    <MaybeLink href={demo?.href} className="block h-full">
-      <div className={`${INK_CARD} flex h-full min-h-52 flex-col p-6 group-hover:-translate-y-1`}>
-        <div className="flex items-center justify-between">
-          <span className="font-mono text-xs uppercase tracking-[0.14em] text-parchment-faint">Live demo</span>
-          <span className="flex gap-1.5" aria-hidden="true">
-            <span className="h-2 w-2 rounded-full border border-parchment/50" />
-            <span className="h-2 w-2 rounded-full border border-parchment/50" />
-            <span className="h-2 w-2 rounded-full bg-parchment/70" />
-          </span>
-        </div>
-        <p className="mt-5 font-mono text-2xl leading-tight">{demo ? demo.name : 'Demo'}</p>
-        <p className="mt-2 max-w-sm font-rounded text-sm leading-relaxed text-parchment-muted">
-          {demo ? demo.description : 'Goes live after the talk.'}
-        </p>
-        <span className="mt-auto pt-6">
-          <Prompt live={!!demo}>{demo ? `Run ${host}` : 'Coming soon'}</Prompt>
-        </span>
-      </div>
-    </MaybeLink>
-  );
-}
-
-/** One outlined folder behind the front one: body plus a tab joined to it. */
-function FolderOutline({ top, tabLeft, tone }: { top: string; tabLeft: string; tone: string }) {
-  return (
-    <span aria-hidden="true" className="absolute inset-x-0 bottom-0" style={{ top }}>
-      <span className={`absolute inset-0 rounded-2xl border-[1.5px] bg-primary-bg ${tone}`} />
-      {/* the tab overlaps the body's top edge so the outline runs on unbroken */}
-      <span
-        className={`absolute -top-[1.375rem] h-[calc(1.375rem+1.5px)] w-28 rounded-t-xl border-[1.5px] border-b-0 bg-primary-bg ${tone}`}
-        style={{ left: tabLeft }}
-      />
-    </span>
-  );
-}
-
-/** A folder for the repo: solid ink front, outlined folders stacked behind. */
-function FolderCard({ talk }: { talk: Talk }) {
-  const repo = talk.repos.find((r) => r.href && r.kind !== 'demo');
-  const path = repo?.href.replace(/^https?:\/\/github\.com\//, '');
-  const front = 'bg-[#2b1f17] dark:bg-pastel-cream';
-  return (
-    <MaybeLink href={repo?.href} className="block h-full">
-      <div className="relative flex h-full flex-col pt-[4.25rem]">
-        <FolderOutline top="1.5rem" tabLeft="46%" tone="border-parchment/30" />
-        <FolderOutline top="2.875rem" tabLeft="24%" tone="border-parchment/55" />
-        {/* front folder, its tab flush with the left edge */}
-        <div className={`relative flex min-h-52 flex-1 flex-col rounded-2xl rounded-tl-none p-6 text-[#f3ece4] transition-transform duration-300 group-hover:-translate-y-1 ${front}`}>
-          <span aria-hidden="true" className={`absolute -top-[1.375rem] left-0 h-[calc(1.375rem+1px)] w-32 rounded-t-xl ${front}`} />
-          <span className="flex items-start justify-between gap-4">
-            <span className="font-mono text-xs uppercase tracking-[0.14em] text-[#f3ece4]/60">Source code</span>
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#f3ece4] text-[#2b1f17]">
-              <Asterisk className="h-4 w-4" />
-            </span>
-          </span>
-          <p className="mt-3 font-display text-2xl leading-snug">{path || 'Repository'}</p>
-          <p className="mt-2 max-w-sm font-rounded text-sm leading-relaxed text-[#f3ece4]/70">
-            {repo ? repo.description : 'Goes public after the talk.'}
-          </p>
-          <span className="mt-auto pt-6 font-mono text-xs uppercase tracking-[0.14em] text-[#f3ece4]/60">
-            {repo ? 'github.com ↗' : 'Coming soon'}
-          </span>
-        </div>
-      </div>
-    </MaybeLink>
-  );
-}
-
-/** The deck: a card with two more fanned out behind it and a slide counter. */
-function DeckCard({ talk }: { talk: Talk }) {
-  const live = !!talk.slidesUrl;
-  return (
-    <MaybeLink href={talk.slidesUrl || undefined} className="block pb-4 pl-4">
-      <div className="relative">
-        {/* two cards stacked behind, stepped down and to the left */}
-        <span aria-hidden="true" className={`${BACK_CARD} -translate-x-4 translate-y-4 border-parchment/30 shadow-[0_14px_28px_-20px_rgba(0,0,0,0.45)] group-hover:-translate-x-5 group-hover:translate-y-5`} />
-        <span aria-hidden="true" className={`${BACK_CARD} -translate-x-2 translate-y-2 border-parchment/55 group-hover:-translate-x-2.5 group-hover:translate-y-2.5`} />
-        <div className={`${INK_CARD} flex min-h-52 flex-col p-6 sm:p-8`}>
-          <div className="flex items-center justify-between">
-            <span className="flex items-center gap-3 font-mono text-sm text-parchment-muted">
-              <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6">
-                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeOpacity="0.25" strokeWidth="1.5" />
-                <path d="M12 2a10 10 0 0 1 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-              1 / {live ? '—' : '?'}
-            </span>
-            <span aria-hidden="true" className="flex h-9 w-9 items-center justify-center rounded-full border-[1.5px] border-parchment/70">
-              <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 4l4 4-4 4M8 4l4 4-4 4M13.5 4v8" />
-              </svg>
-            </span>
-          </div>
-          <p className="mt-6 font-mono text-2xl leading-tight sm:text-3xl">Slide deck.</p>
-          <p className="mt-2 max-w-xl font-rounded text-sm leading-relaxed text-parchment-muted sm:text-base">
-            Every slide from the session, diagrams and benchmarks included.
-          </p>
-          <span className="mt-auto pt-6">
-            <Prompt live={live}>
-              {live ? 'Open the deck' : `Uploads after the talk${talk.date ? `, ${formatDate(talk.date)}` : ''}`}
-            </Prompt>
-          </span>
-        </div>
-      </div>
-    </MaybeLink>
+    <div className={cls}>{body}</div>
   );
 }
 
 function DeckAndCode({ talk }: { talk: Talk }) {
+  const repo = talk.repos.find((r) => r.href && r.kind !== 'demo');
+  const demo = talk.repos.find((r) => r.href && r.kind === 'demo');
   return (
     <section className="pt-16 md:pt-20">
       <Reveal>
         <SectionHead n={<PhoneSwap phone="01" wide="02" />} kicker="Deck, code and demo" title="Slides, source and demo" />
       </Reveal>
       <Reveal delay={0.06}>
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 sm:items-end sm:gap-4">
-          <DemoCard talk={talk} />
-          <FolderCard talk={talk} />
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          <SpotCard
+            href={demo?.href}
+            icon={<DemoSpot />}
+            title={demo ? `${demo.name} live demo` : 'Live demo'}
+            subtitle={demo ? 'Replay an LLM stream, three ways' : 'Goes live after the talk'}
+            tone="bg-pastel-beige"
+            soon="After the talk"
+          />
+          <SpotCard
+            href={repo?.href}
+            icon={<CodeSpot />}
+            title="Source on GitHub"
+            subtitle={repo ? repo.href.replace(/^https?:\/\/github\.com\//, '') : 'Goes public after the talk'}
+            tone="bg-pastel-rose"
+            soon="After the talk"
+          />
         </div>
       </Reveal>
       <Reveal delay={0.12}>
-        <div className="mt-6">
-          <DeckCard talk={talk} />
+        <div className="mt-4">
+          <SpotCard
+            href={talk.slidesUrl || undefined}
+            icon={<DeckSpot />}
+            title="Slide deck"
+            subtitle="Every slide, diagrams and benchmarks included"
+            tone="bg-pastel-peach"
+            soon={talk.date ? `Uploads ${formatDate(talk.date)}` : 'After the talk'}
+          />
         </div>
       </Reveal>
     </section>
