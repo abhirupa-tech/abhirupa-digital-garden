@@ -14,8 +14,9 @@ import { ViewAllLink } from './ViewAllLink';
  * Practice list it shares a row with, so neither side dangles short.
  */
 export function FieldNotesCards({ zone, entries }: { zone: Zone; entries: ContentEntry[] }) {
-  // Entries arrive newest-first (getSectionEntries), so the latest post leads.
-  const items = entries.slice(0, 4);
+  // Entries arrive newest-first (getSectionEntries), so the latest post leads;
+  // the home preview shows the six most recent.
+  const items = entries.slice(0, 6);
   return (
     <div>
       <SectionHeader zone={zone} from="right" />
