@@ -16,6 +16,7 @@ export const site = {
     'Abhirupa Mitra is a senior frontend engineer at Slack designing agentic AI interfaces — the UI and UX research layer where AI agents think alongside people. A personal knowledge ecosystem on frontend for AI, design thinking, and slow living.',
   locale: 'en_US',
   email: 'mitra.abhirupa@gmail.com',
+  coffee: 'https://buymeacoffee.com/abhirupa',
   social: {
     linkedin: 'https://www.linkedin.com/in/abhirupa-mitra',
     medium: 'https://medium.com/@mitra.abhirupa',

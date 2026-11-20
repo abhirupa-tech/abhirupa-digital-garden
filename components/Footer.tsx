@@ -62,16 +62,27 @@ export function Footer() {
               {site.role} designing agentic AI interfaces — the surfaces where
               agents reason, and thrive.
             </p>
-            <a
-              href="/feed.xml"
-              className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/25 px-3.5 py-1.5 font-rounded text-sm text-white/85 transition-colors duration-300 hover:border-rust-soft hover:text-rust-soft"
-            >
-              <svg viewBox="0 0 24 24" aria-hidden="true" className="h-3.5 w-3.5">
-                <path d="M5 5a14 14 0 0 1 14 14M5 11a8 8 0 0 1 8 8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <circle cx="6" cy="18" r="1.6" fill="currentColor" />
-              </svg>
-              Subscribe via RSS
-            </a>
+            <div className="mt-5 flex flex-wrap gap-2.5">
+              <a
+                href="/feed.xml"
+                className="inline-flex items-center gap-2 rounded-full border border-white/25 px-3.5 py-1.5 font-rounded text-sm text-white/85 transition-colors duration-300 hover:border-rust-soft hover:text-rust-soft"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" className="h-3.5 w-3.5">
+                  <path d="M5 5a14 14 0 0 1 14 14M5 11a8 8 0 0 1 8 8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  <circle cx="6" cy="18" r="1.6" fill="currentColor" />
+                </svg>
+                Subscribe via RSS
+              </a>
+              <a
+                href={site.coffee}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-white/25 px-3.5 py-1.5 font-rounded text-sm text-white/85 transition-colors duration-300 hover:border-rust-soft hover:text-rust-soft"
+              >
+                <span aria-hidden="true">☕</span>
+                Buy me a coffee
+              </a>
+            </div>
           </Reveal>
 
           <Reveal delay={0.1} className="md:col-span-8">
