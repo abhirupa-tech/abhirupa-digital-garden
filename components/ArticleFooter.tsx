@@ -15,7 +15,7 @@ export function ArticleFooter({
   related: ContentEntry[];
 }) {
   return (
-    <footer className="zone-article mt-14 border-t border-parchment/12 pt-8 sm:mt-24 sm:pt-12">
+    <footer className="zone-article mt-12 sm:mt-16">
       <RelatedPosts entries={related} />
 
       {entry.medium && (
