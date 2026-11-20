@@ -149,6 +149,7 @@ function NavIcon({
 export function SideNav() {
   const pathname = usePathname();
   const [active, setActive] = useState('top');
+  const [reading, setReading] = useState(false);
 
   // The site exports with trailingSlash, so usePathname yields e.g. "/about/".
   const isHome = !pathname || pathname === '/' || pathname === '';
@@ -159,6 +160,16 @@ export function SideNav() {
     () => iconItems.map((it) => ({ ...it, href: !isHome && it.hub ? it.hub : `/#${it.id}` })),
     [isHome],
   );
+
+  // Off the homepage the rail is a way out, not a guide: once the reader is
+  // into the piece it fades back, returning on hover or keyboard focus.
+  useEffect(() => {
+    if (isHome) return;
+    const onScroll = () => setReading(window.scrollY > 320);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [isHome]);
 
   // Scroll-spy: mark the section crossing the viewport's vertical middle.
   useEffect(() => {
@@ -182,7 +193,9 @@ export function SideNav() {
       {/* Desktop full-height bar — soft ivory-to-taupe gradient */}
       <nav
         aria-label="Section navigation"
-        className="fixed inset-y-0 left-0 z-40 hidden w-20 flex-col items-center border-r border-black/10 bg-linear-to-b from-[#f5f1e9]/95 to-[#ddd6c4]/95 dark:border-white/10 dark:from-secondary-bg/95 dark:to-tertiary-bg/95 lg:flex"
+        className={`fixed inset-y-0 left-0 z-40 hidden w-20 flex-col items-center border-r border-black/10 bg-linear-to-b from-[#f5f1e9]/95 to-[#ddd6c4]/95 dark:border-white/10 dark:from-secondary-bg/95 dark:to-tertiary-bg/95 lg:flex transition-opacity duration-500 hover:opacity-100 focus-within:opacity-100 ${
+          reading && !isHome ? 'opacity-35' : 'opacity-100'
+        }`}
       >
         <a
           href={isHome ? '/#top' : '/'}

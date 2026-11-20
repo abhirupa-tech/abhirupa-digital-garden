@@ -205,31 +205,45 @@ function MobileMenu({ path }: { path: string }) {
  * Site header: name on the left (home link), labelled destinations on the
  * right — a Writing menu with each section and its one-line description, then
  * Lab, Speaking, Now, About and the theme switch. Phones get the name and one menu
- * button. Transparent at the top, an opaque canvas once scrolled.
+ * button. Transparent at the top, an opaque canvas once scrolled. On article
+ * pages it slips away while reading down and returns on any scroll up.
  */
 export function TopNav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const [tucked, setTucked] = useState(false);
   // The site exports with trailingSlash, so usePathname yields e.g. "/about/".
   const path = pathname && pathname !== '/' ? pathname.replace(/\/$/, '') : '/';
   const isHome = path === '/';
   const segments = isHome ? [] : path.split('/').filter(Boolean);
-  const hasRail = isHome || (segments.length >= 2 && SECTION_IDS.has(segments[0]));
+  const isArticle = segments.length >= 2 && SECTION_IDS.has(segments[0]);
+  const hasRail = isHome || isArticle;
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 8);
+      if (isArticle && Math.abs(y - lastY) > 6) {
+        setTucked(y > lastY && y > 160);
+        lastY = y;
+      } else if (!isArticle) {
+        setTucked(false);
+      }
+    };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [isArticle]);
 
   if (STANDALONE_PREFIXES.some((prefix) => path.startsWith(prefix))) return null;
 
   return (
     <div
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+      // Keyboard focus inside the bar always brings it back.
+      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,transform] duration-300 ease-out focus-within:translate-y-0 ${
         scrolled ? 'border-b border-hairline bg-primary-bg/95 backdrop-blur-sm' : 'bg-transparent'
-      }`}
+      } ${tucked ? '-translate-y-full' : 'translate-y-0'}`}
     >
       <nav
         aria-label="Primary"

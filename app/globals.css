@@ -214,6 +214,12 @@
   @apply relative mx-auto w-full max-w-4xl px-6 md:px-10 3xl:px-5;
 }
 
+@utility zone-read {
+  /* Article text: a ~40rem (≈68 characters) measure at md+, the line length
+     long-form reading is most comfortable at. Same gutters as zone-article. */
+  @apply relative mx-auto w-full max-w-[45rem] px-6 md:px-10 3xl:px-5;
+}
+
 @layer base {
   :root {
     color-scheme: light;

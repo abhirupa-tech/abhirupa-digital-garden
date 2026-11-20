@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { compileMDX } from 'next-mdx-remote/rsc';
 import { getEntries, getEntry, getRelatedEntries, type ContentEntry } from '@/lib/content';
@@ -8,6 +9,8 @@ import { cloudinaryUrl } from '@/lib/cloudinary';
 import { SideNav } from '@/components/SideNav';
 import { Footer } from '@/components/Footer';
 import { ArticleFooter } from '@/components/ArticleFooter';
+import { ArticleEnd } from '@/components/ArticleEnd';
+import { ArticleNavigator } from '@/components/ArticleNavigator';
 import { Callout, Heading, Subtitle, TagList, typographyComponents } from '@/components/typography';
 import { formatDate, readingTime } from '@/lib/format';
 
@@ -180,9 +183,9 @@ export default async function PiecePage({ params }: { params: Promise<PageParams
       <div className="lg:pl-20">
         <main>
           {entry.cover && (
-            // Header image: the same width as the article text (zone-article
-            // shares its column and gutters), cropped to a wide band.
-            <figure className="zone-article pt-20 sm:pt-24">
+            // Header image: the same width as the article column (zone-read
+            // shares its gutters), cropped to a wide band.
+            <figure className="zone-read pt-20 sm:pt-24">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={cloudinaryUrl(entry.cover, { width: 2000 })}
@@ -198,30 +201,50 @@ export default async function PiecePage({ params }: { params: Promise<PageParams
             </figure>
           )}
           <article
-            className={`zone-article pb-10 sm:pb-16 ${
+            className={`zone-read pb-10 sm:pb-16 ${
               entry.cover ? 'pt-8 sm:pt-12 md:pt-16' : 'pt-10 sm:pt-16 md:pt-28'
             }`}
           >
             <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
               <span className="font-display text-lg text-sand/70">{zone.index}</span>
               <span className="label">{entry.type}</span>
-              {entry.date && (
-                <span className="label text-parchment-faint">
-                  <time dateTime={entry.date}>{formatDate(entry.date)}</time>
-                </span>
-              )}
               {entry.updated && entry.updated !== entry.date && (
                 <span className="label text-parchment-faint">
                   Updated <time dateTime={entry.updated}>{formatDate(entry.updated)}</time>
                 </span>
               )}
-              <span className="label text-parchment-faint">{readingTime(entry.body)} min read</span>
             </div>
 
             <Heading level={1} className="mt-4">
               {entry.title}
             </Heading>
             {entry.description && <Subtitle>{entry.description}</Subtitle>}
+
+            {/* Byline: who, how long, when — the commitment cost at a glance. */}
+            <div className="mt-6 flex items-center gap-3 sm:mt-8">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={site.avatar}
+                alt=""
+                width={44}
+                height={44}
+                className="h-11 w-11 rounded-full border border-parchment/10 object-cover"
+              />
+              <div className="min-w-0 font-rounded leading-tight">
+                <Link href="/about/" className="text-base text-parchment transition-colors duration-300 hover:text-highlight">
+                  {site.name}
+                </Link>
+                <p className="mt-1 text-sm text-parchment-faint">
+                  {readingTime(entry.body)} min read
+                  {entry.date && (
+                    <>
+                      {' · '}
+                      <time dateTime={entry.date}>{formatDate(entry.date)}</time>
+                    </>
+                  )}
+                </p>
+              </div>
+            </div>
             <TagList tags={entry.tags} />
 
             {entry.audience && (
@@ -237,6 +260,9 @@ export default async function PiecePage({ params }: { params: Promise<PageParams
             <div className={`article-body ${entry.audience ? 'mt-6 sm:mt-10' : 'mt-9 sm:mt-16'}`}>
               {content}
             </div>
+
+            <ArticleEnd />
+            <ArticleNavigator />
           </article>
 
           <ArticleFooter entry={entry} related={related} />

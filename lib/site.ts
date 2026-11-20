@@ -17,6 +17,9 @@ export const site = {
   locale: 'en_US',
   email: 'mitra.abhirupa@gmail.com',
   coffee: 'https://buymeacoffee.com/abhirupa',
+  // Square, face-cropped portrait for article bylines and the author card.
+  avatar:
+    'https://res.cloudinary.com/ra5tg986/image/upload/c_fill,g_face,w_160,h_160,f_auto,q_auto/v1784876463/abhirupa-mitra_lozlsu.png',
   social: {
     linkedin: 'https://www.linkedin.com/in/abhirupa-mitra',
     medium: 'https://medium.com/@mitra.abhirupa',
