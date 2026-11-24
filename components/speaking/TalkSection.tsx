@@ -1,9 +1,10 @@
 import type { ReactNode } from 'react';
-import type { Talk } from '@/lib/speaking';
+import { slidesReady, type Talk } from '@/lib/speaking';
 import { formatDate } from '@/lib/format';
 import { Reveal } from '@/components/motion/Reveal';
 import { Asterisk, Quarter } from './Shapes';
 import { ClampToFit } from './ClampToFit';
+import { DeckViewer } from './DeckViewer';
 
 /*
  * The Speaking page as a soft poster grid: pastel tiles of different sizes,
@@ -393,14 +394,26 @@ function DeckAndCode({ talk }: { talk: Talk }) {
       </Reveal>
       <Reveal delay={0.12}>
         <div className="mt-4">
-          <SpotCard
-            href={talk.slidesUrl || undefined}
-            icon={<DeckSpot />}
-            title="Slide deck"
-            subtitle="Every slide, diagrams and benchmarks included"
-            tone="bg-pastel-peach"
-            soon={talk.date ? `Uploads ${formatDate(talk.date)}` : 'After the talk'}
-          />
+          {talk.slideImages && talk.slidesUrl ? (
+            <DeckViewer
+              title={talk.title || `${talk.event} slides`}
+              pdfHref={talk.slidesUrl}
+              pdfSize="15 MB"
+              dir={talk.slideImages.dir}
+              count={talk.slideImages.count}
+              availableAt={talk.slidesAvailableAt}
+              openAtBuild={slidesReady(talk)}
+            />
+          ) : (
+            <SpotCard
+              href={talk.slidesUrl || undefined}
+              icon={<DeckSpot />}
+              title="Slide deck"
+              subtitle="Every slide, diagrams and benchmarks included"
+              tone="bg-pastel-peach"
+              soon={talk.date ? `Uploads ${formatDate(talk.date)}` : 'After the talk'}
+            />
+          )}
         </div>
       </Reveal>
     </section>

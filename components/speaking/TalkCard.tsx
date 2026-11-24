@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import type { Talk } from '@/lib/speaking';
+import { slidesReady, type Talk } from '@/lib/speaking';
 import { site } from '@/lib/site';
 import { Asterisk, Blob, Half, Quarter } from './Shapes';
 
@@ -69,7 +69,7 @@ export function TalkCard({ talk, index }: { talk: Talk; index: number }) {
         <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
           <ul className="flex flex-wrap gap-2" aria-label="Materials">
             <Status ready={!!talk.youtubeId}>Recording</Status>
-            <Status ready={!!talk.slidesUrl}>Slides</Status>
+            <Status ready={slidesReady(talk)}>Slides</Status>
             <Status ready={talk.repos.some((r) => r.href)}>Code</Status>
           </ul>
           <span className="inline-flex items-center gap-1.5 font-rounded text-sm font-semibold text-pastel-ink">

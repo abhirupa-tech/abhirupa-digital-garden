@@ -44,6 +44,13 @@ export type Talk = {
   youtubeId: string;
   /** Public link to the slide deck (PDF, Google Slides, Speaker Deck…). */
   slidesUrl: string;
+  /**
+   * Slide images for the on-page deck viewer: `count` files named 01.webp,
+   * 02.webp… under `dir`. Omit to show only a link to `slidesUrl`.
+   */
+  slideImages?: { dir: string; count: number };
+  /** ISO instant before which the deck stays locked (view + download), e.g. the talk's start. */
+  slidesAvailableAt?: string;
   repos: TalkRepo[];
 };
 
@@ -68,7 +75,10 @@ export const talks: Talk[] = [
     sessionUrl:
       'https://www.wearedevelopers.com/conference-india/agenda/sessions/react-under-fire-rendering-performance-for-streaming-agent-uis-1288492',
     youtubeId: '',
-    slidesUrl: '',
+    slidesUrl: '/speaking/wearedevelopers-2026/React-Under-Fire.pdf',
+    slideImages: { dir: '/speaking/wearedevelopers-2026/slides', count: 35 },
+    // 9:00 AM IST on the day of the talk.
+    slidesAvailableAt: '2026-11-26T09:00:00+05:30',
     repos: [
       {
         name: 'we-are-developers',
@@ -86,6 +96,12 @@ export const talks: Talk[] = [
     ],
   },
 ];
+
+/** True once the deck exists and its release time (if any) has passed. */
+export function slidesReady(talk: Talk, now = Date.now()): boolean {
+  if (!talk.slidesUrl) return false;
+  return !talk.slidesAvailableAt || now >= Date.parse(talk.slidesAvailableAt);
+}
 
 export function getTalk(id: string): Talk | undefined {
   return talks.find((t) => t.id === id);
