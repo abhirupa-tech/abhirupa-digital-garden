@@ -77,8 +77,6 @@ export const talks: Talk[] = [
     youtubeId: '',
     slidesUrl: '/speaking/wearedevelopers-2026/React-Under-Fire.pdf',
     slideImages: { dir: '/speaking/wearedevelopers-2026/slides', count: 35 },
-    // 9:00 AM IST on the day of the talk.
-    slidesAvailableAt: '2026-11-26T09:00:00+05:30',
     repos: [
       {
         name: 'we-are-developers',
