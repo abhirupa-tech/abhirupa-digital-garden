@@ -76,7 +76,7 @@ export const talks: Talk[] = [
       'https://www.wearedevelopers.com/conference-india/agenda/sessions/react-under-fire-rendering-performance-for-streaming-agent-uis-1288492',
     youtubeId: '',
     slidesUrl: '/speaking/wearedevelopers-2026/React-Under-Fire.pdf',
-    slideImages: { dir: '/speaking/wearedevelopers-2026/slides', count: 35 },
+    slideImages: { dir: '/speaking/wearedevelopers-2026/slides', count: 33 },
     repos: [
       {
         name: 'we-are-developers',

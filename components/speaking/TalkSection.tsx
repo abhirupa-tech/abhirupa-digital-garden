@@ -398,7 +398,7 @@ function DeckAndCode({ talk }: { talk: Talk }) {
             <DeckViewer
               title={talk.title || `${talk.event} slides`}
               pdfHref={talk.slidesUrl}
-              pdfSize="15 MB"
+              pdfSize="14 MB"
               dir={talk.slideImages.dir}
               count={talk.slideImages.count}
               availableAt={talk.slidesAvailableAt}
